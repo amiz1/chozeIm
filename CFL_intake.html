@@ -87,7 +87,8 @@ table.kv td:first-child{color:var(--mute);width:38%}
 .sel{font:inherit;font-size:15px;padding:4px 8px;border:1px solid var(--rule);border-radius:6px;background:var(--tint2);color:var(--ink)}
 @media print{.nav,.tabs,.noprint{display:none!important}.hide{display:block!important}body{background:#fff}.card{break-inside:avoid}}
 .grow{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--rule)}.grow .gl{flex:1 1 220px;font-weight:600}.grow input{flex:1 1 220px}.gseg{display:flex;gap:6px;flex:1 1 280px}.gseg button{flex:1;font:inherit;font-size:15px;padding:9px 6px;border:1px solid var(--rule);background:var(--card,#fff);color:inherit;border-radius:6px;cursor:pointer}.gseg button.on{background:var(--olive);color:#fff;border-color:var(--olive)}
-.q.tb{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;margin:10px 0}.q.tb .qt{font-size:17px}.q.tb .opt{display:inline-flex;margin:4px 0 4px 6px;padding:7px 12px}.q.tb+.q.tb{margin-top:-11px;border-top:1px dashed var(--rule);border-radius:0 0 10px 10px}.q.tb:has(+.q.tb){border-bottom-left-radius:0;border-bottom-right-radius:0}.tbh{font-weight:700;color:var(--olive);font-size:19px;margin:0 0 8px}</style>
+.q.tb{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;margin:10px 0}.q.tb .qt{font-size:17px}.q.tb .opt{display:inline-flex;margin:4px 0 4px 6px;padding:7px 12px}.q.tb+.q.tb{margin-top:-11px;border-top:1px dashed var(--rule);border-radius:0 0 10px 10px}.q.tb:has(+.q.tb){border-bottom-left-radius:0;border-bottom-right-radius:0}.tbh{font-weight:700;color:var(--olive);font-size:19px;margin:0 0 8px}.cfl-analysis #app>.nav,.cfl-analysis #cpm,.cfl-analysis #saveBar{display:none!important}
+</style>
 <style>#cwlR{position:fixed;inset:0;background:rgba(20,20,15,.55);display:flex;align-items:flex-start;justify-content:center;z-index:9999;overflow:auto;padding:24px 14px;direction:rtl}
  #cwlR .bx{background:#fff;color:#2B2B28;max-width:520px;width:100%;border-radius:10px;border-top:5px solid #B8933F;padding:22px 20px;font-family:"Assistant","Heebo","Segoe UI",Arial,sans-serif;font-size:17px;line-height:1.6}
  #cwlR h3{margin:0 0 6px;font-size:22px;color:#4E5A3A}#cwlR p{margin:0 0 10px}
@@ -1018,6 +1019,12 @@ CFL.start('intake').then(function(info){
   if(info.view){
     S=Object.assign({name:'',date:'',a:{},t:{},page:0,done:true},info.saved||{},{name:CFL.name,done:true});
     LOCKED=true;
+    if(info.viewMode==='analysis'){
+      /* the יועצים site: the analysis for the יועץ ("מפת שיחה ליועץ/ת"), nothing saved from here */
+      document.documentElement.classList.add('cfl-analysis');
+      renderAnalysis(pack());
+      return;
+    }
     if(info.viewMode==='answers')renderAllAnswers();else render();
     return;
   }

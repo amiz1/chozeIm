@@ -134,8 +134,10 @@
   // postMessage. Only a parent page on the same site is accepted; nothing goes to the server.
   //   <page>#view          -> the summary screen ("סיכום לנועץ")
   //   <page>#view-answers  -> the questionnaire itself with the answers filled in ("תשובות הנועץ")
-  const VIEW = /(^|[#&])view(-answers)?\b/.test(location.hash) && window.parent !== window;
-  const VIEW_MODE = /(^|[#&])view-answers\b/.test(location.hash) ? 'answers' : 'results';
+  //   <page>#view-analysis -> the page's analysis for the יועץ, where it has one (שאלון הכניסה)
+  const VIEW = /(^|[#&])view(-answers|-analysis)?\b/.test(location.hash) && window.parent !== window;
+  const VIEW_MODE = /(^|[#&])view-answers\b/.test(location.hash) ? 'answers'
+    : /(^|[#&])view-analysis\b/.test(location.hash) ? 'analysis' : 'results';
   function waitForStaffPage() {
     return new Promise(resolve => {
       window.addEventListener('message', e => {
