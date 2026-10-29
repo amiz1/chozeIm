@@ -167,3 +167,9 @@ footer b { color: var(--olive); }
 
 /* Two choices side by side (לשון פניה) */
 .options.two { grid-template-columns: 1fr 1fr; }
+
+/* קורות חיים card on the home page */
+.cv-card { margin-top: 22px; border-right: 4px solid var(--gold); }
+.cv-note { color: var(--mute); font-size: 15px; margin: 0 0 10px; }
+.cv-status { margin: 0 0 14px; }
+.cv-input { display: none; }

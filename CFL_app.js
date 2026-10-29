@@ -255,8 +255,62 @@ async function showHome(notice) {
     notice ? msgBox(notice, 'success') : null,
     el('h1', {}, 'שלום, ' + r.name),
     el('p', { class: 'sub' }, 'אלה השאלונים שלך. שאלונים חדשים ייפתחו לאורך התהליך.'),
-    el('div', { class: 'q-list' }, cards)
+    el('div', { class: 'q-list' }, cards),
+    cvCard(r.cv)
   );
+}
+
+// ===================== CV (קורות חיים) =====================
+const CV_MAX = 5 * 1024 * 1024;
+const CV_EXT = ['pdf', 'doc', 'docx'];
+
+function readBase64(file) {
+  return new Promise((resolve, reject) => {
+    const fr = new FileReader();
+    fr.onload = () => resolve(String(fr.result).split(',')[1] || '');
+    fr.onerror = () => reject(fr.error);
+    fr.readAsDataURL(file);
+  });
+}
+
+function cvCard(cv) {
+  const status = el('p', { class: 'cv-status' });
+  const msg = el('div');
+  const paint = (c) => {
+    status.replaceChildren(c
+      ? el('span', {}, 'הקובץ שהועלה: ', el('b', { dir: 'auto' }, c.name), ' · ' + c.uploadedAt)
+      : 'עדיין לא הועלו קורות חיים.');
+    btn.textContent = c ? 'החלפת הקובץ' : 'העלאת קורות חיים';
+  };
+  const input = el('input', {
+    type: 'file', class: 'cv-input', 'aria-label': 'בחירת קובץ קורות חיים',
+    accept: '.pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+  });
+  const btn = el('button', { type: 'button', class: 'btn primary', onclick: () => input.click() });
+  input.addEventListener('change', async () => {
+    const f = input.files && input.files[0];
+    input.value = '';
+    if (!f) return;
+    msg.replaceChildren();
+    const ext = (f.name.split('.').pop() || '').toLowerCase();
+    if (CV_EXT.indexOf(ext) === -1) { msg.append(msgBox('אפשר להעלות קובץ PDF או Word בלבד.')); return; }
+    if (f.size > CV_MAX) { msg.append(msgBox('הקובץ גדול מ-5MB. נסו לשמור אותו כ-PDF קטן יותר.')); return; }
+    let r;
+    await withBusy(btn, async () => {
+      btn.textContent = 'מעלה…';
+      let data;
+      try { data = await readBase64(f); } catch (e) { r = { ok: false, message: 'לא הצלחנו לקרוא את הקובץ.' }; return; }
+      r = await api('cvUpload', { name: f.name, data: data });
+    });
+    if (!r || !r.ok) { if (r && !r.handled) msg.append(msgBox(r.message)); return; }
+    paint(r.cv);
+    msg.append(msgBox('הקובץ נשמר. תודה!', 'success'));
+  });
+  paint(cv);
+  return el('div', { class: 'card cv-card' },
+    el('h2', {}, 'קורות חיים'),
+    el('p', { class: 'cv-note' }, 'PDF או Word, עד 5MB. הקובץ נשמר באופן פרטי, ורק היועצים יכולים לצפות בו.'),
+    status, msg, btn, input);
 }
 
 // A questionnaire with its own page (like עוגני קריירה)
