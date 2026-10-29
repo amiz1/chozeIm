@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>אותנטיות בפעולה המקצועית · חוזה עם החיים</title>
+<style>
+:root{--paper:#F7F5EF;--card:#FFF;--ink:#2B2B28;--mute:#6E6B62;--olive:#6B7A4F;--olive-d:#4E5A3A;
+--olive-l:#8C9A72;--clay:#A9633F;--claybg:#F4E9E1;--gold:#B8933F;--goldbg:#F2EDDC;
+--rule:#DAD5C7;--tint:#F0EEE5;--tint2:#FAF9F4;--slate:#3E4A55;--slatebg:#EAEDF0;--acc:#6B7A4F;--acc-d:#4E5A3A;--accbg:#F0EEE5}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Assistant","Heebo","Segoe UI",Arial,sans-serif;font-size:17px;line-height:1.65}
+.wrap{max-width:780px;margin:0 auto;padding:0 20px 100px}
+header{padding:42px 0 26px;border-bottom:2px solid var(--acc)}
+.roof{display:inline-block;font-size:12.5px;font-weight:700;padding:4px 12px;background:var(--accbg);color:var(--acc-d);margin:0 0 12px}
+.brand{font-size:14px;color:var(--mute);font-weight:700;margin:0 0 6px}
+h1{font-size:31px;line-height:1.25;margin:0 0 10px;font-weight:800}
+.lede{font-size:18px;color:var(--mute);margin:0;max-width:56ch}
+.note{background:var(--claybg);border-right:4px solid var(--clay);padding:16px 20px;margin:26px 0;font-size:15.5px}
+.note b{color:var(--clay)}
+section.block{margin:38px 0 0;background:var(--card);border:1px solid var(--rule);padding:26px 24px}
+section.block h2{font-size:23px;margin:0 0 6px;font-weight:800}
+section.block .sub{font-size:16px;color:var(--mute);margin:0 0 20px;max-width:52ch}
+.dim{display:inline-block;font-size:12.5px;font-weight:700;padding:3px 10px;margin-bottom:10px;background:var(--tint);color:var(--olive-d)}
+.item{padding:15px 0;border-top:1px solid var(--rule)}
+.item:first-of-type{border-top:none}
+.qt{margin:0 0 10px;font-size:16.5px}
+.rev{font-size:12.5px;color:var(--clay);font-weight:700}
+.scale{display:flex;gap:6px}
+.scale label{flex:1}
+.scale input{position:absolute;opacity:0;width:0;height:0}
+.scale span{display:block;text-align:center;padding:10px 0;cursor:pointer;border:1px solid var(--rule);background:var(--tint2);font-size:15px;font-weight:600}
+.scale input:checked + span{background:var(--acc);border-color:var(--acc-d);color:#fff}
+.scale input:focus-visible + span{outline:3px solid var(--gold);outline-offset:2px}
+.ends{display:flex;justify-content:space-between;font-size:12.5px;color:var(--mute);margin-top:6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.grid2 label{font-size:15px}
+.grid2 input{width:100%;margin-top:7px;padding:11px;font-size:17px;border:1px solid var(--rule);background:var(--tint2);font-family:inherit}
+.cap{font-size:13.5px;color:var(--mute);margin:13px 0 0}
+.actions{margin:36px 0 0;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+button{font-family:inherit;font-size:16.5px;font-weight:700;cursor:pointer;background:var(--ink);color:var(--paper);border:none;padding:15px 34px}
+button:hover{background:var(--acc-d)}
+button.ghost{background:transparent;color:var(--mute);border:1px solid var(--rule);padding:14px 24px;font-weight:600}
+.status{font-size:14.5px;color:var(--clay)}
+#out{display:none;margin-top:44px}
+#out.on{display:block}
+.switchwrap{margin:0 0 28px}
+.switchlabel{font-size:14px;color:var(--mute);margin:0 0 8px;font-weight:700}
+.tabs{display:flex;gap:0;border:2px solid var(--acc);padding:4px;background:var(--card)}
+.tabs button{flex:1;background:transparent;color:var(--acc-d);border:none;padding:14px 10px;font-size:16px;font-weight:700}
+.tabs button.on{background:var(--acc);color:#fff}
+.tabs button:not(.on):hover{background:var(--accbg)}
+.pane{display:none}.pane.on{display:block}
+.res{padding:15px 0;border-top:1px solid var(--rule)}
+.res:first-of-type{border-top:2px solid var(--acc)}
+.res{padding:18px 0}
+.rhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.rname{font-size:18.5px;font-weight:800}
+.rname{margin-bottom:4px}
+.mirtext{font-size:16.5px;margin:8px 0 0;max-width:56ch}
+.meter{height:8px;background:var(--tint);border:1px solid var(--rule);margin:9px 0 6px}
+.meter i{display:block;height:100%;background:var(--olive-l)}
+.res.low .meter i{background:var(--clay)}
+
+.tag{font-size:13px;color:var(--clay);font-weight:700}
+.gapline{font-size:14px;color:var(--mute);margin-top:4px}
+.read{background:var(--tint);padding:22px 24px;margin-top:24px}
+.read h3{margin:0 0 6px;font-size:19px}
+.read h3.n{margin-top:22px}
+.read p{margin:0 0 10px;font-size:16px}.read p:last-child{margin:0}
+.flag{background:var(--claybg);border-right:4px solid var(--clay);padding:14px 18px;margin:15px 0;font-size:15.5px}
+.rank{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--rule);font-size:16px}
+.rank b{color:var(--acc-d)}
+.cons{background:var(--slatebg);border-right:4px solid var(--slate);padding:16px 20px;margin:0 0 24px;font-size:15px}
+.cons b{color:var(--slate)}
+.cbox{background:var(--card);border:1px solid var(--rule);padding:20px 22px;margin-top:20px}
+.cbox h3{margin:0 0 12px;font-size:18px;color:var(--slate)}
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th,td{text-align:right;padding:8px 6px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-size:13px;color:var(--mute);font-weight:700}
+td.n{text-align:center;font-weight:700;width:52px}
+tr.rv td{color:var(--clay)}
+tr.hi td.n{background:var(--goldbg)}
+tr.lo td.n{background:var(--claybg)}
+.eg{font-weight:800;font-size:15px;background:var(--tint);padding:10px 6px!important}
+ul.q{margin:0;padding-right:20px}
+ul.q li{margin-bottom:9px;font-size:15.5px}
+.ok{color:var(--olive-d);font-weight:700}
+.warn{color:var(--clay);font-weight:700}
+.bridge{background:var(--goldbg);border-right:4px solid var(--gold);padding:16px 20px;margin:20px 0;font-size:15.5px}
+.bridge b{color:var(--gold)}
+.p2act{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 22px}
+.p2act button{background:var(--slate);color:#fff;font-size:15px;padding:12px 20px}
+.p2act button:hover{background:var(--ink)}
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+#rawbox{width:100%;min-height:300px;margin-top:14px;padding:14px;font-family:inherit;
+  font-size:14px;border:1px solid var(--rule);background:var(--tint2);display:none}
+#rawbox.on{display:block}
+@media print{
+  body{background:#fff}
+  header,form,.actions,.tabs,.switchwrap,.p2act,footer,.note,#p1{display:none!important}
+  #out{display:block!important;margin:0}
+  .pane{display:none!important}
+  #p2{display:block!important}
+  .cbox{border:1px solid #ccc;page-break-inside:avoid}
+  .cons{border-right:3px solid #333}
+}
+footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--rule);font-size:13px;color:var(--mute)}
+@media(max-width:620px){body{font-size:16px}h1{font-size:25px}.scale{gap:4px}
+.scale span{padding:9px 0;font-size:14px}section.block{padding:20px 16px}.grid2{grid-template-columns:1fr}
+.tabs button{padding:11px 14px;font-size:15px}table{font-size:13px}}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap" rel="stylesheet"><style id="cfl-font">body,body *{font-family:"Heebo",Arial,"Arial Hebrew",sans-serif!important}</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <p class="roof">אחד מארבעה · סקרנות · <b>אותנטיות</b> · אומץ · דבקות</p>
+  <p class="brand">חוזה עם החיים</p>
+  <h1>אותנטיות בפעולה המקצועית</h1>
+  <p class="lede">עשרים פריטים, חמישה ממדים. הכלי בודק התנהגות ולא תחושה — לא &quot;מי אני&quot;, אלא מה קורה כשמה שאני מאמינה בו נתקל במשהו.</p>
+</header>
+<div class="note"><b>אותנטיות אינה תחושה של התאמה.</b> היא מידת ההתאמה בין מה שאנחנו מאמינים בו לבין מה שאנחנו עושים בפועל — ולכן היא נמדדת בהתנהגות, במחיר, ובמה שקורה תחת לחץ.</div>
+<form id="f">
+<section class="block" data-eng="פעולה לפי ערכים"><span class="dim">ממד ראשון</span><h2>פעולה לפי ערכים</h2><p class="sub">הפער בין מה שאנחנו מאמינים בו לבין איך שאנחנו פועלים בעשייה המקצועית בראשון.</p></section>
+<section class="block" data-eng="הבחירות הגדולות"><span class="dim">ממד שני</span><h2>הבחירות הגדולות</h2><p class="sub">לא איך אנחנו פועלים, אלא על מה בחרנו לפעול.</p></section>
+<section class="block" data-eng="העמדת פנים"><span class="dim">ממד שלישי</span><h2>העמדת פנים</h2><p class="sub">כמה מהעשייה המקצועית שלנו מחייבת הצגת עמדה שאיננו מאמינים בה.</p></section>
+<section class="block" data-eng="עמידות מול לחץ"><span class="dim">ממד רביעי</span><h2>עמידות מול לחץ</h2><p class="sub">מי מכריע כשיש התנגשות — השיפוט שלנו או הציפייה של אחרים.</p></section>
+<section class="block" data-eng="המחיר"><span class="dim">ממד חמישי</span><h2>המחיר</h2><p class="sub">ערך שלא עלה בכלום הוא בדרך כלל דעה.</p></section>
+
+
+<div class="actions">
+<button type="button" id="go">סיום</button>
+<button type="button" class="ghost" id="clr">ניקוי</button>
+<span class="status" id="msg"></span>
+</div>
+<p id="saved" class="cap" style="margin-top:14px"></p>
+</form>
+<div id="out">
+  <div class="switchwrap">
+    <p class="switchlabel">שני מסכים · לחצי כדי להחליף</p>
+    <div class="tabs">
+      <button type="button" id="t1" class="on">מה הנועץ רואה</button>
+      <button type="button" id="t2">מה היועץ רואה</button>
+    </div>
+  </div>
+  <div class="pane on" id="p1">
+    <h2 style="font-size:26px;margin:0 0 6px">המראה</h2>
+    <p style="color:var(--mute);margin:0 0 22px">חמש תמונות. המטרה אינה לתת לעצמך ציון אלא לדייק את עצמך.</p>
+    <div id="bars"></div><div id="extra1"></div><div class="read" id="read"></div>
+    <div class="cwl-card" style="border:1px solid var(--rule);border-top:5px solid #B8933F;background:#fff;border-radius:8px;padding:20px 22px;margin:26px 0;font-size:18px">
+    <h3 style="margin-top:0">שליחה אליי</h3><p>נשאר רק לשלוח לי את התשובות. הן יגיעו רק אליי, ונסתכל עליהן יחד בפגישה שלנו.</p>
+    <button type="button" class="cwl-send" onclick="CWLReturn.open()">שליחת התשובות אליי</button></div>
+  </div>
+  <div class="pane" id="p2">
+    <div class="p2act">
+      <button type="button" id="pr">הדפסה או שמירה כ־PDF</button>
+      <button type="button" id="cp">הצגה כטקסט להעתקה</button>
+    </div>
+    <div id="p2body"></div>
+    <textarea id="rawbox" readonly></textarea>
+  </div>
+</div>
+<footer>חוזה עם החיים · עודכן 13.09.2026 · 16:12. התשובות נשמרות בדפדפן שלך, ומגיעות אליי רק כשתשלחי אותן.</footer>
+</div>
+<script>
+const T0=Date.now();
+const raw=(e,i)=>{const el=document.querySelector('input[name="'+e+'_'+i+'"]:checked');return el?+el.value:null;};
+const sc=(e,i)=>{const v=raw(e,i);return v===null?null:(DATA[e][i][1]?7-v:v);};
+const avg=e=>{let s=0,n=0;DATA[e].forEach((_,i)=>{const v=sc(e,i);if(v!==null){s+=v;n++;}});return n?s/n:null;};
+const num=id=>{const el=document.getElementById(id);if(!el)return null;const v=parseFloat(el.value);return isNaN(v)?null:v;};
+const sd=a=>{const m=a.reduce((x,y)=>x+y,0)/a.length;return Math.sqrt(a.reduce((x,y)=>x+(y-m)**2,0)/a.length);};
+
+function renderItems(){
+  document.querySelectorAll('section.block[data-eng]').forEach(sec=>{
+    const eng=sec.dataset.eng;
+    if(!DATA[eng]){console.warn('אין נתונים עבור',eng);return;}
+    DATA[eng].forEach((it,i)=>{
+      const d=document.createElement('div');d.className='item';
+      let s='<p class="qt">'+it[0]+'</p><div class="scale">';
+      for(let v=1;v<=6;v++) s+='<label><input type="radio" name="'+eng+'_'+i+'" value="'+v+'"><span>'+v+'</span></label>';
+      s+='</div><div class="ends"><span>כלל לא</span><span>במידה רבה מאוד</span></div>';
+      d.innerHTML=s;sec.appendChild(d);
+    });
+  });
+}
+
+function qaBlock(scored){
+  const all=[];for(const e in DATA) DATA[e].forEach((_,i)=>{const v=raw(e,i);if(v!==null)all.push(v);});
+  const mins=Math.round((Date.now()-T0)/60000), S=sd(all);
+  const ext=all.filter(v=>v===1||v===6).length/all.length, mid=all.filter(v=>v===3||v===4).length/all.length;
+  let c='<div class="cbox"><h3>איכות המילוי</h3><table><tr><th>מדד</th><th>ערך</th><th>קריאה</th></tr>';
+  c+='<tr><td>זמן מילוי</td><td class="n">'+mins+"'</td><td>"+(mins<7?'<span class="warn">מהיר מאוד — ייתכן מילוי שטחי</span>':'<span class="ok">סביר</span>')+'</td></tr>';
+  c+='<tr><td>פיזור התשובות</td><td class="n">'+S.toFixed(2)+'</td><td>'+(S<0.85?'<span class="warn">נמוך — חשד לסימון אחיד</span>':'<span class="ok">תקין</span>')+'</td></tr>';
+  c+='<tr><td>שימוש בקצוות</td><td class="n">'+Math.round(ext*100)+'%</td><td>'+(ext>0.6?'<span class="warn">גבוה — סגנון קוטבי</span>':'<span class="ok">תקין</span>')+'</td></tr>';
+  c+='<tr><td>ריכוז במרכז</td><td class="n">'+Math.round(mid*100)+'%</td><td>'+(mid>0.65?'<span class="warn">גבוה — הימנעות מהכרעה</span>':'<span class="ok">תקין</span>')+'</td></tr></table></div>';
+  let inc=[];
+  scored.forEach(e=>{const dir=[],rev=[];DATA[e].forEach((it,i)=>{const v=sc(e,i);if(v!==null)(it[1]?rev:dir).push(v);});
+    if(rev.length&&dir.length){const md=dir.reduce((a,b)=>a+b,0)/dir.length,mr=rev.reduce((a,b)=>a+b,0)/rev.length;
+      if(Math.abs(md-mr)>=1.5) inc.push([e,md,mr]);}});
+  c+='<div class="cbox"><h3>סתירות פנימיות</h3>';
+  if(inc.length){c+='<p style="font-size:15px;margin:0 0 12px">פער בין הפריטים הישירים להפוכים באותו ממד. לרוב מעיד על רצייה חברתית או על פריט שלא נקרא נכון.</p><table><tr><th>ממד</th><th>ישירים</th><th>הפוכים</th></tr>';
+    inc.forEach(x=>c+='<tr><td>'+x[0]+'</td><td class="n">'+x[1].toFixed(1)+'</td><td class="n">'+x[2].toFixed(1)+'</td></tr>');c+='</table>';}
+  else c+='<p style="font-size:15px;margin:0"><span class="ok">אין סתירה חריגה.</span> הפריטים הישירים וההפוכים מסכימים בכל הממדים.</p>';
+  return c+'</div>';
+}
+
+function answerTable(order){
+  let c='<div class="cbox"><h3>כל התשובות</h3><table>';
+  order.forEach(e=>{const a=avg(e);
+    c+='<tr><td class="eg" colspan="3">'+e+(a?' · '+a.toFixed(1):'')+'</td></tr>';
+    DATA[e].forEach((it,i)=>{const rv=raw(e,i),s=sc(e,i);
+      c+='<tr class="'+(it[1]?'rv':'')+(s>=5?' hi':s<=2?' lo':'')+'"><td>'+it[0]+'</td><td class="n">'+rv+'</td><td class="n">'+(it[1]?s:'')+'</td></tr>';});});
+  return c+'</table><p class="cap">העמודה הראשונה — הסימון הגולמי. השנייה — הציון אחרי היפוך, לפריטים ההפוכים בלבד (מודגשים בחום).</p></div>';
+}
+
+function hidden(){return '<div class="cbox"><h3>מה הנועץ אינו רואה</h3><p style="font-size:15px;margin:0">דגלי איכות המילוי · הסתירות הפנימיות · מדד הרצייה החברתית · טבלת התשובות · השאלות לשיחה. <b>הנועץ רואה ציונים וקריאה בלבד.</b> זו החלטה מתודולוגית ולא טכנית.</p></div>';}
+
+/* מסך הנועץ: תמונה, לא ציון. ללא מספרים וללא תגית "אילוץ". */
+function mirror(order,R,LEVEL,lows){
+  const lvl=v=>v<=3.4?0:(v<=4.4?1:2);
+  let h='';
+  order.forEach(e=>{const v=R[e],low=lows.includes(e);
+    h+='<div class="res'+(low?' low':'')+'"><div class="rname">'+e+'</div>'
+      +'<div class="meter"><i style="width:'+((v-1)/5*100).toFixed(0)+'%"></i></div>'
+      +'<p class="mirtext">'+LEVEL[e][lvl(v)]+'</p>'
+      +(low?'<span class="tag">'+(v>=4.5?'הנמוך מבין החמישה — ועדיין גבוה':'כאן הפער הגדול ביותר')+'</span>':'')+'</div>';});
+  return h;
+}
+/* מסך היועץ בלבד: מספרים */
+function numbers(order,R){
+  let h='<div class="cbox"><h3>ציונים</h3><table><tr><th>ממד</th><th>ממוצע לפריט</th></tr>';
+  order.forEach(e=>h+='<tr><td>'+e+'</td><td class="n">'+R[e].toFixed(1)+'</td></tr>');
+  return h+'</table><p class="cap">המספרים אינם מוצגים לנועץ. הם כאן להשוואה בין מפגשים ולאיתור תנועה לאורך זמן.</p></div>';
+}
+
+function tab(n){['1','2'].forEach(k=>{document.getElementById('t'+k).classList.toggle('on',k===n);
+  document.getElementById('p'+k).classList.toggle('on',k===n);});}
+/* ── שמירה אוטומטית בדפדפן ── */
+const SKEY='cim_'+(document.title||'tool').replace(/[^֐-׿a-zA-Z0-9]/g,'_');
+let saveTimer=null;
+function collectState(){
+  const st={r:{},n:{}};
+  document.querySelectorAll('#f input[type=radio]:checked').forEach(el=>{st.r[el.name]=el.value;});
+  document.querySelectorAll('#f input[type=number]').forEach(el=>{if(el.value!=='')st.n[el.id]=el.value;});
+  return st;
+}
+function saveState(){
+  try{
+    localStorage.setItem(SKEY,JSON.stringify({t:Date.now(),s:collectState()}));
+    const el=document.getElementById('saved');
+    if(el) el.textContent='נשמר · '+new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
+  }catch(e){}
+}
+function queueSave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveState,250);}
+function restoreState(){
+  let raw=null;
+  try{raw=localStorage.getItem(SKEY);}catch(e){return false;}
+  if(!raw)return false;
+  let d;try{d=JSON.parse(raw);}catch(e){return false;}
+  const st=d&&d.s;if(!st)return false;
+  let n=0;
+  for(const k in st.r){
+    const el=document.querySelector('input[name="'+k+'"][value="'+st.r[k]+'"]');
+    if(el){el.checked=true;n++;}
+  }
+  for(const k in st.n){const el=document.getElementById(k);if(el){el.value=st.n[k];n++;}}
+  if(n){
+    const el=document.getElementById('saved');
+    if(el) el.textContent='שוחזרה עבודה קודמת · '+n+' תשובות. אפשר להמשיך מאיפה שהפסקת, או ללחוץ ניקוי כדי להתחיל מחדש.';
+  }
+  return n>0;
+}
+function clearState(){try{localStorage.removeItem(SKEY);}catch(e){}}
+
+function checkMissing(){let m=0;for(const e in DATA) DATA[e].forEach((_,i)=>{if(raw(e,i)===null)m++;});return m;}
+function writeConsultant(html){
+  document.getElementById('p2body').innerHTML=html;
+  const w=document.getElementById('p2body');
+  if(!w||!w.querySelectorAll)return;
+  w.querySelectorAll('table').forEach(t=>{
+    if(t.parentElement.className==='tblwrap')return;
+    const d=document.createElement('div');d.className='tblwrap';
+    t.parentNode.insertBefore(d,t);d.appendChild(t);
+  });
+}
+function boot(){
+  renderItems();
+  restoreState();
+  document.getElementById('f').addEventListener('change',queueSave);
+  window.addEventListener('beforeunload',saveState);
+  document.getElementById('pr').onclick=()=>window.print();
+  document.getElementById('cp').onclick=()=>{
+    const box=document.getElementById('rawbox');
+    if(box.classList.contains('on')){box.classList.remove('on');return;}
+    let out=[];
+    document.querySelectorAll('#p2body .cbox, #p2body .cons').forEach(el=>{
+      const h=el.querySelector('h3');
+      if(h){out.push('');out.push('=== '+h.textContent.trim()+' ===');}
+      el.querySelectorAll('p,li').forEach(x=>{const t=x.textContent.trim();if(t)out.push(t);});
+      el.querySelectorAll('tr').forEach(r=>{
+        const c=[...r.children].map(y=>y.textContent.trim()).filter(Boolean);
+        if(c.length) out.push(c.join('  |  '));
+      });
+    });
+    box.value=out.join(String.fromCharCode(10));box.classList.add('on');box.select();
+  };
+  document.getElementById('t1').onclick=()=>tab('1');
+  document.getElementById('t2').onclick=()=>tab('2');
+  document.getElementById('clr').onclick=()=>{
+    if(!confirm('למחוק את כל התשובות ולהתחיל מחדש?'))return;
+    document.getElementById('f').reset();clearState();
+    document.getElementById('out').classList.remove('on');
+    document.getElementById('msg').textContent='';
+    const sv=document.getElementById('saved');if(sv)sv.textContent='';
+    window.scrollTo({top:0,behavior:'smooth'});};
+}
+
+
+const DATA={"פעולה לפי ערכים": [["ההחלטות המקצועיות שלנו תואמות את מה שאנחנו מאמינים בו.", 0], ["יש פער בין מה שחשוב לנו לבין איך אנחנו עובדים בפועל.", 1], ["כשמבקשים מאיתנו לעשות משהו שמתנגש בערך שלנו, אנחנו אומרים את זה.", 0], ["אנחנו עושים בעשייה המקצועית שלנו דברים שהיינו מעדיפים לא לעשות.", 1]], "הבחירות הגדולות": [["הפרויקטים שאנחנו בוחרים לקחת עליהם אחריות הם כאלה שאנחנו מאמינים בערכם.", 0], ["את התפקיד הנוכחי בחרנו בעיקר לפי מה שהיה מצופה או משתלם.", 1], ["אם היינו בוחרים מחדש היום, היינו בוחרים בערך באותו כיוון.", 0], ["קשה לנו להסביר במה בדיוק העשייה המקצועית שלנו תורמת למשהו שחשוב לנו.", 1]], "העמדת פנים": [["במהלך העשייה המקצועית שלנו אנחנו מציגים עמדה שאיננו מחזיקים בה.", 1], ["אנחנו מהנהנים ומסכימים גם כשאנחנו חושבים אחרת.", 1], ["מי שרואה אותנו בעשייה המקצועית שלנו רואה פחות או יותר את מי שאנחנו.", 0], ["בסוף יום אנחנו מותשים לא מהעשייה עצמה אלא מהתפקיד שהיינו צריכים לשחק.", 1], ["העשייה המקצועית שלנו מחייבת אותנו להציג עמדה שאיננו מאמינים בה.", 1]], "עמידות מול לחץ": [["כשדעתנו שונה מזו של בעל סמכות, אנחנו נוטים ליישר קו.", 1], ["אנחנו מסוגלים להחזיק עמדה מקצועית גם כשרוב החדר חושב אחרת.", 0], ["ציפיות של אנשים שחשובים לנו משפיעות על ההחלטות המקצועיות שלנו יותר ממה שהיינו רוצים.", 1], ["כשיש התנגשות בין מה שנכון בעינינו לבין מה שמצופה, השיפוט שלנו מכריע.", 0]], "המחיר": [["ויתרנו בעבר על משהו משתלם כי הוא התנגש במשהו שאנחנו מאמינים בו.", 0], ["אם משהו עובד ומתוגמל, פחות משנה לנו אם הוא מתיישב עם הערכים שלנו.", 1], ["אנחנו מוכנים לשלם מחיר כספי או מקצועי כדי לא לעשות משהו שמתנגש בנו.", 0], ["עמדנו על ערך שלנו במצב שבו זה עלה לנו בקשר, בכסף, או בהזדמנות.", 0]]};
+const TOOLS={"פעולה לפי ערכים": ["נסחי שלושה ערכים מקצועיים במשפט אחד כל אחד. לא רשימת מילים — משפט שאפשר להפר.", "עברי על היומן של השבועיים האחרונים וסמני כל פגישה שהתנגשה באחד מהם.", "בחרי התנגשות אחת חוזרת והכריעי בה מראש, לפני הפעם הבאה."], "הבחירות הגדולות": ["רשמי את שלושת הפרויקטים הגדולים של השנה, ולכל אחד — למה נכנסת אליו.", "סמני איזה מהם היית בוחרת שוב.", "אם אף אחד — השאלה אינה איך עובדים, אלא על מה."], "העמדת פנים": ["הכריעי קודם כול אם ההצגה נדרשת מהתפקיד או נבחרת על ידך. זו שאלה אחרת לגמרי, והיא קובעת את כל ההמשך.", "אם התפקיד מחייב — השאלה אינה איך לתקן את עצמך אלא כמה זה עולה, וכמה זמן אפשר להחזיק בזה.", "אם זו בחירה — בחרי מפגש חוזר אחד וכתבי מה היית אומרת בלי המשחק.", "בדקי אם הפער הוא בתוכן או רק בטון. אם רק בטון — זו מקצועיות ולא חוסר אותנטיות."], "עמידות מול לחץ": ["זהי את האדם או התפקיד שמולו את מיישרת קו הכי מהר.", "הכיני מראש נוסח קצר להחזקת עמדה — משפט אחד, בלי התנצלות.", "החליטי מראש מה הגבול שלך בנושא אחד ספציפי, כדי לא להכריע תחת לחץ."], "המחיר": ["רשמי מתי בפעם האחרונה ערך שלך עלה לך במשהו ממשי.", "אם אין דוגמה מחמש השנים האחרונות — זו התשובה, ולא כישלון.", "בחרי מראש מחיר אחד שאת מוכנה לשלם השנה, וכמה הוא."]};
+const DIMS=Object.keys(DATA);
+const SRC={"פעולה לפי ערכים":"Wood ואח' · van den Bosch & Taris","הבחירות הגדולות":"Sheldon & Elliot · Self-Concordance",
+"העמדת פנים":"Hochschild · Surface Acting","עמידות מול לחץ":"Wood ואח' · השפעה חיצונית, הפוך","המחיר":"תוספת מקורית — אינה מהספרות"};
+boot();
+document.getElementById('go').addEventListener('click',()=>{
+  const m=checkMissing(), msg=document.getElementById('msg');
+  if(m){msg.textContent='נותרו '+m+' פריטים ללא סימון.';return;} msg.textContent='';
+  const R={};DIMS.forEach(d=>R[d]=avg(d));
+  const vals=DIMS.map(d=>R[d]),mn=Math.min(...vals),mx=Math.max(...vals);
+  const lows=DIMS.filter(d=>Math.abs(R[d]-mn)<0.05), highs=DIMS.filter(d=>Math.abs(R[d]-mx)<0.05);
+  const tot=vals.reduce((a,b)=>a+b,0)/DIMS.length;
+
+  const DESC={
+   "פעולה לפי ערכים":"הפער בין מה שאת מאמינה בו לבין איך שאת פועלת בעשייה המקצועית בראשון. זה הממד היומיומי — לא ההכרעות הגדולות, אלא ההתנהלות השוטפת.",
+   "הבחירות הגדולות":"לא איך את פועלת, אלא על מה בחרת לפעול. ממד שמשתנה לאט, ולכן כשהוא נמוך הוא יקר לתיקון — אבל גם משנה הכי הרבה.",
+   "העמדת פנים":"כמה מהעשייה המקצועית שלך מחייבת הצגת עמדה שאינך מאמינה בה. זה הממד היחיד שנמדד בהתנהגות ולא בתחושה — ולכן הקשה ביותר להסתיר. שימי לב לניסוח: מחייבת. לפעמים זה לא האדם אלא התפקיד.",
+   "עמידות מול לחץ":"מי מכריע כשיש התנגשות — השיפוט שלך או הציפייה של אחרים. הממד הזה לא בודק אם יש לך עמדה, אלא מה קורה לה כשהיא נתקלת במשהו.",
+   "המחיר":"ערך שלא עלה בכלום הוא בדרך כלל דעה. זה הממד שמבחין בין מה שאת מאמינה בו לבין מה שאת מוכנה לשלם עליו."};
+
+
+  const LEVEL={
+   "פעולה לפי ערכים":["מה שחשוב לך ומה שאת עושה בפועל לא תמיד נפגשים, ובעיקר בשגרה ולא בהכרעות הגדולות. זה כמעט תמיד מצטבר מהרבה ויתורים קטנים ולא מהחלטה אחת.",
+     "ברוב המצבים את פועלת לפי מה שחשוב לך, ויש מצבים חוזרים שבהם לא.",
+     "ההתנהלות היומיומית שלך מתיישבת עם מה שחשוב לך."],
+   "הבחירות הגדולות":["הכיוון המקצועי שלך נבחר בעיקר לפי מה שהיה מצופה או משתלם. כך בוחרים רוב האנשים בגיל שבו בוחרים, ורובם לא בדקו מאז.",
+     "הכיוון סביר אך לא מדויק. היית בוחרת בו שוב, עם שינויים.",
+     "בחרת את הכיוון שלך מתוך אמונה בערכו, והיית בוחרת אותו שוב."],
+   "העמדת פנים":["חלק ניכר מהעשייה המקצועית שלך מחייב הצגת עמדה שאינך מאמינה בה. זה מתיש, וזה לא תמיד בשליטתך.",
+     "יש מצבים שבהם את מציגה עמדה אחרת. הם מוגדרים, ולא רציפים.",
+     "מי שרואה אותך בעשייה המקצועית שלך רואה בעיקר את מי שאת."],
+   "עמידות מול לחץ":["כשיש התנגשות בין השיפוט שלך לבין הציפייה של אחרים, לרוב הציפייה מכריעה. זה אנושי מאוד, והמחיר שלו מצטבר בשקט.",
+     "לפעמים את מחזיקה בעמדה ולפעמים נסוגה — תלוי מול מי.",
+     "כשיש התנגשות, השיפוט שלך הוא שמכריע."],
+   "המחיר":["לא עולה כאן מצב שבו ערך שלך עמד למבחן ועלה לך במשהו. ייתכן שלא הזדמן, וייתכן שהמחיר היה גבוה מדי — שתי התשובות לגיטימיות.",
+     "שילמת מחירים, אך לא בהכרח כשזה היה יקר באמת.",
+     "עמדת על ערכים שלך גם כשזה עלה לך בכסף, בקשר, או בהזדמנות."]};
+  document.getElementById('bars').innerHTML=mirror(DIMS,R,LEVEL,lows);
+  document.getElementById('extra1').innerHTML='';
+  const allHigh = mn>=4.5;
+  let t='';
+  if(allHigh){
+    t+='<h3>לפני הכול</h3><div class="flag"><b>חמשת הממדים יצאו גבוהים, וגם הנמוך שבהם גבוה.</b> יש לזה שתי קריאות אפשריות, והכלי אינו יכול להכריע ביניהן: או שהאותנטיות שלך אכן חזקה בכל הכיוונים, או שהתמונה יצאה מחמיאה. <b>ההבדל ביניהן אינו נבדק בשאלון אלא באירועים.</b></div>';
+  }
+  t+='<h3'+(allHigh?' class="n"':'')+'>מה זה אומר</h3>';
+
+  const hi=x=>R[x]>=4.3, lo=x=>R[x]<=3.5; let said=false;
+  if(hi("פעולה לפי ערכים")&&lo("המחיר")){
+    t+='<div class="flag"><b>הפער המרכזי: תואמת ולא שילמת.</b> ההתנהלות היומיומית מתיישבת עם הערכים — אבל היא לא נבחנה. ייתכן שהיא אותנטית, וייתכן שפשוט לא הייתה התנגשות. <b>השאלה לבדיקה אינה "מה חשוב לך", אלא "על מה כבר ויתרת בגלל זה".</b></div>';said=true;}
+  if(hi("המחיר")&&lo("העמדת פנים")){
+    t+='<p>משלמת מחירים על ערכים, ובו בזמן משחקת תפקיד ביומיום. <b>זה לא סותר</b> — לרוב זה אומר שהאותנטיות שמורה להכרעות גדולות ולא נוכחת בשגרה. השאלה היא כמה זה עולה באנרגיה.</p>';said=true;}
+  if(lo("הבחירות הגדולות")&&hi("פעולה לפי ערכים")){
+    t+='<div class="flag"><b>עובדת נכון על הדבר הלא נכון.</b> ההתנהלות היומיומית מדויקת, אבל הכיוון עצמו נבחר מסיבות אחרות. <b>שיפור ביומיום לא יפתור את זה</b> — הבעיה אינה באיך אלא על מה.</div>';said=true;}
+  if(lo("עמידות מול לחץ")&&hi("פעולה לפי ערכים")){
+    t+='<p>הערכים ברורים, והם נסוגים בהתנגשות. <b>זו אינה שאלה של בהירות אלא של נוכחות ברגע.</b> הכלי המעשי כאן הוא הכרעה מראש, כי בזמן אמת כבר מאוחר.</p>';said=true;}
+  if(lo("העמדת פנים")&&lo("עמידות מול לחץ")){
+    t+='<div class="flag"><b>שני הממדים ההתנהגותיים נמוכים יחד.</b> זה הצירוף המשמעותי ביותר בשאלון: לא רק שקשה להחזיק עמדה, אלא שגם מוצגת עמדה אחרת. <b>לרוב זה מצב סביבתי ולא אישיותי</b> — ושווה לבדוק אם זה קורה בכל מקום, או רק כאן.</div>';said=true;}
+  if(!said) t+='<p>אין צירוף חריג. חמשת הממדים נעים יחד, ומה שיזיז אותם הוא זה שבו הפער הגדול ביותר.</p>';
+
+  const forced=raw("העמדת פנים",4);
+  if(forced>=5) t+='<div class="flag"><b>העשייה עצמה מחייבת הצגת עמדה.</b> זה ממצא מבני ולא אישי — <b>יש תפקידים שהעמדת פנים היא חלק מהגדרתם.</b> אין כאן מה לתקן באדם. יש לברר כמה זה עולה, האם המחיר בר־קיימא, והאם הוא זמני או קבוע.</div>';
+  else if(forced<=2&&R["העמדת פנים"]<=3.5) t+='<div class="flag"><b>התפקיד אינו מחייב, וההצגה קיימת בכל זאת.</b> זה הפוך מהמקרה השכיח, וזה ממצא לשיחה: ההצגה נבחרת ולא נכפית.</div>';
+  t+='<p><b>'+highs[0]+'</b> הוא מה שכבר עובד אצלך. שווה לברר איפה הוא כבר עלה לך במחיר, כי <b>ממד גבוה שמעולם לא נבחן אינו חוזק מוכח אלא הצהרה שלא נבדקה.</b></p>';
+  t+='<h3 class="n">מה לעשות</h3>';
+  if(allHigh){
+    t+='<p>כשכל הממדים גבוהים, אין טעם לעבוד על אף אחד מהם לפני שבודקים אם הם עומדים במציאות. <b>שלוש הפעולות האלה הן בדיקה ולא שיפור.</b></p><ul class="q">'
+      +'<li>עברי ממד־ממד ומצאי לכל אחד <b>אירוע אחד ממשי מהשנתיים האחרונות</b>. לא נטייה כללית — מקרה עם תאריך.</li>'
+      +'<li>הממד שלא נמצא לו אירוע הוא הממצא. <b>לא כי הוא נמוך, אלא כי הוא לא נבחן.</b></li>'
+      +'<li>בקשי מאדם שעובד איתך למלא את אותם פריטים עלייך. פער בין התמונות הוא מידע, לא תקלה.</li></ul>';
+  } else {
+    t+='<p>שלוש הפעולות האלה נוגעות ב<b>'+lows[0]+'</b>, שבו הפער הגדול ביותר. שם תנועה קטנה תיתן יותר מתנועה גדולה במקום שכבר חזק.</p><ul class="q">';
+    TOOLS[lows[0]].forEach(x=>t+='<li>'+x+'</li>');t+='</ul>';
+  }
+
+  if(tot>=5.0&&!allHigh) t+='<div class="flag"><b>התמונה יוצאת גבוהה לאורך כל הממדים.</b> אותנטיות היא הממד שהכי קל לראות בו את עצמנו לטובה, וזה אנושי לגמרי. שווה לעבור על התשובות הגבוהות ולמצוא לכל אחת אירוע ממשי מהשנה האחרונה. <b>אם לא נמצא — זו התשובה.</b></div>';
+
+  t+='<h3 class="n">איפה זה נפגש עם ההשפעה שלך</h3>';
+  t+='<div class="bridge"><p style="margin:0 0 10px">ארבעה דברים מניעים אדם להשפיע: <b>סקרנות, אומץ, דבקות</b> — ואותנטיות. שלושת הראשונים הם מנועי כוח: הם קובעים <b>כמה רחוק</b> תגיעי. האותנטיות היא מנוע כיוון: היא קובעת <b>לאן</b>.</p>';
+  t+='<p style="margin:0 0 10px">ההבדל מעשי. מנוע כוח נמוך עוצר אותך, ואת מרגישה בזה. מנוע כיוון נמוך <b>אינו עוצר כלום</b> — את ממשיכה במלוא המהירות, רק לא לשם. לכן אותנטיות נמוכה כמעט אף פעם לא מתגלה בזמן אמת, אלא בדיעבד.</p>';
+  if(tot<=3.4) t+='<p style="margin:0"><b>אצלך התמונה מראה שהכיוון עדיין לא מיושר, ולכן זו השאלה הראשונה.</b> לפני שמחזקים סקרנות, אומץ או דבקות — שווה לוודא לאן הם יפעילו אותך. אחרת ההשקעה תלך לכיוון שממילא אינו שלך.</p>';
+  else if(tot>=4.5) t+='<p style="margin:0"><b>אצלך התמונה מראה כיוון ברור.</b> מכאן השאלה עוברת למנועי הכוח: סקרנות, אומץ ודבקות. הכיוון קיים — נשאר לבדוק מה מניע אותך לאורכו.</p>';
+  else t+='<p style="margin:0"><b>אצלך הכיוון קיים אך אינו מוחלט.</b> לכן, ולכן כדאי לקרוא את הכלי הזה יחד עם שאלוני הסקרנות, האומץ והדבקות — ולא לפניהם.</p>';
+  t+='</div>';
+  t+='<p class="cap">זו מראה ולא מבחן. אין כאן ציון, ואין תשובה טובה או רעה — יש תמונה שאפשר להסכים איתה, לחלוק עליה, או לדייק אותה.</p>';
+  document.getElementById('read').innerHTML=t;
+
+  let c='<div class="cons"><b>מסך יועץ.</b> כולל נתונים שאינם מוצגים לנועץ.</div>';
+  c+=numbers(DIMS,R);
+  c+='<div class="cbox"><h3>מקור הממדים</h3><table><tr><th>ממד</th><th>עוגן תיאורטי</th></tr>';
+  DIMS.forEach(d=>c+='<tr><td>'+d+'</td><td>'+SRC[d]+'</td></tr>');
+  c+='</table></div>';
+  c+=qaBlock(DIMS);
+  c+='<div class="cbox"><h3>רצייה חברתית</h3><p style="font-size:15px;margin:0">ממוצע חמשת הממדים <b>'+tot.toFixed(1)+'</b>. '
+    +(tot>=5.0?'<span class="warn">גבוה. לאמת כל ממד גבוה מול אירוע ממשי.</span>':'<span class="ok">בטווח שאינו מעורר חשד.</span>')
+    +' הממד <b>העמדת פנים</b> הוא העמיד ביותר לרצייה חברתית כי הוא שואל על התנהגות ולא על ערך — <b>אם הוא נמוך בעוד השאר גבוהים, הוא המהימן מביניהם.</b></p></div>';
+  let qs=[];
+  lows.forEach(d=>qs.push('<b>'+d+'</b> הוא הפער הגדול ביותר. בקשי אירוע קונקרטי מהשנה האחרונה.'));
+  if(R["המחיר"]<=3.5) qs.push('מתי בפעם האחרונה ערך שלך עלה לך במשהו ממשי? אם אין דוגמה — זה הממצא המרכזי.');
+  if(R["העמדת פנים"]<=3.5) qs.push('מול מי בדיוק מוצגת עמדה אחרת? אדם מסוים, או כל החדר?');
+  if(R["הבחירות הגדולות"]<=3.5) qs.push('איך נבחר התפקיד הנוכחי? ומי היה בחדר כשזה הוכרע?');
+  qs.push('<b>'+highs[0]+'</b> הוא החזק. איפה הוא כבר עלה במחיר?');
+  qs.push('האם היה פריט שהתקשית לסמן עליו נמוך?');
+  c+='<div class="cbox"><h3>שאלות לשיחה</h3><ul class="q"><li>'+qs.join('</li><li>')+'</li></ul></div>';
+  c+=answerTable(DIMS)+hidden();
+  writeConsultant(c);
+  document.getElementById('out').classList.add('on');
+  document.getElementById('out').scrollIntoView({behavior:'smooth'});
+});
+
+</script>
+<style>.switchwrap,#p2{display:none!important}#p1{display:block!important}</style>
+<script>window.cwlAuthSummary=function(){const L=[];
+ DIMS.forEach(d=>{L.push('',d);DATA[d].forEach((it,i)=>{const v=raw(d,i);L.push('• '+it[0]+'\n   ← '+(v===null?'-':v+' מתוך 6'))})});
+ const b=document.getElementById('p2body');if(b&&b.innerHTML.trim()){const T=[];
+  b.querySelectorAll('.cbox').forEach(el=>{const h=el.querySelector('h3');const ht=h?h.textContent.trim():'';if(ht==='כל התשובות'||ht==='מה הנועץ אינו רואה')return;
+   T.push('','['+ht+']');el.querySelectorAll('p,li').forEach(x=>{const t=x.textContent.trim();if(t)T.push(t)});
+   el.querySelectorAll('tr').forEach(r=>{const c=[...r.children].map(y=>y.textContent.trim()).filter(Boolean);if(c.length)T.push(c.join(' | '))})});
+  L.push('','— נתונים ליועצת (החישוב האוטומטי) —',...T)}
+ return L.join('\n').trim()};</script>
+<script>window.CWL_CFG={tool:'authenticity',fill:'את שאלון האותנטיות',title:'אותנטיות בפעולה המקצועית',summary:()=>window.cwlAuthSummary()};</script>
+
+
+
+<!-- חוזה עם החיים: חיבור לאתר (שמירה בגיליון במקום שליחה במייל) -->
+<script src="CFL_config.js"></script>
+<script src="CFL_bridge.js"></script>
+<script>
+window.CFL_PAGE={id:'authenticity',keys:['cim_'+(document.title||'tool').replace(/[^֐-׿a-zA-Z0-9]/g,'_')],flush:function(){if(typeof saveState==='function')saveState();},results:function(){var b=document.getElementById('go');if(b)b.click();},staffView:function(){/* the יועצים site also gets the tab 'מה היועץ רואה' */document.querySelectorAll('style').forEach(function(s){if(s.textContent.indexOf('.switchwrap,#p2{display:none!important}')!==-1)s.remove();});}};
+</script>
+<script src="CFL_cwl.js"></script>
+</body>
+</html>

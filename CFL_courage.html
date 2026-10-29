@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מדד האומץ המקצועי · חוזה עם החיים</title>
+<style>
+:root{--ink:#2B2B2B;--olive:#5E6A41;--olive-d:#3F4A2C;--olive-l:#7E8C5A;--clay:#9C6B4F;
+ --gold:#B08A3E;--paper:#FAF9F5;--card:#FFF;--rule:#DCD7CA;--mute:#6E6A5F;--tint:#F4F5EF;
+ --display:'Frank Ruhl Libre','David Libre',Georgia,serif;--body:'Assistant','Segoe UI',system-ui,sans-serif;}
+*{box-sizing:border-box}html,body{margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.65}
+.wrap{max-width:900px;margin:0 auto;padding:26px 20px 80px}
+header{text-align:center;padding:16px 0 8px}
+header img{max-width:230px;height:auto}
+h1{font-family:var(--display);font-size:34px;margin:14px 0 4px;color:var(--olive-d)}
+.dek{color:var(--mute);margin:0 0 6px;font-size:16px}
+.win{border:1px solid var(--olive);border-radius:4px;background:#F7F9F3;padding:12px 16px;margin:18px 0}
+.win b{font-size:19px;color:var(--olive-d)}
+.win i{font-style:normal;display:block;font-size:12px;letter-spacing:.08em;color:var(--olive)}
+.win span{display:block;font-size:13px;color:var(--mute);margin-top:4px}
+h2{font-family:var(--display);font-size:24px;color:var(--olive-d);margin:34px 0 4px}
+.sub{color:var(--mute);font-size:14px;margin:0 0 14px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.cell{display:flex;align-items:center;gap:9px;border:1px solid var(--rule);border-radius:3px;padding:6px 10px;background:var(--card)}
+.cell.done{background:#F7F9F3}.cell.bad{border-color:var(--clay);background:#FBF3EF}
+.cell .n{font-size:13px;color:var(--mute);min-width:20px}
+.cell .t{flex:1;font-size:13.5px;line-height:1.4}
+.cell input,.cell select{width:74px;padding:5px;border:1px solid var(--rule);border-radius:3px;font-family:inherit;font-size:15px;text-align:center;background:#fff}
+.yesno{display:flex;gap:6px}
+.yesno button{border:1px solid var(--rule);background:#fff;border-radius:3px;padding:5px 12px;font-family:inherit;font-size:14px;cursor:pointer}
+.yesno button[aria-pressed="true"]{background:var(--olive);border-color:var(--olive);color:#fff}
+.bar{position:sticky;bottom:0;background:rgba(250,249,245,.96);border-top:1px solid var(--rule);padding:12px 0;margin-top:30px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn{background:var(--olive);color:#fff;border:0;border-radius:3px;padding:11px 22px;font-family:inherit;font-size:16px;cursor:pointer}
+.btn.ghost{background:none;color:var(--olive);border:1px solid var(--olive)}
+.status{font-size:13px;color:var(--mute)}
+.alert{display:none;background:#FBF3EF;border-inline-start:4px solid var(--clay);padding:11px 14px;border-radius:3px;margin-top:12px;font-size:15px}
+#out{display:none;margin-top:34px}
+.level{border:1px solid var(--rule);border-radius:4px;padding:22px 24px;background:#FBFCF9;margin-bottom:22px}
+.lvl-lbl{font-size:13px;letter-spacing:.08em;color:var(--mute);margin:0}
+.lvl-num{font-family:var(--display);font-size:60px;line-height:1;color:var(--olive-d);margin:6px 0 2px}
+.lvl-num small{font-family:var(--body);font-size:14px;color:var(--mute);margin-inline-start:8px}
+.lvl-name{font-family:var(--display);font-size:22px;color:var(--olive);margin-bottom:8px}
+.mirror{font-size:16px;line-height:1.7;margin:14px 0 0;padding-top:12px;border-top:1px solid var(--rule)}
+.dim{margin:12px 0}
+.dim-top{display:flex;justify-content:space-between;align-items:baseline}
+.dim-name{font-size:16px}.dim-score{font-family:var(--display);font-size:20px;color:var(--olive-d)}
+.track{height:9px;background:#E8E9E1;border-radius:2px;overflow:hidden;margin-top:5px}
+.track span{display:block;height:100%;background:var(--olive)}
+.dim-desc{font-size:13px;color:var(--mute);margin-top:3px}
+.box{border-inline-start:4px solid var(--olive);background:var(--tint);padding:14px 17px;border-radius:3px;margin:16px 0}
+.box.clay{border-color:var(--clay);background:#FBF6F2}
+.box b{font-family:var(--display);font-size:18px;color:var(--olive-d);display:block;margin-bottom:5px}
+.box p{margin:6px 0;font-size:15px}
+footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--rule);font-size:12px;color:var(--mute)}
+details summary{cursor:pointer;font-size:13px;color:var(--mute)}
+@media(max-width:640px){.grid{grid-template-columns:1fr}.wrap{padding:16px 12px 70px}}
+</style><link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap" rel="stylesheet"><style id="cfl-font">body,body *{font-family:"Heebo",Arial,"Arial Hebrew",sans-serif!important}</style>
+</head><body>
+<div class="wrap">
+<header>
+  <img src="CFL_logo.png" alt="חוזה עם החיים">
+  <h1>מדד האומץ המקצועי</h1>
+  <p class="dek">שאלון על רגעים מקצועיים שדורשים אומץ. אין כאן תשובות נכונות או לא נכונות, רק מה שקרה בפועל.</p>
+</header>
+
+<div class="win"><i>חלון הזמן</i><b>השנה האחרונה</b>
+<span>ענו לפי מה שקרה בפועל בשנה האחרונה. אם מצב מסוים לא הזדמן לכם בכלל, סמנו ״לא הזדמן לי מצב כזה״. התשובות נשמרות בדפדפן, ואפשר לעצור ולחזור.</span></div>
+
+<h2>חלק א · מה עשיתי בפועל</h2>
+<p class="sub">בשנה האחרונה, כמה פעמים זה קרה לך?</p>
+<div class="grid" id="gA"></div>
+
+<h2>חלק ב — המהלכים הגדולים</h2>
+<p class="sub">בחמש השנים האחרונות. כן או לא.</p>
+<div class="grid" id="gBig"></div>
+
+<h2>חלק ג · מה בחרתי כשצריך לוותר</h2>
+<p class="sub">בכל שורה שני דברים טובים שקשה לקבל את שניהם. סמנו לאן אתם נוטים <b>באמת</b>, לא לאן נכון לנטות.</p>
+<div class="grid" id="gB"></div>
+
+<h2>חלק ד · מה עוצר אותי</h2>
+<p class="sub">כן או לא.</p>
+<div class="grid" id="gF"></div>
+
+<div class="bar">
+  <button class="btn" onclick="calc()">חישוב הפרופיל</button>
+  <button class="btn ghost" onclick="clr()">ניקוי</button>
+  <span class="status" id="prog"></span>
+</div>
+<div class="alert" id="alert"></div>
+
+<div id="out">
+  <div class="level">
+    <p class="lvl-lbl">אומץ בפועל</p>
+    <div class="lvl-num"><span id="lvlNum">–</span><small>מתוך 100</small></div>
+    <div class="lvl-name" id="lvlName"></div>
+    <p class="lvl-lbl" style="margin-top:14px">אומץ במחיר</p>
+    <div class="lvl-num" style="font-size:38px"><span id="priceNum">–</span><small>מתוך 100</small></div>
+    <p class="mirror" id="mirror"></p>
+  </div>
+  <h2>חמשת הממדים</h2>
+  <div id="dims"></div>
+  <h2>הקריאה</h2>
+  <div id="read"></div>
+  <details style="margin-top:22px"><summary>נתונים למנחה</summary><div id="tech"></div></details>
+  <footer>הכלי נשען על הגדרת האומץ הארגוני של Detert ועל העיקרון שאין למדוד תדירות בלי לשאול תחילה אם ההזדמנות בכלל הייתה. הפריטים, זוגות הוויתור, המהלכים הגדולים ובלוק החסמים פותחו לכלי הזה. הציונים אינדיקטיביים ומיועדים לשיחה התפתחותית, לא להחלטות מיון או קידום. · חוזה עם החיים</footer>
+</div>
+</div>
+
+<script>
+const ITEMS=["אמרתי בישיבה דבר שידעתי שהממונה עליי לא ירצה לשמוע.", "המשכתי במהלך אחרי שכמעט כל מי ששאלתי אמר לי שלא כדאי.", "מסרתי בשורה קשה לאדם פנים אל פנים.", "עמדתי על עמדה שידעתי שתעלה לי במערכת יחסים חשובה.", "אמרתי \"טעיתי\" בלי להוסיף \"אבל\".", "חלקתי על עמדה שכבר התגבשה בחדר, כשכל השאר שתקו.", "נשארתי בשיחה קשה עד שהסתיימה, גם כשהיה קל לקטוע אותה.", "התחלתי מהלך בלי אישור מלא, כשהאחריות לכישלון הייתה עליי.", "סיפרתי לאנשים שעובדים איתי על החלטה שלי שהתבררה כשגויה.", "ויתרתי על משהו שרציתי — כסף, תפקיד או הזדמנות — כדי לא לוותר על עמדה.", "שתקתי בישיבה ואמרתי את דעתי אחריה, במסדרון.", "זנחתי מהלך שהאמנתי בו אחרי שנתקלתי בהתנגדות רחבה.", "נתתי משוב שלילי ישיר לאדם שאני תלוי/ה בו.", "עמדתי מאחורי החלטה שלי שהתבררה כשגויה, במקום להסביר איך היא נכפתה עליי.", "הגנתי על אדם שהיה חשוף יותר ממני, כשזה עלול היה לפגוע בי.", "העליתי בעיה שידעתי שתיזקף לחובתי.", "פעלתי לפי שיקול דעתי במקום לפי ההנחיה שקיבלתי.", "העברתי מסר קשה בכתב במקום בשיחה.", "תיקנתי בפומבי מידע שמסרתי קודם והתברר כלא נכון.", "שיניתי עמדה מקצועית אחרי שהבנתי שהיא אינה פופולרית."], DIMS=[["אומץ לומר", [1, 6, 11, 16], "לומר את הדבר הלא נוח למי שיש לו כוח"], ["אומץ להודות", [5, 9, 14, 19], "אחריות על טעות, בלי ריכוך ובלי חלוקה"], ["אומץ ללכת נגד", [2, 8, 12, 17], "לפעול מתוך אמונה כשהחדר אומר לא"], ["אומץ להישאר בחדר", [3, 7, 13, 18], "לשאת עימות ישיר במקום לעקוף אותו"], ["אומץ לשלם", [4, 10, 15, 20], "להחזיק בעמדה כשהיא עולה במשהו"]], PAIRS=[["לומר את זה עכשיו בחדר", "לומר את זה אחר כך ביחידות"], ["לשמור על יחסים טובים", "לומר את מה שצריך להיאמר"], ["להיות מי שמעלה את הבעיה", "להיות מי שפותר/ת אותה בשקט"], ["לקחת אחריות בפומבי", "לתקן בלי שיידעו"], ["להתחיל בלי אישור מלא", "לחכות לאישור"], ["להגן על מי שחשוף/ה יותר ממך", "להגן על המעמד שלך"], ["לצאת מהחדר עם החלטה", "לצאת מהחדר עם כולם איתך"], ["לצאת צודק/ת", "לצאת אהוב/ה"]], BIG=["עזבתי תפקיד או ארגון בגלל דבר שלא יכולתי לחיות איתו.", "סירבתי לקידום, לתפקיד או ללקוח מסיבה שאינה כספית.", "הלכתי עם מהלך שכמעט כל הסובבים אותי התנגדו לו — כי האמנתי בו.", "אמרתי למי שמעליי דבר שידעתי שעלול לעלות לי בתפקיד.", "סיכנתי משאב אישי ממשי — כסף, זמן או מוניטין — על דבר שהאמנתי בו.", "עצרתי מהלך שהיה שלי אחרי שהבנתי שהוא שגוי, כשכבר הושקע בו הרבה."], FEARS=[["אני נמנע/ת מלהתחיל דברים שאיני בטוח/ה שאצליח בהם.", 0], ["כשאני שוקל/ת מהלך, התמונה שעולה לי ראשונה היא איך הוא ייראה אם ייכשל.", 0], ["חשוב לי מאוד לא להיראות כמי שאינו/ה יודע/ת.", 1], ["הייתי מוותר/ת על מהלך נכון אם היה מוריד אותי בעיני אנשים שדעתם חשובה לי.", 1], ["אני מתקשה לומר \"לא\" למי שסומך/ת עליי.", 2], ["לפני שאני אומר/ת דבר לא נוח, אני מחשב/ת קודם כמה הוא יפגע באדם שמולי.", 2], ["אני צריך/ה לראות את כל התמונה לפני שאני זז/ה.", 3], ["אני אוסף/ת עוד מידע גם כשברור שהוא לא ישנה את ההחלטה.", 3]], FNAMES=["פחד מכישלון", "פחד מאובדן מעמד", "פחד לאכזב", "פחד מאי־ודאות"];
+const REV=[11,12,18,20];
+const yn={};
+
+function ynRow(prefix,i,text){
+  return '<div class="cell"><span class="n">'+(i+1)+'</span><span class="t">'+text+'</span>'+
+    '<span class="yesno"><button type="button" data-y="'+prefix+i+'" data-v="1" aria-pressed="false">כן</button>'+
+    '<button type="button" data-y="'+prefix+i+'" data-v="0" aria-pressed="false">לא</button></span></div>';
+}
+function build(){
+  document.getElementById('gA').innerHTML = ITEMS.map((t,i)=>
+    '<div class="cell"><span class="n">'+(i+1)+'</span><span class="t">'+t+'</span>'+
+    '<input type="number" min="0" max="3" placeholder="—" data-a="'+i+'"></div>').join('');
+  document.getElementById('gB').innerHTML = PAIRS.map((p,i)=>
+    '<div class="cell"><span class="n">'+(i+1)+'</span><span class="t">'+p[0]+' <b style="color:var(--mute)">↔</b> '+p[1]+'</span>'+
+    '<input type="number" min="0" max="3" data-b="'+i+'"></div>').join('');
+  document.getElementById('gBig').innerHTML = BIG.map((t,i)=>ynRow('g',i,t)).join('');
+  document.getElementById('gF').innerHTML = FEARS.map((f,i)=>ynRow('f',i,f[0])).join('');
+  document.querySelectorAll('input[data-a],input[data-b]').forEach(i=>i.addEventListener('input',prog));
+  document.body.addEventListener('click',e=>{
+    const b=e.target.closest('button[data-y]'); if(!b) return;
+    const k=b.dataset.y; yn[k]=+b.dataset.v;
+    b.parentNode.querySelectorAll('button').forEach(o=>o.setAttribute('aria-pressed',String(+o.dataset.v===yn[k])));
+    prog();
+  });
+  prog();
+}
+function vals(sel){ return [...document.querySelectorAll(sel)].map(i=>i.value.trim()); }
+function prog(){
+  let ok=0;
+  document.querySelectorAll('input[data-a],input[data-b]').forEach(inp=>{
+    const v=inp.value.trim(), n=+v;
+    const bad = v!=='' && (!(n>=0&&n<=3) || v.indexOf('.')>=0);
+    inp.parentNode.classList.toggle('bad',bad);
+    inp.parentNode.classList.toggle('done',!bad&&v!=='');
+    if(!bad&&v!=='') ok++;
+  });
+  const g=Object.keys(yn).filter(k=>k[0]==='g').length, f=Object.keys(yn).filter(k=>k[0]==='f').length;
+  document.getElementById('prog').textContent = ok+' פריטים · '+g+'/6 מהלכים · '+f+'/8 חסמים';
+}
+function clr(){ document.querySelectorAll('input').forEach(i=>i.value='');
+  Object.keys(yn).forEach(k=>delete yn[k]);
+  document.querySelectorAll('button[data-y]').forEach(b=>b.setAttribute('aria-pressed','false'));
+  prog(); document.getElementById('out').style.display='none'; }
+
+function calc(){
+  const a=vals('input[data-a]'), b=vals('input[data-b]');
+  const al=document.getElementById('alert'); const show=m=>{al.style.display='block';al.textContent=m;};
+  for(let i=0;i<20;i++){ if(a[i]==='') continue; const n=+a[i];
+    if(!(n>=0&&n<=3)||a[i].indexOf('.')>=0) return show('הניקוד בפריט '+(i+1)+' חייב להיות 0–3, או ריק אם לא הייתה הזדמנות.'); }
+  for(let i=0;i<8;i++){ const n=+b[i];
+    if(b[i]==='') return show('חסר ניקוד לזוג '+(i+1)+' בחלק ג.');
+    if(!(n>=0&&n<=3)||b[i].indexOf('.')>=0) return show('הניקוד בזוג '+(i+1)+' חייב להיות 0, 1, 2 או 3.'); }
+  const answered=a.filter(v=>v!=='').length;
+  if(answered<10) return show('פחות מעשרה פריטים נענו. זה מעט מדי מכדי לחשב פרופיל.');
+  al.style.display='none';
+
+  const dims=DIMS.map(d=>{
+    let sum=0,cnt=0;
+    d[1].forEach(k=>{ const v=a[k-1]; if(v==='') return;
+      sum += REV.includes(k) ? 3-(+v) : +v; cnt++; });
+    const conv = cnt===4?1 : cnt===3?4/3 : cnt===2?2 : null;
+    return {n:d[0],desc:d[2],sum:sum,cnt:cnt,
+            pct: conv===null?null:Math.round(sum*conv/12*100), converted:cnt<4};
+  });
+  const ok=dims.filter(d=>d.pct!==null);
+  const declared=Math.round(ok.reduce((s,d)=>s+d.pct,0)/ok.length);
+  const price=Math.round(b.reduce((s,v)=>s+ +v,0)/24*100);
+  const gap=declared-price;
+  const noOpp=20-answered;
+  const bigYes=Object.keys(yn).filter(k=>k[0]==='g'&&yn[k]===1).length;
+
+  document.getElementById('lvlNum').textContent=declared;
+  document.getElementById('priceNum').textContent=price;
+  document.getElementById('lvlName').textContent = declared<30?'נמוך':declared<50?'בינוני':declared<70?'גבוה':'גבוה מאוד';
+
+  document.getElementById('dims').innerHTML = ok.slice().sort((x,y)=>y.pct-x.pct).map(d=>
+    '<div class="dim"><div class="dim-top"><span class="dim-name">'+d.n+(d.converted?' <span style="font-size:12px;color:var(--clay)">· מומר</span>':'')+
+    '</span><span class="dim-score">'+d.pct+'</span></div>'+
+    '<div class="track"><span style="width:'+d.pct+'%"></span></div>'+
+    '<div class="dim-desc">'+d.desc+'</div></div>').join('') +
+    (dims.some(d=>d.pct===null)?'<p class="sub">ממד אחד או יותר לא ניתן לקריאה — פחות משני פריטים נענו בו.</p>':'');
+
+  let h='';
+  if(gap>=25) h+='<div class="box"><b>פער של '+gap+' נקודות</b><p>המעשים קיימים, אבל כשהאומץ מתנגש בערך מתחרה הוא מפנה את מקומו. זה אינו פחד אלא סדר עדיפויות שלא נבחר במודע.</p></div>';
+  else if(gap>=10) h+='<div class="box"><b>פער של '+gap+' נקודות</b><p>האומץ עומד ברוב המבחנים ונסוג בלחץ. שווה לבדוק אילו מהוויתורים היו החלטה ואילו הרגל.</p></div>';
+  else if(gap>=-10) h+='<div class="box"><b>פער זניח</b><p>המעשה וההעדפה תואמים. קראו את הפרופיל לפי הממדים.</p></div>';
+  else h+='<div class="box"><b>פער הפוך</b><p>ההעדפות אמיצות יותר מהמעשים. לרוב זו סביבה שמענישה, ולא נטייה אישית.</p></div>';
+
+  h+='<div class="box"><b>המהלכים הגדולים — '+bigYes+' מתוך 6</b><p>'+
+     (bigYes===0 ? 'לא סומן אף מהלך גדול. שווה לשאול אם ההזדמנות לא הגיעה, או שהיא הגיעה ולא זוהתה ככזאת.'
+      : declared<50 ? 'אומץ יומיומי נמוך לצד מהלך גדול — הפרופיל המעניין מכולם. האומץ קיים ומרוכז, ולא מפוזר על היומיום.'
+      : 'האומץ מופיע גם ביומיום וגם בהכרעות הגדולות.')+'</p></div>';
+
+  if(noOpp>=6) h+='<div class="box clay"><b>'+noOpp+' פריטים ללא הזדמנות</b><p>שנה שלמה שבה יותר משישה מצבים כאלה לא הזדמנו אינה ממצא על האומץ אלא על התפקיד. תפקיד שאינו מזמן רגעים כאלה אינו מפתח אומץ ואינו מודד אותו, וזו שאלה בפני עצמה.</p></div>';
+
+  const fc=[0,0,0,0];
+  FEARS.forEach((f,i)=>{ if(yn['f'+i]===1) fc[f[1]]++; });
+  if(fc.some(x=>x>0)){
+    const top=fc.indexOf(Math.max(...fc));
+    const need=['צמצום גודל ההימור, לא הגדלת הביטחון. מהלך קטן שאפשר לשרוד את כישלונו מזיז יותר מכל שכנוע עצמי.',
+                'בדיקה מפוכחת של מה באמת יקרה. ברוב המקרים המחיר המדומיין גדול מהממשי.',
+                'הפרדה בין המסר לבין אופן מסירתו. אפשר לומר דבר קשה בעדינות רבה; מה שלא אפשר הוא לומר אותו כל כך בעדינות שהוא נעלם.',
+                'כלל מוקדם שנקבע מראש: מה המידע המינימלי שאחריו מכריעים.'];
+    h+='<div class="box clay"><b>החסם הבולט: '+FNAMES[top]+'</b><p>'+need[top]+'</p>'+
+       '<p style="font-size:13px;color:var(--mute)">ספירה: '+FNAMES.map((n,i)=>n+' '+fc[i]+'/2').join(' · ')+'</p></div>';
+  }
+  document.getElementById('read').innerHTML=h;
+
+  const hi=ok.slice().sort((x,y)=>y.pct-x.pct)[0], lo=ok.slice().sort((x,y)=>x.pct-y.pct)[0];
+  const spread=hi.pct-lo.pct;
+  let m = spread>=25 ? 'האומץ שלכם מופיע בעיקר ב<b>'+hi.n+'</b> ופחות ב<b>'+lo.n+'</b>. אומץ אינו תכונה אחת — מי שאומר הכול בישיבה ואינו מסוגל להודות בטעות אינו אמיץ למחצה, אלא אמיץ בזירה אחת. '
+                     : 'חמשת הממדים יצאו קרובים זה לזה, ולכן התמונה היא של רמה כללית ולא של זירה מסוימת. ';
+  m += (hi.converted||lo.converted) ? 'שימו לב שאחד הממדים חושב מפחות מארבעה פריטים, ולכן הוא נשען על פחות עדות — אל תבנו עליו את השיחה.' : 'הקריאה למטה מצרפת את הפער, את המהלכים הגדולים ואת החסמים.';
+  document.getElementById('mirror').innerHTML=m;
+
+  document.getElementById('tech').innerHTML =
+    '<p>' + dims.map(d=>d.n+' '+d.sum+'/'+(d.cnt*3)+' ('+d.cnt+' פריטים)').join(' · ') + '</p>'+
+    '<p>אומץ בפועל '+declared+' · אומץ במחיר '+price+' · פער '+gap+' · ללא הזדמנות '+noOpp+'/20 · מהלכים גדולים '+bigYes+'/6</p>'+
+    '<p>הספים הם קווי שיפוט מניסיון ייעוצי ולא נורמות ממדגם מייצג.</p>';
+
+  document.getElementById('out').style.display='block';
+  window.scrollTo({top:document.getElementById('out').offsetTop-20,behavior:'smooth'});
+}
+build();
+</script><script>window.CWL_P2C={"key": "courage", "noop": true, "aTitle": "מה עשיתי בפועל (בשנה האחרונה)", "bigTitle": "חלק ב · המהלכים הגדולים (בחמש השנים האחרונות)", "pTitle": "חלק ג · מה בחרתי כשצריך לוותר", "fTitle": "חלק ד · מה עוצר אותי", "order": ["big", "pairs", "fears"]};</script>
+<script>
+/* חוזה עם החיים · הפיכת טופס הזנה לשאלון דיגיטלי לנועץ */
+(function(){
+ const C=window.CWL_P2C, $=id=>document.getElementById(id);
+ const FREQ=['אף פעם','פעם אחת','2–4 פעמים','5 ומעלה'];
+ const HAS_YN=(typeof yn!=='undefined');
+ const css=`.cell.cq{display:block;padding:14px 16px}.cell.cq .t{display:block;font-size:17px;line-height:1.5;margin-bottom:10px}
+ .cell.cq input[data-a],.cell.cq input[data-b]{display:none}.grid{grid-template-columns:1fr!important;gap:10px}
+ .cq .ch{display:flex;flex-wrap:wrap;gap:6px}.cq .ch button{flex:1 1 auto;min-width:92px;border:1px solid var(--rule);background:#fff;border-radius:6px;padding:10px 8px;font:inherit;font-size:15px;cursor:pointer}
+ .cq .ch button[aria-pressed="true"]{background:var(--olive);border-color:var(--olive);color:#fff}
+ .cq .ch button.no{flex-basis:100%;background:#FAF9F5;color:var(--mute)}.cq .ch button.no[aria-pressed="true"]{background:var(--clay);border-color:var(--clay);color:#fff}
+ .cq .poles{display:flex;justify-content:space-between;gap:14px;font-size:17px;font-weight:700;margin-bottom:8px}.cq .poles span:last-child{text-align:left}
+ .cq .ch.p4 button{flex:1 1 0;min-width:0;padding:10px 4px;font-size:14px}
+ .cell.yn{flex-wrap:wrap}.cell.yn .t{font-size:17px}.yesno button{padding:9px 18px;font-size:16px}
+ .cell.miss{border-color:var(--clay)!important;background:#FBF3EF!important}
+ #out,#alert{display:none!important}.cell .n{font-size:15px}
+ #cwlDone{border:1px solid var(--rule);border-top:5px solid var(--gold);background:#fff;border-radius:8px;padding:22px 22px;margin:28px 0;font-size:18px}
+ #cwlDone h2{margin-top:0}`;
+ const st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
+ function mkBtns(host,opts,onPick){const d=document.createElement('div');d.className='ch';
+  opts.forEach(o=>{const b=document.createElement('button');b.type='button';b.textContent=o.l;b.dataset.v=o.v;if(o.cls)b.className=o.cls;
+   b.setAttribute('aria-pressed','false');b.onclick=()=>{onPick(o.v);paint(d,o.v);save();prog();};d.appendChild(b);});host.appendChild(d);return d;}
+ function paint(d,v){d.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===String(v))));}
+ const A=[...document.querySelectorAll('input[data-a]')], B=[...document.querySelectorAll('input[data-b]')];
+ const noop={};
+ A.forEach((inp,i)=>{const cell=inp.closest('.cell');cell.classList.add('cq');
+  const opts=FREQ.map((l,v)=>({l,v:String(v)}));if(C.noop)opts.push({l:'לא הזדמן לי מצב כזה',v:'n',cls:'no'});
+  cell._d=mkBtns(cell,opts,v=>{if(v==='n'){inp.value='';noop[i]=1}else{inp.value=v;delete noop[i]}cell.classList.remove('miss');});});
+ B.forEach((inp,i)=>{const cell=inp.closest('.cell');cell.classList.add('cq');const p=PAIRS[i];
+  cell.querySelector('.t').innerHTML='<div class="poles"><span>'+p[0]+'</span><span>'+p[1]+'</span></div>';
+  cell._d=mkBtns(cell,[{l:'בבירור זה',v:'0'},{l:'נוטה לזה',v:'1'},{l:'נוטה לזה',v:'2'},{l:'בבירור זה',v:'3'}],v=>{inp.value=v;cell.classList.remove('miss');});cell._d.classList.add('p4');});
+ document.querySelectorAll('.yesno').forEach(y=>y.closest('.cell').classList.add('yn'));
+ document.body.addEventListener('click',e=>{const b=e.target.closest('button[data-y]');if(b){b.closest('.cell').classList.remove('miss');setTimeout(()=>{save();prog()},0);}});
+ /* סטטוס ושמירה */
+ const YK=HAS_YN?[...document.querySelectorAll('.yesno')].map(y=>y.querySelector('button').dataset.y):[];
+ const TOTAL=A.length+B.length+YK.length;
+ function answered(){let n=0;A.forEach((x,i)=>{if(x.value!==''||noop[i])n++});B.forEach(x=>{if(x.value!=='')n++});YK.forEach(k=>{if(yn[k]!==undefined)n++});return n}
+ function prog(){const p=$('prog');if(p)p.textContent='ענית על '+answered()+' מתוך '+TOTAL}
+ const SK='cwl-'+C.key;
+ function save(){try{localStorage.setItem(SK,JSON.stringify({a:A.map(x=>x.value),b:B.map(x=>x.value),noop,yn:HAS_YN?yn:{}}))}catch(e){}}
+ function restore(){let d=null;try{d=JSON.parse(localStorage.getItem(SK)||'null')}catch(e){}if(!d)return;
+  (d.a||[]).forEach((v,i)=>{if(A[i]){A[i].value=v;if(v!=='')paint(A[i].closest('.cell')._d,v)}});
+  Object.keys(d.noop||{}).forEach(i=>{noop[i]=1;paint(A[i].closest('.cell')._d,'n')});
+  (d.b||[]).forEach((v,i)=>{if(B[i]){B[i].value=v;if(v!=='')paint(B[i].closest('.cell')._d,v)}});
+  if(HAS_YN)Object.keys(d.yn||{}).forEach(k=>{yn[k]=d.yn[k];document.querySelectorAll('button[data-y="'+k+'"]').forEach(o=>o.setAttribute('aria-pressed',String(+o.dataset.v===yn[k])))});
+  if(answered()){const s=$('cwlSaved');if(s)s.textContent='שמרנו את מה שמילאת. אפשר להמשיך מאיפה שעצרת.'}}
+ /* כפתורי הסרגל */
+ const bar=document.querySelector('.bar');
+ bar.innerHTML='<button class="btn" type="button" id="cwlFin">סיום</button><button class="btn ghost" type="button" id="cwlClr">התחלה מחדש</button><span class="status" id="prog"></span><span class="status" id="cwlSaved" style="width:100%"></span>';
+ $('cwlClr').onclick=()=>{if(!confirm('למחוק את כל התשובות ולהתחיל מחדש?'))return;try{localStorage.removeItem(SK)}catch(e){}location.reload()};
+ $('cwlFin').onclick=()=>{
+  const miss=[];A.forEach((x,i)=>{if(x.value===''&&!noop[i])miss.push(x.closest('.cell'))});B.forEach(x=>{if(x.value==='')miss.push(x.closest('.cell'))});
+  YK.forEach(k=>{if(yn[k]===undefined)miss.push(document.querySelector('button[data-y="'+k+'"]').closest('.cell'))});
+  if(miss.length){miss.forEach(c=>c.classList.add('miss'));$('cwlSaved').textContent='נשארו '+miss.length+' שאלות בלי תשובה. סימנתי אותן בצבע.';miss[0].scrollIntoView({behavior:'smooth',block:'center'});return}
+  try{calc()}catch(e){}
+  let d=$('cwlDone');if(!d){d=document.createElement('div');d.id='cwlDone';bar.parentNode.insertBefore(d,bar.nextSibling)}
+  d.innerHTML='<h2>סיימת. תודה!</h2><p>נשאר רק לשלוח לי את התשובות. הן יגיעו רק אליי, ונסתכל עליהן יחד בפגישה שלנו.</p><button type="button" class="cwl-send" onclick="CWLReturn.open()">שליחת התשובות אליי</button>';
+  d.scrollIntoView({behavior:'smooth',block:'center'});};
+ /* הסיכום שנשלח */
+ window.cwlP2CSummary=function(){const L=[];
+  L.push('חלק א · '+C.aTitle);
+  A.forEach((x,i)=>L.push((i+1)+'. '+ITEMS[i]+'\n   ← '+(noop[i]?'לא הזדמן לי':(x.value===''?'-':FREQ[+x.value]))));
+  C.order.forEach(sec=>{
+   if(sec==='big'&&HAS_YN){L.push('',C.bigTitle);BIG.forEach((t,i)=>L.push((i+1)+'. '+t+'\n   ← '+(yn['g'+i]===1?'כן':yn['g'+i]===0?'לא':'-')))}
+   if(sec==='pairs'){L.push('',C.pTitle);B.forEach((x,i)=>{const p=PAIRS[i],v=x.value;
+    L.push((i+1)+'. '+p[0]+' ↔ '+p[1]+'\n   ← '+(v===''?'-':(v<'2'?(v==='0'?'בבירור: ':'נוטה ל: ')+p[0]:(v==='3'?'בבירור: ':'נוטה ל: ')+p[1])))})}
+   if(sec==='fears'&&HAS_YN){L.push('',C.fTitle);FEARS.forEach((f,i)=>L.push((i+1)+'. '+f[0]+'\n   ← '+(yn['f'+i]===1?'כן':yn['f'+i]===0?'לא':'-')))}
+  });
+  const o=$('out');if(o&&o.style.display==='block'){const T=[];
+   const tx=el=>{const d=document.createElement('div');d.innerHTML=el.innerHTML.replace(/<(\/?)(div|span|p|small|h\d)([^>]*)>/g,' <$1$2$3> ');return d.textContent.replace(/\s+/g,' ').trim()};
+   const lv=o.querySelector('.level');if(lv){lv.querySelectorAll('.lvl-lbl').forEach(l=>{const n=l.nextElementSibling;T.push('• '+l.textContent.trim()+': '+(n?tx(n):''))});
+    const nm=lv.querySelector('.lvl-name');if(nm&&nm.textContent.trim())T.push('• רמה: '+nm.textContent.trim());const mr=lv.querySelector('.mirror');if(mr)T.push('• '+tx(mr))}
+   o.querySelectorAll('.dim,.box,#figure>*,#tech p').forEach(el=>{const t=tx(el);if(t)T.push('• '+t)});
+   L.push('','— נתונים ליועצת (החישוב האוטומטי) —',...T);}
+  return L.join('\n');};
+ restore();prog();
+})();
+</script>
+
+<script>window.CWL_CFG={tool:'courage',fill:'את שאלון האומץ המקצועי',title:'אומץ מקצועי',summary:()=>window.cwlP2CSummary()};</script>
+
+
+
+<!-- חוזה עם החיים: חיבור לאתר (שמירה בגיליון במקום שליחה במייל) -->
+<script src="CFL_config.js"></script>
+<script src="CFL_bridge.js"></script>
+<script>
+window.CFL_PAGE={id:'courage',keys:['cwl-courage']};
+</script>
+<script src="CFL_cwl.js"></script>
+</body></html>
