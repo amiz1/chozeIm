@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>היכולות שלי · חוזה עם החיים</title>
+<style>
+:root{--paper:#F7F5EF;--card:#FFFFFF;--ink:#2B2B28;--mute:#6E6B62;--olive:#6B7A4F;--olive-d:#4E5A3A;--gold:#B8933F;--goldbg:#F2EDDC;--rule:#DAD5C7;--tint:#F0EEE5;--clay:#A9633F;--claybg:#F4E9E1;--onink:#F7F5EF}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-size:17px;line-height:1.65}
+.bar{position:sticky;top:0;height:4px;background:var(--rule);z-index:5}.bar i{display:block;height:100%;width:0;background:var(--olive);transition:width .3s}
+.wrap{max-width:720px;margin:0 auto;padding:28px 20px 130px}
+.brand{font-size:14px;color:var(--mute);margin:0 0 14px}
+h1{font-size:30px;line-height:1.25;margin:0 0 8px;font-weight:800}
+h2{font-size:24px;line-height:1.3;margin:0 0 4px;font-weight:800}
+h3{font-size:19px;margin:22px 0 8px;color:var(--olive-d)}
+.sub{color:var(--mute);margin:0 0 18px}
+p{margin:0 0 14px}
+.note{background:var(--goldbg);border-right:4px solid var(--gold);padding:14px 18px;margin:18px 0;font-size:16px}
+.clay{background:var(--claybg);border-right-color:var(--clay)}
+.card{background:var(--card);border:1px solid var(--rule);border-right:4px solid var(--olive);padding:14px 16px;margin:0 0 12px}
+label{display:block;font-weight:700;margin:10px 0 4px;font-size:16px}label small{font-weight:400;color:var(--mute)}
+textarea,input[type=text]{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--paper);border:1px solid var(--rule);padding:10px 12px;resize:vertical}
+textarea:focus,input:focus,button:focus-visible{outline:2px solid var(--olive);outline-offset:1px}
+details.fam{background:var(--card);border:1px solid var(--rule);padding:10px 14px;margin:0 0 8px}
+details.fam summary{cursor:pointer;font-weight:700;color:var(--olive-d)}details.fam p{margin:8px 0 0;font-size:15.5px}
+.ab{display:flex;gap:8px;align-items:center;margin:0 0 8px}.ab .n{min-width:26px;color:var(--mute);font-size:15px;text-align:center}
+button{font-family:inherit;font-size:17px;font-weight:700;cursor:pointer;background:var(--ink);color:var(--onink);border:none;padding:13px 28px}
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--rule);font-weight:600}
+button.link{background:none;color:var(--olive-d);padding:6px 0;text-decoration:underline;font-weight:600}
+.seg{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 4px}
+.seg button{flex:1 1 0;min-width:0;background:var(--card);color:var(--ink);border:1px solid var(--rule);padding:10px 6px;font-size:15px;font-weight:600}
+.seg button[aria-pressed=true]{background:var(--olive);border-color:var(--olive);color:#fff}
+.seg.q2 button[aria-pressed=true]{background:var(--gold);border-color:var(--gold)}
+.qlbl{font-size:14px;color:var(--mute);margin:8px 0 0}
+.abname{font-weight:800;font-size:18px}
+table{width:100%;border-collapse:collapse;font-size:15.5px;margin:8px 0 16px}td,th{border-bottom:1px solid var(--rule);padding:8px 6px;text-align:right;vertical-align:top}th{color:var(--mute);font-size:14px}
+.grid4{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.sq{background:var(--card);border:1px solid var(--rule);padding:14px;border-top:5px solid var(--olive)}
+.sq h4{margin:0 0 2px;font-size:18px}.sq .s{font-size:13.5px;color:var(--mute);margin:0 0 8px}.sq ul{margin:0;padding-right:18px}.sq li{font-size:16px}
+.sq.b{border-top-color:var(--gold)}.sq.c{border-top-color:var(--clay)}.sq.d{border-top-color:var(--rule)}
+.nav{position:fixed;bottom:0;left:0;right:0;background:var(--paper);border-top:1px solid var(--rule);padding:12px 20px}
+.nav .in{max-width:720px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.count{font-size:14px;color:var(--mute);text-align:center}
+.saved{font-size:14px;color:var(--mute)}
+@media(max-width:560px){.grid4{grid-template-columns:1fr}h1{font-size:26px}}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap" rel="stylesheet"><style id="cfl-font">body,body *{font-family:"Heebo",Arial,"Arial Hebrew",sans-serif!important}</style>
+</head>
+<body>
+<div class="bar" aria-hidden="true"><i id="prog"></i></div>
+<main class="wrap" id="app" aria-live="polite"></main>
+<nav class="nav"><div class="in"><button class="ghost" id="back">הקודם</button><span class="count" id="count"></span><button id="next">הבא</button></div></nav>
+<script>
+const KEY='cwl-abilities-v1';
+const FAM=[['מקצועיות־תחומיות','הידע הספציפי של התחום שלכם','ניתוח נתונים ומסקנות · כתיבת מסמך מקצועי שמישהו מקבל על פיו החלטה · תמחור והערכת עלויות'],
+['טכנולוגיות','לא רק כלים — גם היכולת ללמוד כלי חדש','עבודה שוטפת עם מערכת ניהול · הפיכת תהליך ידני לאוטומטי · אימוץ כלי חדש והטמעתו אצל אחרים'],
+['ניהוליות','גם למי שאין לו כפיפים היום','בניית תוכנית עבודה שעומדת בזמנים · ניהול תקציב · לקחת אחריות על תוצאה של אנשים אחרים'],
+['בין־אישיות','כאן כדאי לדייק — "עבודה עם אנשים" זו לא יכולת','משא ומתן מול אינטרסים מנוגדים · מסירת מסר לא נעים בלי לשבור את הקשר · חניכה של מישהו צעיר עד שהוא עומד לבד'],
+['חשיבה והכרעה','מה שקורה כשאין תשובה מוכנה','פירוק בעיה מורכבת לחלקים · הכרעה כשחסר מידע והזמן נגמר · זיהוי מה באמת חשוב מתוך רעש'],
+['ביצוע וסדר','הפחות זוהרות, ולרוב החזקות ביותר','לקחת דבר מהתחלה עד הסוף · לעמוד בלוח זמנים כשאתם תלויים באחרים · לבנות תהליך שאפשר לחזור עליו']];
+const Q1=[['e','נותן לי אנרגיה'],['x','כבר לא'],['n','לא משנה לי']];
+const Q2=[['y','עדיין נדרשת'],['o','כבר לא נדרשת'],['?','לא ברור']];
+const SQ=[['core','הליבה','נותנת לי אנרגיה, ועדיין נדרשת','a','כאן משתלם להעמיק, וכאן כדאי להגן כשמשהו משתנה. זה מה שרוצים שיהיה בתפקיד הבא, ובתפקיד הנוכחי אם נשארים.'],
+['pain','הכואבת','נותנת לי אנרגיה, ואינה נדרשת עוד','b','מה שמדליק אתכם ואף אחד לא מבקש. ממשיכים להשקיע בזה כי זה נעים, וההשקעה מרגישה בדיוק כמו התקדמות. שווה לשאול איפה זה כן מבוקש.'],
+['trap','המלכודת','כבר לא נותנת לי, ועדיין נדרשת','c','טובים בזה, מבוקשים בזה, וזה כבר לא נותן. אין שום סיבה חיצונית לעזוב, ולכן אנשים נשארים שם שנים. זו המשבצת שבגללה נבנה הכלי הזה.'],
+['free','השחרור','כבר לא נותנת לי, ואינה נדרשת עוד','d','כאן משחררים בלי כאב ובלי ויכוח. התחילו מכאן, כי זה גם הקל ביותר וגם מפנה מקום.']];
+let S={i:0,name:'',ab:Array.from({length:15},()=>({t:'',q1:'',q2:''})),common:'',less:'',lessLong:'',more:'',surprise:'',goals:Array.from({length:3},()=>({t:'',from:'',lets:'',done:''})),pick1:'',step1:'',pick2:'',step2:'',miss:''};
+try{const x=localStorage.getItem(KEY);if(x)S=Object.assign(S,JSON.parse(x))}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const $=s=>document.querySelector(s);
+const esc=t=>String(t||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const filledAb=()=>S.ab.filter(a=>a.t.trim());
+const filledGoals=()=>S.goals.filter(g=>g.t.trim());
+function sqOf(a){if(a.q1==='e'&&a.q2==='y')return'core';if(a.q1==='e'&&a.q2==='o')return'pain';if(a.q1==='x'&&a.q2==='y')return'trap';if(a.q1==='x'&&a.q2==='o')return'free';return null}
+function xCount(){const f=filledAb();return{x:f.filter(a=>a.q1==='x').length,n:f.length}}
+function xRead(){const {x,n}=xCount();if(!n)return'';const r=x/n;
+ if(r<=0.25)return'עד רבע: שחיקה נקודתית, וזה נורמלי בכל תפקיד.';
+ if(r<=0.5)return'בין רבע למחצית: חלק ניכר ממה שאתם עושים כבר לא מזין, והשאלה אינה איזה תפקיד חדש אלא כמה מהתכולה הנוכחית ניתנת להעברה או לצמצום.';
+ return'מעל מחצית: זו כבר לא שאלה של מיפוי יכולות, ושווה לדבר עליה לפני שמדברים על כיוון.'}
+const SCREENS=['welcome','list','rate','squares','sum','pause','goals','step','done'];
+function seg(cls,opts,cur,attr){return `<div class="seg ${cls}">${opts.map(([v,t])=>`<button type="button" ${attr}="${v}" aria-pressed="${cur===v}">${t}</button>`).join('')}</div>`}
+function render(){
+ const s=SCREENS[S.i];let h='';
+ $('#back').style.visibility=S.i?'visible':'hidden';$('#next').style.display='';$('#next').textContent='הבא';
+ if(s==='welcome'){h=`<p class="brand">חוזה עם החיים</p><h1>היכולות שלי</h1><p class="sub">מה סל היכולות שלי היום, במה אני רוצה להשתמש, ומה ארצה לפתח מכאן והלאה</p>
+ <p>לאורך השנים אספנו יכולות. חלקן נבנו מתוך בחירה, חלקן פשוט נדבקו, וכמעט אף אחד לא עצר לבדוק מה מכל זה עדיין עובד בשבילו.</p>
+ <p>הכלי הזה עושה שני דברים פשוטים: מוציא את הרשימה מהראש אל הדף, ואז שואל על כל יכולת שתי שאלות: האם היא עדיין נותנת לי משהו, והאם העולם עדיין מבקש אותה.</p>
+ <p>החלק השני ממשיך משם אל מה שחסר: מה נרצה לפתח, ומה באמת מיועד לקרות.</p>
+ <div class="note">הכול נשמר אוטומטית בדפדפן, ואפשר לעצור ולחזור בכל שלב.</div>
+ <label for="nm">השם שלי <small>· לא חובה</small></label><input type="text" id="nm" value="${esc(S.name)}">`;$('#next').textContent='מתחילים'}
+ else if(s==='list'){h=`<p class="brand">שלב 1 מתוך 6</p><h2>הרשימה</h2><p class="sub">רשמו את היכולות שיש לכם היום. לא תארים ולא תפקידים, אלא דברים שאתם יודעים לעשות.</p>
+ <p>כדי לא לשכוח חצי מהן, הנה שש משפחות. פתחו אותן אחת אחת, ובכל אחת שאלו: מה יש לי כאן?</p>
+ ${FAM.map(f=>`<details class="fam"><summary>${f[0]}</summary><p>${f[1]}</p><p><b>לדוגמה:</b> ${f[2]}</p></details>`).join('')}
+ <div class="note"><b>ומשפחה שביעית שקל לפספס:</b> יכולות שנרכשו מחוץ לעבודה. ועד בית, התנדבות, ארגון אירוע משפחתי גדול, טיפול בהורה מבוגר מול מערכות. הן נחשבות לגמרי, ולעיתים הן החזקות ביותר.</div>
+ <p><b>אל תסננו.</b> אם עלתה יכולת, כתבו אותה, גם אם היא נראית מובנת מאליה. דווקא מה שאנחנו עושים בלי לחשוב הוא לרוב מה שאנחנו הכי טובים בו.</p>
+ <p class="saved">מקום לשלושים. אין צורך למלא הכול, אבל פחות מחמש עשרה בדרך כלל אומר שסיננו.</p>
+ ${S.ab.map((a,i)=>`<div class="ab"><span class="n">${i+1}</span><input type="text" data-ab="${i}" value="${esc(a.t)}" aria-label="יכולת ${i+1}"></div>`).join('')}
+ ${S.ab.length<30?'<button class="link" id="addAb">הוספת 5 שורות</button>':''}`}
+ else if(s==='rate'){const f=S.ab.map((a,i)=>[a,i]).filter(([a])=>a.t.trim());
+ h=`<p class="brand">שלב 2 מתוך 6</p><h2>שתי השאלות</h2><p class="sub">לכל יכולת עונים על שתי שאלות שונות לגמרי. הראשונה על עצמנו, השנייה על העולם.</p>
+ <details class="fam"><summary>מה פירוש התשובות לשאלה הראשונה?</summary><p><b>נותן לי אנרגיה:</b> עדיין יש בזה חיות. הייתי רוצה שזה יהיה בעבודה שלי גם מכאן והלאה.</p><p><b>כבר לא:</b> היה בזה משהו פעם, והוא נגמר. אולי נשחקתי, אולי התקדמתי, ואולי זה פשוט כבר לא רלוונטי לי.</p><p><b>לא משנה לי:</b> עושה כשצריך, בלי התרגשות ובלי התנגדות.</p></details>
+ <details class="fam"><summary>ואיך עונים על השאלה השנייה?</summary><p>זו אינה שאלה על כמה אתם טובים בה, ואינה ניחוש על השוק. היא שאלה על מה שכבר קרה סביבכם:</p><p>מתי בפעם האחרונה מישהו ביקש ממני דווקא את זה, והאם התדירות עלתה או ירדה בשנתיים האחרונות? והאם מישהו אחר עושה את אותו דבר בדרך אחרת לגמרי, ומגיע לאותה תוצאה מהר יותר?</p><p>אם אין תשובה ברורה, סמנו "לא ברור". זו תשובה לגיטימית, והיא בעצמה ממצא.</p></details>
+ ${f.length?f.map(([a,i])=>`<div class="card"><div class="abname">${esc(a.t)}</div><p class="qlbl">האם זה עדיין נותן לי משהו?</p>${seg('q1',Q1,a.q1,'data-q1="'+i+'" data-v')}<p class="qlbl">האם העולם עדיין מבקש את זה?</p>${seg('q2',Q2,a.q2,'data-q2="'+i+'" data-v')}</div>`).join(''):'<p class="note clay">עוד לא נכתבו יכולות. חזרו לשלב הקודם.</p>'}`}
+ else if(s==='squares'){const {x,n}=xCount();
+ h=`<p class="brand">שלב 3 מתוך 6</p><h2>ארבע המשבצות</h2><p class="sub">כששני הסימונים נפגשים, מתקבלות ארבע קבוצות. לכל אחת משמעות אחרת לגמרי, וגם המשך אחר.</p>
+ <p>יכולת חלשה שאיש אינו מבקש אינה בעיה. יכולת חזקה ששוחקת אתכם ומבוקשת מאוד היא הבעיה הגדולה ביותר שיש כאן.</p>
+ <div class="grid4">${SQ.map(q=>{const l=filledAb().filter(a=>sqOf(a)===q[0]);return `<div class="sq ${q[3]}"><h4>${q[1]}</h4><p class="s">${q[2]}</p>${l.length?'<ul>'+l.map(a=>'<li>'+esc(a.t)+'</li>').join('')+'</ul>':'<p class="saved">אין כאן יכולות</p>'}</div>`}).join('')}</div>
+ ${SQ.map(q=>`<p><b>${q[1]}:</b> ${q[4]}</p>`).join('')}
+ <div class="note"><b>וספירה אחת:</b> סימנת "כבר לא" ב־${x} יכולות, מתוך ${n}.<br>${xRead()}</div>`}
+ else if(s==='sum'){h=`<p class="brand">שלב 4 מתוך 6</p><h2>מה עולה מהמיון</h2><p class="sub">את הסיכום עושים בעצמכם. מה שאדם מנסח במילים שלו נשאר איתו.</p>
+ <p>הסתכלו על הליבה, היכולות שנותנות אנרגיה ועדיין נדרשות, ושאלו מה משותף לשלוש־ארבע מהן. לא השם המקצועי שלהן, אלא מה קורה בפועל כשאתם מפעילים אותן. האם יש שם אנשים? האם יש תוצאה שרואים? האם אתם לבד או בקבוצה?</p>
+ <label for="t_common">מה משותף ליכולות שנותנות לי אנרגיה</label><textarea id="t_common" data-f="common" rows="3">${esc(S.common)}</textarea>
+ <label for="t_less">יכולת אחת שאני מפעיל/ה הרבה, וארצה להפחית</label><textarea id="t_less" data-f="less" rows="2">${esc(S.less)}</textarea>
+ <label for="t_more">יכולת אחת שכמעט לא באה לידי ביטוי, ואשמח שתבוא</label><textarea id="t_more" data-f="more" rows="2">${esc(S.more)}</textarea>
+ <label for="t_sur">מה הכי הפתיע אותי ברשימה</label><textarea id="t_sur" data-f="surprise" rows="2">${esc(S.surprise)}</textarea>
+ <p class="saved" style="margin-top:16px">להיות טובים במשהו ולרצות להמשיך לעשות אותו הם שני דברים שונים. הכלי הזה מפריד ביניהם.</p>`}
+ else if(s==='pause'){h=`<h2>עד כאן: מה יש</h2><div class="note">החלק הבא עוסק במה שחסר, והוא נשען על מה שכתבתם כאן. אם אתם עייפים, זה מקום טוב לעצור ולחזור מחר. הכול נשמר.</div>`;$('#next').textContent='להמשך'}
+ else if(s==='goals'){h=`<p class="brand">שלב 5 מתוך 6</p><h2>יעדי הפיתוח</h2><p class="sub">רשמו עד עשר יכולות שאין לכם היום ושהייתם רוצים לפתח, ולצד כל אחת ענו על שלוש שאלות.</p>
+ <div class="note">לפני שמתחילים, הציצו שוב בארבע המשבצות. לעיתים יכולת שאתם מבקשים לפתח דומה מאוד לאחת שסימנתם בה "כבר לא". זה ממצא ששווה לעצור עליו.</div>
+ <details class="fam"><summary>מה פירוש שלוש השאלות?</summary><p><b>מאיפה זה הגיע:</b> האם הצורך עלה מרגע או ממצב שחוויתם, או שזה משהו ששמעתם שכדאי לדעת. שתי התשובות לגיטימיות, וההבחנה ביניהן היא שחשובה.</p><p><b>מה זה יאפשר לי:</b> מה תוכלו לעשות עם היכולת הזו שאינכם יכולים לעשות היום. אם אין תשובה קונקרטית, סימן שהיכולת עדיין לא באמת נחוצה לכם.</p><p><b>מה כבר עשיתי בכיוון:</b> כל צעד נחשב, ולו הקטן ביותר: שיחה, סרטון, ספר שנפתח, שאלה ששאלתם. תשובה ריקה אינה שיפוט, היא מידע.</p></details>
+ ${S.goals.map((g,i)=>`<div class="card"><label for="g_t_${i}">יכולת ${i+1} שארצה לפתח</label><input type="text" id="g_t_${i}" data-g="${i}" data-k="t" value="${esc(g.t)}">
+ <label for="g_f_${i}">מאיפה זה הגיע</label><textarea id="g_f_${i}" data-g="${i}" data-k="from" rows="2">${esc(g.from)}</textarea>
+ <label for="g_l_${i}">מה זה יאפשר לי</label><textarea id="g_l_${i}" data-g="${i}" data-k="lets" rows="2">${esc(g.lets)}</textarea>
+ <label for="g_d_${i}">מה כבר עשיתי בכיוון</label><textarea id="g_d_${i}" data-g="${i}" data-k="done" rows="2">${esc(g.done)}</textarea></div>`).join('')}
+ ${S.goals.length<10?'<button class="link" id="addG">הוספת יכולת נוספת</button>':''}`}
+ else if(s==='step'){const gl=filledGoals();const opt=cur=>`<option value="">בחירה מהרשימה</option>`+gl.map(g=>`<option ${cur===g.t?'selected':''}>${esc(g.t)}</option>`).join('');
+ h=`<p class="brand">שלב 6 מתוך 6</p><h2>מהרשימה לצעד</h2><p class="sub">בחרו שתיים בלבד</p>
+ <p>הקריטריון אינו מה החשוב ביותר, אלא היכן צירוף התשובות משכנע: יכולת שהגיעה מרגע אמיתי, שיש לה שימוש ברור, ושכבר נעשה בה צעד כלשהו.</p>
+ <div class="card"><label for="p1">היכולת הראשונה שבחרתי</label><select id="p1" data-f="pick1" style="width:100%;font:inherit;padding:10px">${opt(S.pick1)}</select>
+ <label for="s1">הצעד הראשון שאעשה, ומתי</label><textarea id="s1" data-f="step1" rows="2">${esc(S.step1)}</textarea></div>
+ <div class="card"><label for="p2">היכולת השנייה שבחרתי</label><select id="p2" data-f="pick2" style="width:100%;font:inherit;padding:10px">${opt(S.pick2)}</select>
+ <label for="s2">הצעד הראשון שאעשה, ומתי</label><textarea id="s2" data-f="step2" rows="2">${esc(S.step2)}</textarea></div>
+ <h3>יכולת אחת שאם לא אפתח אותה, ארגיש שהחמצתי</h3><p class="saved">שאלה זו אינה חלק מהרשימה ואינה מדורגת. כתבו את מה שעולה.</p><textarea data-f="miss" rows="3" aria-label="יכולת שאם לא אפתח ארגיש שהחמצתי">${esc(S.miss)}</textarea>`;$('#next').textContent='סיום'}
+ else if(s==='done'){h=`<h2>סיימת. תודה!</h2><p>עשית כאן עבודה אמיתית. נשאר רק לשלוח לי את מה שכתבת. זה יגיע רק אליי, ונסתכל על זה יחד בפגישה שלנו.</p>
+ <button type="button" class="cwl-send" onclick="CWLReturn.open()">שליחת התשובות אליי</button>
+ <p class="saved" style="margin-top:14px">רוצה לתקן משהו לפני השליחה? אפשר לחזור אחורה בכפתור "הקודם".</p>
+ <button class="link" id="reset">מחיקת כל התשובות</button>`;$('#next').style.display='none'}
+ $('#app').innerHTML=h;
+ const n=filledAb().length;$('#count').textContent=(s==='list'||s==='rate')?`${n} יכולות`:(s==='goals'?`${filledGoals().length} יעדים`:'');
+ $('#prog').style.width=Math.round(S.i/(SCREENS.length-1)*100)+'%';bind();save()}
+function bind(){
+ const nm=$('#nm');if(nm)nm.oninput=()=>{S.name=nm.value;save()};
+ document.querySelectorAll('[data-ab]').forEach(t=>t.oninput=()=>{S.ab[+t.dataset.ab].t=t.value;save();$('#count').textContent=`${filledAb().length} יכולות`});
+ const addAb=$('#addAb');if(addAb)addAb.onclick=()=>{for(let k=0;k<5&&S.ab.length<30;k++)S.ab.push({t:'',q1:'',q2:''});const y=scrollY;render();scrollTo(0,y)};
+ document.querySelectorAll('[data-q1]').forEach(b=>b.onclick=()=>{const a=S.ab[+b.dataset.q1];a.q1=a.q1===b.dataset.v?'':b.dataset.v;b.parentNode.querySelectorAll('button').forEach(o=>o.setAttribute('aria-pressed',a.q1===o.dataset.v));save()});
+ document.querySelectorAll('[data-q2]').forEach(b=>b.onclick=()=>{const a=S.ab[+b.dataset.q2];a.q2=a.q2===b.dataset.v?'':b.dataset.v;b.parentNode.querySelectorAll('button').forEach(o=>o.setAttribute('aria-pressed',a.q2===o.dataset.v));save()});
+ document.querySelectorAll('[data-f]').forEach(t=>{const ev=t.tagName==='SELECT'?'onchange':'oninput';t[ev]=()=>{S[t.dataset.f]=t.value;save()}});
+ document.querySelectorAll('[data-g]').forEach(t=>t.oninput=()=>{S.goals[+t.dataset.g][t.dataset.k]=t.value;save();$('#count').textContent=`${filledGoals().length} יעדים`});
+ const addG=$('#addG');if(addG)addG.onclick=()=>{S.goals.push({t:'',from:'',lets:'',done:''});const y=scrollY;render();scrollTo(0,y)};
+ const rs=$('#reset');if(rs)rs.onclick=()=>{if(confirm('למחוק את כל התשובות ולהתחיל מחדש?')){try{localStorage.removeItem(KEY)}catch(e){}location.reload()}}}
+function summary(){const W1={e:'נותן לי אנרגיה',x:'כבר לא',n:'לא משנה לי'},W2={y:'עדיין נדרשת','o':'כבר לא נדרשת','?':'לא ברור'};
+ let o='■ הרשימה שלי והסימונים\n';filledAb().forEach((a,i)=>{o+=`${i+1}. ${a.t.trim()}\n   ← ${W1[a.q1]||'-'} · ${W2[a.q2]||'-'}\n`});
+ o+='\n■ ארבע המשבצות\n';SQ.forEach(q=>{const l=filledAb().filter(a=>sqOf(a)===q[0]).map(a=>a.t.trim());o+=`${q[1]} (${q[2]}): ${l.length?l.join(' · '):'-'}\n`});
+ const {x,n}=xCount();o+=`סימנתי "כבר לא" ב־${x} מתוך ${n} יכולות. ${xRead()}\n`;
+ o+=`\n■ מה עולה מהמיון\nמה משותף ליכולות שנותנות לי אנרגיה: ${S.common.trim()||'-'}\nיכולת שארצה להפחית: ${S.less.trim()||'-'}\nיכולת שאשמח שתבוא לידי ביטוי: ${S.more.trim()||'-'}\nמה הכי הפתיע אותי: ${S.surprise.trim()||'-'}\n`;
+ const gl=filledGoals();o+='\n■ יכולות שארצה לפתח\n';gl.length?gl.forEach((g,i)=>{o+=`${i+1}. ${g.t.trim()}\n   מאיפה זה הגיע: ${g.from.trim()||'-'}\n   מה זה יאפשר לי: ${g.lets.trim()||'-'}\n   מה כבר עשיתי: ${g.done.trim()||'-'}\n`}):o+='-\n';
+ o+=`\n■ מהרשימה לצעד\n1. ${S.pick1||'-'}: ${S.step1.trim()||'-'}\n2. ${S.pick2||'-'}: ${S.step2.trim()||'-'}\n\nיכולת שאם לא אפתח, ארגיש שהחמצתי: ${S.miss.trim()||'-'}\n`;
+ return o}
+$('#next').onclick=()=>{if(S.i<SCREENS.length-1){S.i++;render();scrollTo(0,0)}};
+$('#back').onclick=()=>{if(S.i>0){S.i--;render();scrollTo(0,0)}};
+render();
+</script>
+
+<script>window.CWL_CFG={tool:'abilities',fill:'את שאלון היכולות שלי',title:'היכולות שלי',name:()=>S.name||'',summary:()=>summary()};</script>
+
+
+
+<!-- חוזה עם החיים: חיבור לאתר (שמירה בגיליון במקום שליחה במייל) -->
+<script src="CFL_config.js"></script>
+<script src="CFL_bridge.js"></script>
+<script>
+(function(){var go=function(n){if(typeof S==="undefined"||typeof render!=="function")return;S.i=n;render();scrollTo(0,0);};window.CFL_PAGE={id:'abilities',keys:['cwl-abilities-v1'],fields:false,
+results:function(){go(SCREENS.indexOf('squares'));},answers:function(){go(1);}};})();
+</script>
+<script src="CFL_cwl.js"></script>
+</body>
+</html>

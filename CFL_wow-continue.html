@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>וואו והישגים · להמשך הדרך</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#F7F5EF;--card:#FFFFFF;--ink:#2B2B28;--mute:#6E6B62;--olive:#6B7A4F;--olive-d:#4E5A3A;--gold:#B8933F;--goldbg:#F2EDDC;--rule:#DAD5C7;--tint:#F0EEE5;--onink:#F7F5EF}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#1E1F1B;--card:#272924;--ink:#ECE9DF;--mute:#A9A597;--olive:#9DAD7E;--olive-d:#B7C49A;--gold:#D2B169;--goldbg:#35301F;--rule:#3E4038;--tint:#2F312B;--onink:#1E1F1B}}
+:root[data-theme="dark"]{--paper:#1E1F1B;--card:#272924;--ink:#ECE9DF;--mute:#A9A597;--olive:#9DAD7E;--olive-d:#B7C49A;--gold:#D2B169;--goldbg:#35301F;--rule:#3E4038;--tint:#2F312B;--onink:#1E1F1B}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Assistant","Heebo","Segoe UI",Arial,sans-serif;font-size:17px;line-height:1.65}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);height:4px;background:var(--rule);z-index:5}
+.bar i{display:block;height:100%;width:0;background:var(--olive);transition:width .3s}
+.wrap{max-width:680px;margin:0 auto;padding:28px 20px 130px}
+.brand{font-size:14px;color:var(--mute);margin:0 0 18px}
+h1{font-size:30px;line-height:1.25;margin:0 0 8px;font-weight:800}
+h2{font-size:24px;line-height:1.3;margin:0 0 4px;font-weight:800}
+.sub{color:var(--mute);margin:0 0 20px}
+p{margin:0 0 14px}
+.note{background:var(--goldbg);border-right:4px solid var(--gold);padding:14px 18px;margin:18px 0;font-size:16px}
+.moment{background:var(--card);border:1px solid var(--rule);border-right:4px solid var(--olive);padding:16px 18px;margin:0 0 16px}
+.moment h3{margin:0 0 10px;font-size:17px;color:var(--olive-d)}
+label{display:block;font-weight:700;margin:10px 0 4px;font-size:16px}
+label small{font-weight:400;color:var(--mute)}
+textarea,input[type=text]{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--paper);border:1px solid var(--rule);padding:10px 12px;resize:vertical}
+textarea:focus,input:focus,button:focus-visible,summary:focus-visible{outline:2px solid var(--olive);outline-offset:1px}
+.help{margin-top:8px;font-size:15px}
+.help summary{cursor:pointer;color:var(--olive-d)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chips button{background:var(--tint);color:var(--ink);border:1px solid var(--rule);padding:5px 12px;font-size:15px;font-weight:600}
+.chips button:hover{background:var(--goldbg)}
+button{font-family:inherit;font-size:17px;font-weight:700;cursor:pointer;background:var(--ink);color:var(--onink);border:none;padding:13px 28px}
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--rule);font-weight:600}
+button.link{background:none;color:var(--olive-d);padding:6px 0;text-decoration:underline;font-weight:600}
+.choice{display:block;width:100%;text-align:start;background:var(--card);color:var(--ink);border:1px solid var(--rule);padding:16px 18px;margin:0 0 10px;font-weight:600}
+.choice span{display:block;font-weight:400;color:var(--mute);font-size:15px}
+.choice[aria-pressed=true]{border-color:var(--olive);box-shadow:inset -4px 0 0 var(--olive)}
+.here{display:flex;gap:10px;align-items:flex-start;background:var(--tint);padding:12px 14px;margin:18px 0;font-size:16px;cursor:pointer}
+.here input{margin-top:6px;width:18px;height:18px;accent-color:var(--olive)}
+.nav{position:fixed;bottom:0;left:0;right:0;background:var(--paper);border-top:1px solid var(--rule);padding:12px 20px calc(12px + env(safe-area-inset-bottom,0px))}
+.nav .in{max-width:680px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.count{font-size:14px;color:var(--mute)}
+.saved{font-size:13px;color:var(--mute);margin-top:6px}
+.out{white-space:pre-wrap;background:var(--card);border:1px solid var(--rule);padding:14px;font-size:15px;max-height:340px;overflow:auto}
+.rv{border-right:3px solid var(--rule);padding:4px 12px;margin:0 0 12px;font-size:15.5px}.rv b{color:var(--olive-d)}.seg{display:flex;gap:8px;flex-wrap:wrap}.seg button{flex:1;min-width:90px;padding:10px}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap" rel="stylesheet"><style id="cfl-font">body,body *{font-family:"Heebo",Arial,"Arial Hebrew",sans-serif!important}</style>
+</head>
+<body>
+<div class="bar" aria-hidden="true"><i id="prog"></i></div>
+<main class="wrap" id="app" aria-live="polite"></main>
+<nav class="nav"><div class="in"><button class="ghost" id="back">הקודם</button><span class="count" id="count"></span><button id="next">הבא</button></div></nav>
+<script>
+const KEY='inval-wow-ach-b-v1';
+const PERIODS={
+ A:[['גיל 16 עד סוף בית הספר','בית ספר, תנועת נוער, עבודות ראשונות, תחביבים'],['אחרי בית הספר','שירות צבאי או לאומי, שנת שירות, טיול, עבודה'],['הלימודים והצעדים המקצועיים הראשונים','ההתמחות, המשרה הראשונה, הפרויקטים הראשונים']],
+ B:[['גיל 16 עד סוף בית הספר','בית ספר, תנועת נוער, עבודות ראשונות'],['אחרי בית הספר','שירות צבאי או לאומי, שנת שירות, טיול, עבודה'],['הלימודים והשנים המקצועיות הראשונות','ההתמחות, המשרה הראשונה, המנהל או המנהלת הראשונים'],['העשור המקצועי הראשון','התמקצעות, קידום ראשון, מעבר בין תפקידים'],['שנות האמצע','תקופת ההבשלה המקצועית, לרוב הארוכה ביותר'],['העשור האחרון','תפקידים, התנדבות ופעילות מחוץ לחיים המקצועיים'],['לקראת הפרישה ואחריה','רק למי שנמצא/ת בתקופה הזו']]};
+const WORDS=['יצירה','פתרון בעיה','חופש ועצמאות','קשר עם אנשים','תרומה לאחרים','למידה','אתגר','השפעה','שייכות','יופי','תנועה','תחושת מסוגלות','הקצב','הסביבה'];
+let S={v:'B',name:'',per:{},stop:null,personal:[],line:'',ach:[],achLine:'',fb:{time:'',unclear:'',stop:''},i:0};
+try{const x=localStorage.getItem(KEY);if(x)S=Object.assign(S,JSON.parse(x))}catch(e){}S.v='B';
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const $=s=>document.querySelector(s);
+const esc=t=>(t||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function per(){return PERIODS[S.v||'B']}
+function lastP(){return S.stop!=null?S.stop:per().length-1}
+function perDefault(){return S.v==='A'?2:1}
+function screens(){const a=['welcome','what'];if(S.v){for(let p=0;p<=lastP();p++)a.push('p'+p);if(S.v==='A')a.push('px');a.push('personal','line','achIntro');achList().forEach((_,k)=>a.push('a'+k));a.push('achLine','fb','done')}return a}
+function filled(m){return m&&((m.a||'').trim()||(m.b||'').trim())}
+function nMoments(){let n=0;Object.keys(S.per).forEach(k=>{if(k==='x'?S.v==='A':+k<=lastP())n+=(S.per[k]||[]).filter(filled).length});return n+S.personal.filter(filled).length}
+function momentHTML(key,idx,m,title,q1){
+ return `<div class="moment"><h3>${title}</h3>
+ <label for="a_${key}_${idx}">${q1} <small>· שורה או שתיים</small></label>
+ <textarea id="a_${key}_${idx}" rows="2" data-k="${key}" data-i="${idx}" data-f="a">${esc(m.a)}</textarea>
+ <label for="b_${key}_${idx}">מה בזה נתן לי את התחושה הזו</label>
+ <textarea id="b_${key}_${idx}" rows="4" data-k="${key}" data-i="${idx}" data-f="b">${esc(m.b)}</textarea>
+ <details class="help"><summary>צריך עזרה במילים?</summary><div class="chips">${WORDS.map(w=>`<button type="button" data-chip="${w}" data-t="b_${key}_${idx}">${w}</button>`).join('')}</div></details></div>`}
+function listFor(key){if(key==='x'){if(!S.per.x)S.per.x=[{a:'',b:''},{a:'',b:''}];return S.per.x}
+ if(key==='personal'){if(!S.personal.length)S.personal=Array.from({length:S.v==='A'?3:2},()=>({a:'',b:''}));return S.personal}
+ if(!S.per[key])S.per[key]=Array.from({length:perDefault()},()=>({a:'',b:''}));return S.per[key]}
+const L='אבגדה';
+const AF=[['t','מתי זה קרה','גיל, שנה או שלב בדרך',1],['p','מה היה האתגר או הבעיה','',2],['d','מה עשיתי או הצעתי — החלק שלי','מה לא היה קורה בלעדיי',3],['r','מה יצא — התוצאה','',2],['s','אילו יכולות באו כאן לידי ביטוי','באירוע הזה, בפועל',2],['m','אם יבקשו ממני מחר לעשות את זה שוב — מה ארגיש','',2]];
+function achList(){if(!S.ach||!S.ach.length)S.ach=[{},{},{}];return S.ach}
+const FEEL=['התרגשות','שמחה','סקרנות','גאווה','חשש','עייפות','שעמום','אעשה, אבל בלי חשק','אעביר למישהו אחר'];
+const WHO=['משפחה','חברים','עמיתים','ממונים','לקוחות או מקבלי שירות','הקהילה המקצועית','הציבור או התקשורת'];
+const ORD=['ראשון','שני','שלישי','רביעי','חמישי'];
+function achFilled(a){return a&&['p','d','r'].some(k=>(a[k]||'').trim())}
+function nAch(){return achList().filter(achFilled).length}
+function wowReview(){let h='';for(let p=0;p<=lastP();p++){(S.per[p]||[]).filter(filled).forEach(m=>{h+=`<div class="rv"><b>${per()[p][0]}</b><br>${esc(m.a)}<br><i>${esc(m.b)}</i></div>`})}(S.v==='A'?(S.per.x||[]).filter(filled):[]).forEach(m=>{h+=`<div class="rv"><b>${esc(S.xname)||'תקופה נוספת'}</b><br>${esc(m.a)}<br><i>${esc(m.b)}</i></div>`});S.personal.filter(filled).forEach(m=>{h+=`<div class="rv"><b>רגע אישי</b><br>${esc(m.a)}<br><i>${esc(m.b)}</i></div>`});return h||'<p class="saved">עוד לא נכתבו רגעים.</p>'}
+function achReview(){return achList().filter(achFilled).map(a=>`<div class="rv"><b>${esc(a.t)||'הישג'}</b><br>${esc(a.p)}<br>${esc(a.d)}<br><i>${esc(a.r)}</i></div>`).join('')||'<p class="saved">עוד לא נכתבו הישגים.</p>'}
+function render(){
+ const sc=screens();if(S.i>=sc.length)S.i=sc.length-1;const s=sc[S.i];const app=$('#app');let h='';
+ $('#back').style.visibility=S.i?'visible':'hidden';$('#next').style.display='';$('#next').textContent='הבא';
+ if(s==='welcome'){h=`<p class="brand">חוזה עם החיים</p><h1>וואו והישגים · להמשך הדרך</h1><p class="sub">מתי הרגשנו מלאי חיות, ומה עשינו טוב</p>
+ <p>לאורך החיים יש רגעים שבהם משהו פשוט עבד. לא בהכרח הישגים גדולים, אלא רגעים שבהם הרגשת שאת או אתה במקום הנכון, והזמן עבר בלי לשים לב.</p>
+ <p>יש כאן שני חלקים. בראשון נעבור על תקופות החיים ונחפש שישה עד שמונה רגעים כאלה. בשני נכתוב שלושה עד חמישה הישגים: דברים שעשיתי והצלחתי.</p>
+ <div class="note">הכול נשמר אוטומטית בדפדפן, ואפשר לעצור ולחזור בכל שלב. בטלפון אפשר גם להכתיב במקום להקליד.</div>
+ <div class="note"><b>למי זה מיועד:</b> לאנשים שכבר כמה שנים בדרך המקצועית, בכל גיל ובכל שלב, כולל לקראת פרישה ואחריה.</div><label for="nm">השם שלי <small>· לא חובה</small></label><input type="text" id="nm" value="${esc(S.name)}">`;$('#next').textContent='מתחילים'}
+ else if(s==='stage'){h=`<h2>איפה אני היום?</h2><p class="sub">כדי להציג רק את התקופות הרלוונטיות</p>
+ <button class="choice" data-v="A" aria-pressed="${S.v==='A'}">בתחילת הדרך<span>בלימודים, או בשנים הראשונות אחריהם</span></button>
+ <button class="choice" data-v="B" aria-pressed="${S.v==='B'}">כבר כמה שנים בדרך המקצועית<span>גם אם לקראת פרישה או אחריה</span></button>`}
+ else if(s==='what'){h=`<h2>מהו רגע וואו</h2>
+ <p>רגע שבו הרגשת בשיא, גם אם איש מלבדך לא שם לב. משהו שנהנית ממנו בזמן אמת, לא רק מהתוצאה. חוויה שעדיין מספרים עליה, גם אחרי שנים.</p>
+ <p>רגע וואו הוא אירוע, לא תפקיד שלם או תקופה שלמה.</p>
+ <div class="note">לכל רגע יש שתי שאלות. הראשונה קצרה. השנייה, מה בזה נתן לי את התחושה, היא החשובה. "אהבתי את זה" לא מספיק. נסו להגיע למה בדיוק.</div>`}
+ else if(/^p\d$/.test(s)){const p=+s.slice(1);const [t,sub]=per()[p];const list=listFor(p);const isLast=p===per().length-1;
+ h=`<h2>${t}</h2><p class="sub">${sub}</p>`+list.map((m,i)=>momentHTML(p,i,m,list.length>1?'רגע '+L[i]:'רגע הוואו','מה קרה, ומה עשיתי שם')).join('')+
+ (list.length<(S.v==='A'?3:2)?`<button class="link" id="add" data-k="${p}">הוספת עוד רגע מהתקופה הזו</button>`:'')+
+ (isLast?'':`<label class="here"><input type="checkbox" id="here" ${S.stop===p?'checked':''}><span>זו התקופה שבה אני נמצא/ת עכשיו<br><small style="color:var(--mute)">התקופות הבאות לא יוצגו</small></span></label>`)+
+ `<p class="saved">אם לא עולה רגע מהתקופה הזו, אפשר פשוט להמשיך.</p>`}
+ else if(s==='px'){const list=listFor('x');h=`<h2>תקופה נוספת · לא חובה</h2><p class="sub">אם הייתה תקופה שלא הופיעה כאן, למשל עבודה לפני הלימודים, מעבר דירה או ארץ, או שנה אחרת לגמרי</p><label for="xn">שם התקופה</label><input type="text" id="xn" value="${esc(S.xname)}">`+list.map((m,i)=>momentHTML('x',i,m,'רגע '+L[i],'מה קרה, ומה עשיתי שם')).join('')+`<p class="saved">אם אין תקופה כזו, אפשר פשוט להמשיך.</p>`}
+ else if(s==='personal'){const list=listFor('personal');h=`<h2>רגעים מהחיים האישיים</h2><p class="sub">משפחה, חברות, טיול, יצירה, ספורט, קהילה, התנדבות</p>
+ <p>כאן לא צריך שיהיה משהו שעשית לבד. גם רגע של שייכות, של יופי או של קשר הוא רגע וואו.</p>`+list.map((m,i)=>momentHTML('personal',i,m,'רגע '+L[i],'מה קרה, ומה היה החלק שלי')).join('')+
+ (list.length<(S.v==='A'?5:4)?`<button class="link" id="add" data-k="personal">הוספת עוד רגע</button>`:'')}
+ else if(s==='line'){h=`<h2>כל הרגעים שכתבתי</h2><p class="sub">קראו אותם ברצף, לפני שממשיכים</p>${wowReview()}
+ <p style="margin-top:18px">מה משותף לרגעים האלה? אין צורך בניתוח. משפט אחד במילים שלכם, ואת השאר נעשה יחד בפגישה.</p>
+ <label for="ln">מה משותף לרגעים שלי <small>· לא חובה</small></label><textarea id="ln" rows="3">${esc(S.line)}</textarea>`}
+ else if(s==='achIntro'){h=`<p class="brand">החלק השני</p><h2>ההישגים שלי</h2><p class="sub">דברים שעשיתי והצלחתי</p><div class="note">החלק הראשון מאחוריך. אפשר להמשיך עכשיו, או לעצור כאן ולחזור בפעם אחרת. הכול נשמר.</div>
+ <p>ברגעי הוואו בדקתי מתי הרגשתי מלא/ת חיות ממשהו שעשיתי. כאן השאלה אחרת: מה עשיתי, ועשיתי טוב.</p>
+ <p>לפעמים, דווקא בצמתים של החיים, קל לשכוח מה כבר עשיתי. ההישגים שאכתוב כאן הם לא רק מידע. הם תזכורת למה שכבר היה בי, ועדיין נמצא שם.</p>
+ <div class="note">הישג הוא אירוע ספציפי: אתגר, מה שעשיתי מולו, והתוצאה. הוא לא חייב להיות גדול, ולא חייב להיות משהו שמישהו ידע עליו או נתן עליו קרדיט. ${S.v==='A'?'אפשר מכל מקום: בית הספר, השירות, התנדבות, לימודים או החיים האישיים.':'אפשר מכל תחום: מקצועי, התנדבותי, קהילתי או אישי.'}</div>
+ <p>אכתוב שלושה הישגים, ואם ארצה, עד חמישה. רצוי מתקופות שונות.</p>`}
+ else if(/^a\d$/.test(s)){const k=+s.slice(1);const a=achList()[k];const last=k===achList().length-1;
+ h=`<h2>הישג ${ORD[k]}${k>2?' · לא חובה':''}</h2><p class="sub">${k===0?'קצר ומדויק עדיף על ארוך':'&nbsp;'}</p><div class="moment">`+AF.map(([f,l,sm,r])=>`<label for="ac_${f}">${l}${sm?` <small>· ${sm}</small>`:''}</label>`+(r===1?`<input type="text" id="ac_${f}" data-a="${k}" data-f="${f}" value="${esc(a[f])}">`:`<textarea id="ac_${f}" rows="${r}" data-a="${k}" data-f="${f}">${esc(a[f])}</textarea>`)).join('')+
+ `<details class="help"><summary>צריך עזרה במילים?</summary><div class="chips">${FEEL.map(w=>`<button type="button" data-chip="${w}" data-t="ac_m">${w}</button>`).join('')}</div></details><label>האם היה בתוך ההישג הזה רגע וואו?</label><div class="seg">${['כן','לא','לא בטוח/ה'].map(x=>`<button type="button" class="choice" style="margin:0" data-sg="w" data-val="${x}" aria-pressed="${a.w===x}">${x}</button>`).join('')}</div>
+ <label for="ac_wx">אם כן — מה היה הרגע <small>· לא חובה</small></label><input type="text" id="ac_wx" data-a="${k}" data-f="wx" value="${esc(a.wx)}">
+ <label>האם אחרים ראו את ההישג?</label><div class="seg">${['כן','חלקית','לא'].map(x=>`<button type="button" class="choice" style="margin:0" data-sg="v" data-val="${x}" aria-pressed="${a.v===x}">${x}</button>`).join('')}</div>
+ <label>מי ראה? <small>· אפשר לבחור כמה</small></label><div class="chips">${WHO.map(x=>`<button type="button" data-who="${x}" aria-pressed="${(a.who||[]).includes(x)}" style="${(a.who||[]).includes(x)?'background:var(--goldbg);border-color:var(--gold)':''}">${x}</button>`).join('')}</div></div></div>`+
+ (last&&achList().length<5?`<button class="link" id="addA">הוספת הישג נוסף</button>`:'')}
+ else if(s==='achLine'){h=`<h2>כל ההישגים שכתבתי</h2><p class="sub">אקרא אותם ברצף לפני שאמשיך</p>${achReview()}
+ <p style="margin-top:18px">מה משותף להישגים האלה? משפט אחד, במילים שלי.</p>
+ <label for="aln">מה משותף להישגים שלי <small>· לא חובה</small></label><textarea id="aln" rows="3">${esc(S.achLine)}</textarea>`}
+ else if(s==='fb'){const o=['פחות משעה','בערך שעה','יותר משעה וחצי'];h=`<h2>שלוש שאלות על השאלון עצמו</h2><p class="sub">התשובות כאן יעזרו לי לשפר את השאלון</p>
+ <label>כמה זמן זה לקח?</label>${o.map(x=>`<button class="choice" data-fb="${x}" aria-pressed="${S.fb.time===x}">${x}</button>`).join('')}
+ <label for="f2">היה משהו לא ברור?</label><textarea id="f2" rows="2">${esc(S.fb.unclear)}</textarea>
+ <label for="f3">היה רגע שרציתי להפסיק? איפה?</label><textarea id="f3" rows="2">${esc(S.fb.stop)}</textarea>`;$('#next').textContent='סיום'}
+ else if(s==='done'){const txt=summary();h=`<h2>סיימת. תודה!</h2><p>כתבת כאן דברים אישיים וחשובים. נשאר רק לשלוח לי אותם. הם יגיעו רק אליי, ונסתכל עליהם יחד בפגישה שלנו.</p>
+ <button type="button" class="cwl-send" onclick="CWLReturn.open()">שליחת התשובות אליי</button>
+ <p class="saved" style="margin-top:14px">רוצה לתקן משהו לפני השליחה? אפשר לחזור אחורה בכפתור ״הקודם״.</p>
+ <div class="row"><button class="link" id="reset">מחיקת כל התשובות</button></div>`;$('#next').style.display='none'}
+ app.innerHTML=h;
+ const n=nMoments();$('#count').textContent=!S.v||s==='done'?'':(/^a\d$|achLine|achIntro/.test(s)?`${nAch()} הישגים · היעד 3 עד 5`:`${n} רגעים · היעד 6 עד 8`);
+ $('#prog').style.width=Math.round(S.i/(sc.length-1)*100)+'%';window.scrollTo(0,0);bind();save()}
+function bind(){
+ document.querySelectorAll('textarea[data-k]').forEach(t=>t.addEventListener('input',()=>{const k=t.dataset.k,l=listFor(k==='personal'||k==='x'?k:+k);l[+t.dataset.i][t.dataset.f]=t.value;save();$('#count').textContent=`${nMoments()} רגעים · היעד 6 עד 8`}));
+ document.querySelectorAll('[data-chip]').forEach(b=>b.addEventListener('click',()=>{const t=document.getElementById(b.dataset.t);t.value=(t.value.trim()?t.value.trim()+', ':'')+b.dataset.chip;t.dispatchEvent(new Event('input'));t.focus()}));
+ document.querySelectorAll('[data-v]').forEach(b=>b.addEventListener('click',()=>{if(S.v!==b.dataset.v){S.v=b.dataset.v;S.per={};S.stop=null;S.personal=[]}S.i++;render()}));
+ document.querySelectorAll('[data-fb]').forEach(b=>b.addEventListener('click',()=>{S.fb.time=b.dataset.fb;document.querySelectorAll('[data-fb]').forEach(x=>x.setAttribute('aria-pressed',x===b));save()}));
+ const add=$('#add');if(add)add.addEventListener('click',()=>{const k=add.dataset.k;listFor(k==='personal'||k==='x'?k:+k).push({a:'',b:''});render()});
+ const here=$('#here');if(here)here.addEventListener('change',()=>{const p=+screens()[S.i].slice(1);S.stop=here.checked?p:(S.stop===p?null:S.stop);save();$('#prog').style.width=Math.round(S.i/(screens().length-1)*100)+'%'});
+ document.querySelectorAll('[data-a]').forEach(t=>t.addEventListener('input',()=>{achList()[+t.dataset.a][t.dataset.f]=t.value;save();$('#count').textContent=`${nAch()} הישגים · היעד 3 עד 5`}));
+ document.querySelectorAll('[data-sg]').forEach(b=>b.addEventListener('click',()=>{const k=+screens()[S.i].slice(1),f=b.dataset.sg;achList()[k][f]=b.dataset.val;document.querySelectorAll(`[data-sg="${f}"]`).forEach(x=>x.setAttribute('aria-pressed',x===b));save()}));
+ document.querySelectorAll('[data-who]').forEach(b=>b.addEventListener('click',()=>{const k=+screens()[S.i].slice(1),a=achList()[k];a.who=a.who||[];const x=b.dataset.who,i=a.who.indexOf(x);if(i<0)a.who.push(x);else a.who.splice(i,1);const on=i<0;b.setAttribute('aria-pressed',on);b.style.background=on?'var(--goldbg)':'';b.style.borderColor=on?'var(--gold)':'';save()}));
+ const addA=$('#addA');if(addA)addA.addEventListener('click',()=>{achList().push({});S.i++;render()});
+ const aln=$('#aln');if(aln)aln.addEventListener('input',()=>{S.achLine=aln.value;save()});
+ const xn=$('#xn');if(xn)xn.addEventListener('input',()=>{S.xname=xn.value;save()});
+ const nm=$('#nm');if(nm)nm.addEventListener('input',()=>{S.name=nm.value;save()});
+ const ln=$('#ln');if(ln)ln.addEventListener('input',()=>{S.line=ln.value;save()});
+ const f2=$('#f2');if(f2)f2.addEventListener('input',()=>{S.fb.unclear=f2.value;save()});
+ const f3=$('#f3');if(f3)f3.addEventListener('input',()=>{S.fb.stop=f3.value;save()});
+ const cp=$('#cp');if(cp)cp.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(summary());$('#cpm').textContent='הועתק. אפשר להדביק בהודעה או במייל.'}catch(e){$('#cpm').textContent='ההעתקה לא עבדה. סמנו את הטקסט למטה והעתיקו ידנית.'}});
+ const sh=$('#sh');if(sh)sh.addEventListener('click',()=>navigator.share({title:'וואו והישגים',text:summary()}).catch(()=>{}));
+ const rs=$('#reset');if(rs)rs.addEventListener('click',()=>{if(confirm('למחוק את כל התשובות ולהתחיל מחדש?')){try{localStorage.removeItem(KEY)}catch(e){}location.reload()}})}
+function summary(){let o=`וואו והישגים · להמשך הדרך\n${S.name?'שם: '+S.name+'\n':''}שלב: ${S.v==='A'?'תחילת הדרך':'אמצע הדרך ואילך'}\n`;
+ for(let p=0;p<=lastP();p++){const l=(S.per[p]||[]).filter(filled);if(!l.length)continue;o+=`\n■ ${per()[p][0]}${p===S.stop||(S.stop==null&&p===per().length-1)?' (התקופה הנוכחית)':''}\n`;l.forEach(m=>o+=`• מה קרה: ${m.a.trim()}\n  מה נתן את התחושה: ${m.b.trim()}\n`)}
+ const xl=S.v==='A'?(S.per.x||[]).filter(filled):[];if(xl.length){o+=`\n■ ${S.xname||'תקופה נוספת'}\n`;xl.forEach(m=>o+=`• מה קרה: ${m.a.trim()}\n  מה נתן את התחושה: ${m.b.trim()}\n`)}
+ const pl=S.personal.filter(filled);if(pl.length){o+=`\n■ רגעים אישיים\n`;pl.forEach(m=>o+=`• מה קרה: ${m.a.trim()}\n  מה נתן את התחושה: ${m.b.trim()}\n`)}
+ if(S.line.trim())o+=`\nמה משותף לרגעים שלי: ${S.line.trim()}\n`;
+ const al=achList().filter(achFilled);if(al.length){o+=`\n■ ההישגים שלי\n`;al.forEach((a,i)=>{o+=`\n${i+1}. מתי: ${(a.t||'').trim()}\n  האתגר: ${(a.p||'').trim()}\n  מה עשיתי: ${(a.d||'').trim()}\n  התוצאה: ${(a.r||'').trim()}\n  יכולות: ${(a.s||'').trim()}\n  אם מחר שוב: ${(a.m||'').trim()}\n  רגע וואו בתוך ההישג: ${a.w||'-'}${(a.wx||'').trim()?' — '+a.wx.trim():''}\n  אחרים ראו: ${a.v||'-'}${(a.who||[]).length?' ('+a.who.join(', ')+')':''}\n`})}
+ if(S.achLine.trim())o+=`\nמה משותף להישגים שלי: ${S.achLine.trim()}\n`;
+ o+=`\n— משוב על השאלון —\nזמן: ${S.fb.time||'-'}\nלא ברור: ${S.fb.unclear.trim()||'-'}\nרציתי להפסיק: ${S.fb.stop.trim()||'-'}\n`;return o}
+$('#next').addEventListener('click',()=>{const s=screens()[S.i];if(s==='stage'&&!S.v){$('#app').insertAdjacentHTML('beforeend','<p class="saved">בחרו אחת מהאפשרויות כדי להמשיך.</p>');return}S.i++;render()});
+$('#back').addEventListener('click',()=>{if(S.i>0){S.i--;render()}});
+render();
+</script>
+
+<script>window.CWL_CFG={tool:'wowB',fill:'את שאלון וואו והישגים',title:'וואו והישגים · להמשך הדרך',name:()=>S.name||'',summary:()=>summary()};</script>
+
+
+
+<!-- חוזה עם החיים: חיבור לאתר (שמירה בגיליון במקום שליחה במייל) -->
+<script src="CFL_config.js"></script>
+<script src="CFL_bridge.js"></script>
+<script>
+(function(){var go=function(n){if(typeof S==="undefined"||typeof render!=="function")return;S.i=n;render();scrollTo(0,0);};window.CFL_PAGE={id:'wow',keys:['inval-wow-ach-b-v1'],fields:false,blank:['v'],lockSel:'[data-chip]',
+results:function(){go(2);},answers:function(){go(2);}};})();
+</script>
+<script src="CFL_cwl.js"></script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>היכולות שלי · פרישה</title>
+<style>
+:root{--paper:#F7F5EF;--card:#FFFFFF;--ink:#2B2B28;--mute:#6E6B62;--olive:#6B7A4F;--olive-d:#4E5A3A;--gold:#B8933F;--goldbg:#F2EDDC;--rule:#DAD5C7;--tint:#F0EEE5;--clay:#A9633F;--claybg:#F4E9E1;--onink:#F7F5EF}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-size:17px;line-height:1.65}
+.bar{position:sticky;top:0;height:4px;background:var(--rule);z-index:5}.bar i{display:block;height:100%;width:0;background:var(--olive);transition:width .3s}
+.wrap{max-width:720px;margin:0 auto;padding:28px 20px 130px}
+.brand{font-size:14px;color:var(--mute);margin:0 0 14px}
+h1{font-size:30px;line-height:1.25;margin:0 0 8px;font-weight:800}
+h2{font-size:24px;line-height:1.3;margin:0 0 4px;font-weight:800}
+h3{font-size:19px;margin:22px 0 8px;color:var(--olive-d)}
+.sub{color:var(--mute);margin:0 0 18px}
+p{margin:0 0 14px}
+.note{background:var(--goldbg);border-right:4px solid var(--gold);padding:14px 18px;margin:18px 0;font-size:16px}
+.clay{background:var(--claybg);border-right-color:var(--clay)}
+.card{background:var(--card);border:1px solid var(--rule);border-right:4px solid var(--olive);padding:14px 16px;margin:0 0 12px}
+label{display:block;font-weight:700;margin:10px 0 4px;font-size:16px}label small{font-weight:400;color:var(--mute)}
+textarea,input[type=text]{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--paper);border:1px solid var(--rule);padding:10px 12px;resize:vertical}
+textarea:focus,input:focus,button:focus-visible{outline:2px solid var(--olive);outline-offset:1px}
+details.fam{background:var(--card);border:1px solid var(--rule);padding:10px 14px;margin:0 0 8px}
+details.fam summary{cursor:pointer;font-weight:700;color:var(--olive-d)}details.fam p{margin:8px 0 0;font-size:15.5px}
+.ab{display:flex;gap:8px;align-items:center;margin:0 0 8px}.ab .n{min-width:26px;color:var(--mute);font-size:15px;text-align:center}
+button{font-family:inherit;font-size:17px;font-weight:700;cursor:pointer;background:var(--ink);color:var(--onink);border:none;padding:13px 28px}
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--rule);font-weight:600}
+button.link{background:none;color:var(--olive-d);padding:6px 0;text-decoration:underline;font-weight:600}
+.seg{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 4px}
+.seg button{flex:1 1 0;min-width:0;background:var(--card);color:var(--ink);border:1px solid var(--rule);padding:10px 6px;font-size:15px;font-weight:600}
+.seg button[aria-pressed=true]{background:var(--olive);border-color:var(--olive);color:#fff}
+.seg.q2 button[aria-pressed=true]{background:var(--gold);border-color:var(--gold)}
+.qlbl{font-size:14px;color:var(--mute);margin:8px 0 0}
+.abname{font-weight:800;font-size:18px}
+table{width:100%;border-collapse:collapse;font-size:15.5px;margin:8px 0 16px}td,th{border-bottom:1px solid var(--rule);padding:8px 6px;text-align:right;vertical-align:top}th{color:var(--mute);font-size:14px}
+.grid4{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.sq{background:var(--card);border:1px solid var(--rule);padding:14px;border-top:5px solid var(--olive)}
+.sq h4{margin:0 0 2px;font-size:18px}.sq .s{font-size:13.5px;color:var(--mute);margin:0 0 8px}.sq ul{margin:0;padding-right:18px}.sq li{font-size:16px}
+.sq.b{border-top-color:var(--gold)}.sq.c{border-top-color:var(--clay)}.sq.d{border-top-color:var(--rule)}
+.nav{position:fixed;bottom:0;left:0;right:0;background:var(--paper);border-top:1px solid var(--rule);padding:12px 20px}
+.nav .in{max-width:720px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.count{font-size:14px;color:var(--mute);text-align:center}
+.saved{font-size:14px;color:var(--mute)}
+@media(max-width:560px){.grid4{grid-template-columns:1fr}h1{font-size:26px}}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap" rel="stylesheet"><style id="cfl-font">body,body *{font-family:"Heebo",Arial,"Arial Hebrew",sans-serif!important}</style>
+</head>
+<body>
+<div class="bar" aria-hidden="true"><i id="prog"></i></div>
+<main class="wrap" id="app" aria-live="polite"></main>
+<nav class="nav"><div class="in"><button class="ghost" id="back">הקודם</button><span class="count" id="count"></span><button id="next">הבא</button></div></nav>
+<script>
+const KEY='cwl-abilities-retire-v1';
+const FAM=[['מקצועיות־תחומיות','הידע הספציפי של התחום שלכם','ניתוח נתונים ומסקנות · כתיבת מסמך מקצועי שמישהו מקבל על פיו החלטה · תמחור והערכת עלויות'],
+['ניהוליות','גם למי שכבר אין לו כפיפים','בניית תוכנית עבודה שעומדת בזמנים · ניהול תקציב · לקחת אחריות על תוצאה של אנשים אחרים'],
+['בין־אישיות','כאן כדאי לדייק: "עבודה עם אנשים" זו לא יכולת','משא ומתן מול אינטרסים מנוגדים · מסירת מסר לא נעים בלי לשבור את הקשר · חניכה של מישהו צעיר עד שהוא עומד לבד'],
+['חשיבה והכרעה','מה שקורה כשאין תשובה מוכנה','פירוק בעיה מורכבת לחלקים · הכרעה כשחסר מידע והזמן נגמר · זיהוי מה באמת חשוב מתוך רעש'],
+['ביצוע וסדר','הפחות זוהרות, ולרוב החזקות ביותר','לקחת דבר מהתחלה עד הסוף · לעמוד בלוח זמנים כשאתם תלויים באחרים · לבנות תהליך שאפשר לחזור עליו']];
+const Q1=[['e','נותן לי אנרגיה'],['x','כבר לא'],['n','לא משנה לי']];
+const SC=[['1','בכלל לא'],['2','מעט'],['3','במידה בינונית'],['4','די הרבה'],['5','מאוד']];
+const Q3=[['y','כן'],['s','במידה מסוימת'],['no','לא'],['?','לא יודע/ת']];
+const Q2=[['w','תבוא איתי'],['r','קשורה לתפקיד'],['?','לא בטוח/ה']];
+const SQ=[['core','מה שבא איתי','נותנת לי, ותבוא איתי','a','אלה היכולות שאפשר להביא לידי ביטוי בפרק הבא. אין צורך להחליט עכשיו איך ואיפה. מספיק לדעת שהן שם, ושהן שלכם.'],
+['miss','מה שיחסר לי','נותנת לי, וקשורה לתפקיד','b','יכולות שנתנו לכם הרבה, וחלק מהכוח שלהן הגיע מהתפקיד. מותר שזה יכאב. שווה לשאול מה בדיוק נתן לכם בהן: האנשים, ההשפעה, האתגר. לפעמים את הדבר הזה אפשר למצוא גם במקום אחר.'],
+['lay','מה שמותר להניח','תבוא איתי, אבל כבר לא נותנת לי','c','אתם טובים בזה, ותוכלו להמשיך. אבל אין חובה. ייתכן שזו ההזדמנות הראשונה להניח יכולת שאחרים תמיד ביקשו מכם.'],
+['free','מה שנשאר מאחור','כבר לא נותנת לי, וקשורה לתפקיד','d','כאן משחררים בלי כאב ובלי ויכוח. זה נשאר עם התפקיד.']];
+let S={i:0,name:'',ab:Array.from({length:15},()=>({t:'',q1:'',q2:''})),common:'',less:'',more:'',surprise:'',tech:'',crea:'',wish:'',missWhat:'',forWhom:'',notice:'',regret:''};
+try{const x=localStorage.getItem(KEY);if(x)S=Object.assign(S,JSON.parse(x))}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const $=s=>document.querySelector(s);
+const esc=t=>String(t||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const filledAb=()=>S.ab.filter(a=>a.t.trim());
+function sqOf(a){if(a.q1==='e'&&a.q2==='w')return'core';if(a.q1==='e'&&a.q2==='r')return'miss';if(a.q1==='x'&&a.q2==='w')return'lay';if(a.q1==='x'&&a.q2==='r')return'free';return null}
+function missRead(){const f=filledAb(),e=f.filter(a=>a.q1==='e'),m=e.filter(a=>a.q2==='r');
+ if(e.length>=2&&m.length*2>=e.length)return'חלק גדול ממה שנותן לכם אנרגיה קשור היום לתפקיד. זה לא אומר שהוא ייעלם. זה אומר שכדאי לדבר עליו, לפני שמחפשים לו מקום חדש.';return''}
+const SCREENS=['welcome','list','rate','squares','sum','pause','look','done'];
+function seg(cls,opts,cur,attr){return `<div class="seg ${cls}">${opts.map(([v,t])=>`<button type="button" ${attr}="${v}" aria-pressed="${cur===v}">${t}</button>`).join('')}</div>`}
+function ta(id,f,label,rows,small){return `<label for="${id}">${label}${small?` <small>· ${small}</small>`:''}</label><textarea id="${id}" data-f="${f}" rows="${rows||2}">${esc(S[f])}</textarea>`}
+function render(){
+ const s=SCREENS[S.i];let h='';
+ $('#back').style.visibility=S.i?'visible':'hidden';$('#next').style.display='';$('#next').textContent='הבא';
+ if(s==='welcome'){h=`<p class="brand">חוזה עם החיים</p><h1>היכולות שלי · לקראת הפרישה ואחריה</h1><p class="sub">אילו מהיכולות שלי אני רוצה להביא לידי ביטוי בפרק הבא</p>
+ <p>לאורך השנים אספנו הרבה יכולות. חלקן נבנו מתוך בחירה, וחלקן פשוט נדרשו מאיתנו בתפקיד.</p>
+ <p>כשהתפקיד נגמר, או עומד להיגמר, עולה שאלה חדשה: מה מכל זה הוא באמת שלי, ומה מזה אני רוצה לקחת איתי.</p>
+ <p>השאלון הזה לא מבקש להחליט, וגם לא לתכנן. הוא מזמין לעצור ולהתבונן. קודם כותבים את הרשימה. אחר כך שואלים על כל יכולת שתי שאלות: האם היא עדיין נותנת לי משהו, והאם היא יכולה לבוא איתי גם בלי התפקיד.</p>
+ <div class="note">הכול נשמר אוטומטית בדפדפן, ואפשר לעצור ולחזור בכל שלב.</div>
+ <label for="nm">השם שלי <small>· לא חובה</small></label><input type="text" id="nm" value="${esc(S.name)}">`;$('#next').textContent='מתחילים'}
+ else if(s==='list'){h=`<p class="brand">שלב 1 מתוך 5</p><h2>הרשימה</h2><p class="sub">רשמו את היכולות שיש לכם. לא תארים ולא תפקידים, אלא דברים שאתם יודעים לעשות.</p>
+ <p>כדי לא לשכוח חצי מהן, הנה חמש משפחות. פתחו אותן אחת אחת, ובכל אחת שאלו: מה יש לי כאן?</p>
+ ${FAM.map(f=>`<details class="fam"><summary>${f[0]}</summary><p>${f[1]}</p><p><b>לדוגמה:</b> ${f[2]}</p></details>`).join('')}
+ <div class="note"><b>ומשפחה שישית, שבשלב הזה חשובה במיוחד: יכולות שהבאתם לידי ביטוי מחוץ לעבודה.</b> אנשים שהיו בתפקידים בכירים הפעילו לרוב יכולות רבות גם מחוץ לתפקיד, לפעמים בלי לשים לב. הנה מבחר, כדי לעורר את הזיכרון:<ul style="margin:8px 0;padding-right:20px"><li>חברות בדירקטוריון, בוועד מנהל של עמותה או בוועדה ציבורית</li><li>הקמה או הובלה של מיזם התנדבותי</li><li>חניכה או ייעוץ לאנשים צעירים, בלי תשלום</li><li>ניהול ההשקעות, הנכסים או הירושה של המשפחה</li><li>ניווט מערכת מסובכת בשביל מישהו קרוב: בית חולים, ביטוח לאומי, בית משפט</li><li>הובלת קהילה: ארגון בוגרים, קבוצת הליכה, ועד שכונה, קהילה דתית</li><li>גישור בין אנשים, במשפחה או בקהילה</li><li>תחום שהעמקתם בו עד שאחרים באים לשאול אתכם: היסטוריה, יין, צילום, גינון, טכנולוגיה</li><li>הוראה, הרצאות, כתיבה או מחקר עצמאי</li><li>תכנון והובלה של טיולים, מסעות או אירועים גדולים</li><li>ספורט: אימון, תחרויות, הובלת קבוצה</li></ul>הן נחשבות לגמרי, ולעיתים הן אלה שהכי קל לקחת איתנו.</div>
+ <p><b>אל תסננו.</b> אם עלתה יכולת, כתבו אותה, גם אם היא נראית מובנת מאליה. דווקא מה שאנחנו עושים בלי לחשוב הוא לרוב מה שאנחנו הכי טובים בו.</p>
+ <p class="saved">מקום לשלושים. אין צורך למלא הכול, אבל פחות מחמש עשרה בדרך כלל אומר שסיננו.</p>
+ ${S.ab.map((a,i)=>`<div class="ab"><span class="n">${i+1}</span><input type="text" data-ab="${i}" value="${esc(a.t)}" aria-label="יכולת ${i+1}"></div>`).join('')}
+ ${S.ab.length<30?'<button class="link" id="addAb">הוספת 5 שורות</button>':''}
+ <h3>ועוד שתי שאלות רקע קצרות</h3>
+ <p class="qlbl">עד כמה הטכנולוגיה היא חלק מהחיים שלי, בעבודה ומחוצה לה?</p>${seg('bg',SC,S.tech,'data-bg="tech" data-v')}
+ <p class="qlbl">עד כמה יש יצירה בחיים שלי? (כתיבה, אמנות, מוזיקה, בישול, עבודת ידיים, או כל דבר אחר שיוצר משהו חדש)</p>${seg('bg',SC,S.crea,'data-bg="crea" data-v')}`}
+ else if(s==='rate'){const f=S.ab.map((a,i)=>[a,i]).filter(([a])=>a.t.trim());
+ h=`<p class="brand">שלב 2 מתוך 5</p><h2>שלוש השאלות</h2><p class="sub">לכל יכולת עונים על שלוש שאלות. הראשונה על מה שהיא נותנת לי. השנייה על מה שיקרה לה בלי התפקיד. השלישית על הביקוש לה בשוק.</p>
+ <details class="fam"><summary>מה פירוש התשובות לשאלה הראשונה?</summary><p><b>נותן לי אנרגיה:</b> עדיין יש בזה חיות. הייתי רוצה שזה יהיה בחיים שלי גם מכאן והלאה.</p><p><b>כבר לא:</b> היה בזה משהו פעם, והוא נגמר. אולי נשחקתי, ואולי זה פשוט כבר לא מעניין אותי.</p><p><b>לא משנה לי:</b> עושה כשצריך, בלי התרגשות ובלי התנגדות.</p></details>
+ <details class="fam"><summary>ואיך עונים על השאלה השנייה?</summary><p>חשבו אם היכולת הזאת עובדת בזכות המקום: הסמכות, הצוות, המשאבים, השם של הארגון. או שהיא שלכם, ותעבוד גם במקום אחר: בחניכה, בקהילה, בבית, ביצירה.</p><p>יש יכולות שהן גם וגם. סמנו את מה שקרוב יותר. ואם אין תשובה ברורה, סמנו "לא בטוח/ה". זו תשובה לגיטימית, והיא בעצמה ממצא.</p></details>
+ ${f.length?f.map(([a,i])=>`<div class="card"><div class="abname">${esc(a.t)}</div><p class="qlbl">האם זה עדיין נותן לי משהו?</p>${seg('q1',Q1,a.q1,'data-q1="'+i+'" data-v')}<p class="qlbl">האם היכולת הזאת יכולה לבוא איתי גם בלי התפקיד, התואר והצוות?</p>${seg('q2',Q2,a.q2,'data-q2="'+i+'" data-v')}<p class="qlbl">האם יש ליכולת הזאת ביקוש בשוק היום?</p>${seg('q3',Q3,a.q3||'','data-q3="'+i+'" data-v')}</div>`).join(''):'<p class="note clay">עוד לא נכתבו יכולות. חזרו לשלב הקודם.</p>'}`}
+ else if(s==='squares'){const mr=missRead();
+ h=`<p class="brand">שלב 3 מתוך 5</p><h2>ארבע הקבוצות</h2><p class="sub">כששני הסימונים נפגשים, מתקבלות ארבע קבוצות. לכל אחת משמעות אחרת.</p>
+ <div class="grid4">${SQ.map(q=>{const l=filledAb().filter(a=>sqOf(a)===q[0]);return `<div class="sq ${q[3]}"><h4>${q[1]}</h4><p class="s">${q[2]}</p>${l.length?'<ul>'+l.map(a=>'<li>'+esc(a.t)+'</li>').join('')+'</ul>':'<p class="saved">אין כאן יכולות</p>'}</div>`}).join('')}</div>
+ ${SQ.map(q=>`<p><b>${q[1]}:</b> ${q[4]}</p>`).join('')}
+ ${(()=>{const m=filledAb().filter(a=>sqOf(a)==='core'&&a.q3==='y');return m.length?`<div class="note"><b>מה שבא איתי, ויש לו ביקוש בשוק:</b> ${m.map(a=>esc(a.t)).join(' · ')}. אלה היכולות שאפשר לבנות עליהן גם עבודה בתשלום, אם תרצו.</div>`:''})()}${mr?`<div class="note">${mr}</div>`:''}`}
+ else if(s==='sum'){h=`<p class="brand">שלב 4 מתוך 5</p><h2>מה עולה מהמיון</h2><p class="sub">את הסיכום עושים בעצמכם. מה שאדם מנסח במילים שלו נשאר איתו.</p>
+ <p>הסתכלו על הקבוצה "מה שבא איתי", ושאלו מה משותף לשלוש־ארבע מהיכולות שבה. לא השם המקצועי שלהן, אלא מה קורה בפועל כשאתם מפעילים אותן. האם יש שם אנשים? האם יש תוצאה שרואים? האם אתם לבד או בקבוצה?</p>
+ ${ta('t_common','common','מה משותף ליכולות שנותנות לי ויבואו איתי',3)}
+ ${ta('t_less','less','יכולת אחת שאני טוב/ה בה, ומרגיש/ה שמותר לי להניח')}
+ ${ta('t_more','more','יכולת אחת שכמעט לא באה לידי ביטוי, ואשמח שתבוא')}
+ ${ta('t_sur','surprise','מה הכי הפתיע אותי ברשימה')}
+ <p class="saved" style="margin-top:16px">להיות טובים במשהו ולרצות להמשיך לעשות אותו הם שני דברים שונים. הכלי הזה מפריד ביניהם.</p>`}
+ else if(s==='pause'){h=`<h2>עד כאן: מה יש</h2><div class="note">החלק הבא קצר. אין בו תוכנית ואין בו החלטות, רק כמה שאלות להתבונן בהן. אם אתם עייפים, זה מקום טוב לעצור ולחזור מחר. הכול נשמר.</div>`;$('#next').textContent='להמשך'}
+ else if(s==='look'){h=`<p class="brand">שלב 5 מתוך 5</p><h2>התבוננות</h2><p class="sub">אין כאן צעד ראשון ואין לוח זמנים. אפשר לענות בקצרה, ואפשר לכתוב "עוד לא יודע/ת".</p>
+ ${ta('t_wish','wish','איזו יכולת הייתי רוצה שתבוא לידי ביטוי בפרק הבא, גם בלי לדעת עדיין איך?',3)}
+ ${ta('t_mw','missWhat','ביכולות שיחסרו לי: מה בדיוק נתן לי בהן? האנשים, ההשפעה, האתגר, ההכרה, או משהו אחר?',3)}
+ ${ta('t_fw','forWhom','האם יש מישהו, או משהו, שהייתי רוצה שייהנה מהיכולות שלי?',2,'לא חובה')}
+ ${ta('t_nt','notice','מה הייתי רוצה לשים לב אליו בחודשים הקרובים?',3,'למשל: מתי אני מרגיש/ה חיות, למה אני מתגעגע/ת, ממה אני דווקא שמח/ה שנגמר')}
+ <h3>יכולת אחת שאם לא אביא לידי ביטוי, ארגיש שהחמצתי</h3><p class="saved">כתבו את מה שעולה.</p><textarea data-f="regret" rows="3" aria-label="יכולת שאם לא אביא לידי ביטוי ארגיש שהחמצתי">${esc(S.regret)}</textarea>`;$('#next').textContent='סיום'}
+ else if(s==='done'){h=`<h2>סיימת. תודה!</h2><p>עשית כאן עבודה של התבוננות, וזו עבודה אמיתית. נשאר רק לשלוח לי את מה שכתבת. זה יגיע רק אליי, ונסתכל על זה יחד בפגישה שלנו.</p>
+ <button type="button" class="cwl-send" onclick="CWLReturn.open()">שליחת התשובות אליי</button>
+ <p class="saved" style="margin-top:14px">רוצה לתקן משהו לפני השליחה? אפשר לחזור אחורה בכפתור "הקודם".</p>
+ <button class="link" id="reset">מחיקת כל התשובות</button><div id="resetAsk" hidden><p class="note clay">כל התשובות יימחקו, ואי אפשר יהיה לשחזר אותן.</p><button class="ghost" id="resetYes">כן, למחוק הכול</button></div>`;$('#next').style.display='none'}
+ $('#app').innerHTML=h;
+ const n=filledAb().length;$('#count').textContent=(s==='list'||s==='rate')?`${n} יכולות`:'';
+ $('#prog').style.width=Math.round(S.i/(SCREENS.length-1)*100)+'%';bind();save()}
+function bind(){
+ const nm=$('#nm');if(nm)nm.oninput=()=>{S.name=nm.value;save()};
+ document.querySelectorAll('[data-ab]').forEach(t=>t.oninput=()=>{S.ab[+t.dataset.ab].t=t.value;save();$('#count').textContent=`${filledAb().length} יכולות`});
+ const addAb=$('#addAb');if(addAb)addAb.onclick=()=>{for(let k=0;k<5&&S.ab.length<30;k++)S.ab.push({t:'',q1:'',q2:''});const y=scrollY;render();scrollTo(0,y)};
+ document.querySelectorAll('[data-q1]').forEach(b=>b.onclick=()=>{const a=S.ab[+b.dataset.q1];a.q1=a.q1===b.dataset.v?'':b.dataset.v;b.parentNode.querySelectorAll('button').forEach(o=>o.setAttribute('aria-pressed',a.q1===o.dataset.v));save()});
+ document.querySelectorAll('[data-q3]').forEach(b=>b.onclick=()=>{const a=S.ab[+b.dataset.q3];a.q3=a.q3===b.dataset.v?'':b.dataset.v;b.parentNode.querySelectorAll('button').forEach(o=>o.setAttribute('aria-pressed',a.q3===o.dataset.v));save()});
+ document.querySelectorAll('[data-q2]').forEach(b=>b.onclick=()=>{const a=S.ab[+b.dataset.q2];a.q2=a.q2===b.dataset.v?'':b.dataset.v;b.parentNode.querySelectorAll('button').forEach(o=>o.setAttribute('aria-pressed',a.q2===o.dataset.v));save()});
+ document.querySelectorAll('[data-bg]').forEach(b=>b.onclick=()=>{const k=b.dataset.bg;S[k]=S[k]===b.dataset.v?'':b.dataset.v;b.parentNode.querySelectorAll('button').forEach(o=>o.setAttribute('aria-pressed',S[k]===o.dataset.v));save()});
+ document.querySelectorAll('[data-f]').forEach(t=>{t.oninput=()=>{S[t.dataset.f]=t.value;save()}});
+ const rs=$('#reset');if(rs)rs.onclick=()=>{$('#resetAsk').hidden=false};
+ const ry=$('#resetYes');if(ry)ry.onclick=()=>{try{localStorage.removeItem(KEY)}catch(e){}location.reload()}}
+function summary(){const W1={e:'נותן לי אנרגיה',x:'כבר לא',n:'לא משנה לי'},W2={w:'תבוא איתי',r:'קשורה לתפקיד','?':'לא בטוח/ה'},W3={y:'כן',s:'במידה מסוימת',no:'לא','?':'לא יודע/ת'};
+ let o='■ הרשימה שלי והסימונים\n';filledAb().forEach((a,i)=>{o+=`${i+1}. ${a.t.trim()}\n   ← ${W1[a.q1]||'-'} · ${W2[a.q2]||'-'} · ביקוש בשוק: ${W3[a.q3]||'-'}\n`});
+ const SCW={1:'בכלל לא',2:'מעט',3:'במידה בינונית',4:'די הרבה',5:'מאוד'};o+=`\n■ רקע\nטכנולוגיה בחיים שלי: ${SCW[S.tech]||'-'}\nיצירה בחיים שלי: ${SCW[S.crea]||'-'}\n`;
+ o+='\n■ ארבע הקבוצות\n';SQ.forEach(q=>{const l=filledAb().filter(a=>sqOf(a)===q[0]).map(a=>a.t.trim());o+=`${q[1]} (${q[2]}): ${l.length?l.join(' · '):'-'}\n`});
+ const mr=missRead();if(mr)o+=`הערה: ${mr}\n`;
+ o+=`\n■ מה עולה מהמיון\nמה משותף ליכולות שנותנות לי ויבואו איתי: ${S.common.trim()||'-'}\nיכולת שמותר לי להניח: ${S.less.trim()||'-'}\nיכולת שאשמח שתבוא לידי ביטוי: ${S.more.trim()||'-'}\nמה הכי הפתיע אותי: ${S.surprise.trim()||'-'}\n`;
+ o+=`\n■ התבוננות\nיכולת שהייתי רוצה שתבוא לידי ביטוי בפרק הבא: ${S.wish.trim()||'-'}\nמה נתן לי ביכולות שיחסרו לי: ${S.missWhat.trim()||'-'}\nלמי הייתי רוצה שהיכולות שלי יועילו: ${S.forWhom.trim()||'-'}\nמה ארצה לשים לב אליו בחודשים הקרובים: ${S.notice.trim()||'-'}\n\nיכולת שאם לא אביא לידי ביטוי, ארגיש שהחמצתי: ${S.regret.trim()||'-'}\n`;
+ return o}
+$('#next').onclick=()=>{if(S.i<SCREENS.length-1){S.i++;render();scrollTo(0,0)}};
+$('#back').onclick=()=>{if(S.i>0){S.i--;render();scrollTo(0,0)}};
+render();
+</script>
+
+<script>window.CWL_CFG={tool:'abilities-retire',fill:'את שאלון היכולות שלי לקראת הפרישה ואחריה',title:'היכולות שלי · פרישה',name:()=>S.name||'',summary:()=>summary()};</script>
+
+
+
+
+<!-- חוזה עם החיים: חיבור לאתר (שמירה בגיליון במקום שליחה במייל) -->
+<script src="CFL_config.js"></script>
+<script src="CFL_bridge.js"></script>
+<script>
+(function(){var go=function(n){if(typeof S==="undefined"||typeof render!=="function")return;S.i=n;render();scrollTo(0,0);};window.CFL_PAGE={id:'abilRet',keys:['cwl-abilities-retire-v1'],fields:false,lockSel:'#resetAsk, #resetYes',
+results:function(){go(SCREENS.indexOf('squares'));},answers:function(){go(1);}};})();
+</script>
+<script src="CFL_cwl.js"></script>
+</body>
+</html>

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>שאלון Learning Agility · חוזה עם החיים</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;700;900&family=Assistant:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#2B2B2B; --olive:#5E6A41; --olive-l:#7E8C5A; --clay:#9C6B4F;
+  --gold:#B08A3E; --paper:#FAF9F5; --card:#FFFFFF; --rule:#DCD7CA; --mute:#6E6A5F;
+  --tint:#F4F5EF; --tint2:#FAFAF6; --claybg:#FBF6F2;
+  --display:'Frank Ruhl Libre','David Libre',Georgia,serif;
+  --body:'Assistant','Segoe UI',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:840px;margin:0 auto;padding:0 22px 120px}
+button{font-family:var(--body);cursor:pointer}
+header{padding:34px 0 22px}
+.logo{display:block;width:225px;max-width:60%;height:auto}
+
+.rail{display:flex;align-items:center;gap:8px;padding:14px 0 26px;border-bottom:1px solid var(--rule);margin-bottom:30px;flex-wrap:wrap}
+.pip{width:26px;height:26px;border-radius:50%;border:1px solid var(--rule);background:var(--card);font-family:var(--display);font-size:13px;font-weight:700;color:var(--mute);display:flex;align-items:center;justify-content:center}
+.pip.done{background:var(--olive);border-color:var(--olive);color:#fff}
+.pip.now{border-color:var(--olive);border-width:2px;color:var(--olive)}
+.dash{width:16px;height:1px;background:var(--rule)}
+.rail-label{font-size:13px;color:var(--mute);margin-inline-start:8px}
+
+h1{font-family:var(--display);font-weight:900;font-size:clamp(30px,5.4vw,44px);line-height:1.12;margin:0 0 12px}
+h2{font-family:var(--display);font-weight:700;font-size:23px;margin:30px 0 10px}
+.lede{font-size:19px;color:var(--mute);margin:0 0 24px;max-width:56ch}
+p{margin:0 0 14px}
+.hint{font-size:14.5px;color:var(--mute)}
+
+.step{display:none}
+.step.on{display:block;animation:fade .28s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.note{background:var(--card);border:1px solid var(--rule);border-right:3px solid var(--gold);padding:15px 18px;margin:18px 0;font-size:15.5px}
+.note.olive{border-right-color:var(--olive);background:var(--tint)}
+.note.clay{border-right-color:var(--clay);background:var(--claybg)}
+
+.chapter{margin:34px 0 6px;display:flex;align-items:stretch;border:1px solid var(--rule)}
+.chapter .letter{background:var(--olive);color:#fff;font-family:var(--display);font-size:22px;font-weight:900;width:52px;display:flex;align-items:center;justify-content:center}
+.chapter .title{background:var(--tint);flex:1;padding:13px 18px;font-weight:700;font-size:19px;display:flex;align-items:center}
+
+.item{padding:14px 0;border-bottom:1px solid var(--rule)}
+.q{display:flex;gap:11px;margin-bottom:10px}
+.num{font-family:var(--display);font-size:14px;font-weight:700;color:var(--clay);min-width:26px;padding-top:3px}
+.qt{font-size:16.5px;line-height:1.5}
+.tally{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-inline-start:37px}
+.tally button{height:34px;border:1px solid var(--rule);background:var(--card);font-size:14px;color:var(--mute);padding:0;transition:.1s}
+.tally button:hover{border-color:var(--olive)}
+.tally button.on{background:var(--olive);border-color:var(--olive);color:#fff;font-weight:700}
+.tally button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.scalekey{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin:0 0 16px;margin-inline-start:37px;font-size:10.5px;color:var(--mute);text-align:center;line-height:1.3}
+
+.res{background:var(--card);border:1px solid var(--rule);padding:15px 18px;margin-bottom:10px}
+.res-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:8px}
+.res-name{font-family:var(--display);font-size:19px;font-weight:700}
+.res-score{font-family:var(--display);font-size:24px;font-weight:900}
+.band{font-size:12px;font-weight:700;letter-spacing:.06em;padding:2px 9px;border-radius:11px;margin-inline-start:9px}
+.b-hi{background:var(--olive);color:#fff}
+.b-mid{background:var(--tint);color:var(--olive);border:1px solid var(--olive-l)}
+.b-low{background:var(--claybg);color:var(--clay);border:1px solid var(--clay)}
+.meter{height:8px;background:var(--paper);border:1px solid var(--rule)}
+.meter span{display:block;height:100%;background:var(--olive)}
+.res .desc{font-size:13.5px;color:var(--mute);margin-top:8px}
+
+.exbox{background:var(--card);border:1px solid var(--rule);border-inline-start:4px solid var(--clay);padding:15px 18px;margin-bottom:10px}
+.exbox h4{font-family:var(--display);font-size:18px;margin:0 0 3px}
+.exbox .tag{font-size:12px;color:var(--clay);font-weight:700;letter-spacing:.05em}
+.exbox p{font-size:15px;margin:7px 0 0}
+
+.actions{display:flex;gap:11px;align-items:center;flex-wrap:wrap;margin-top:26px}
+.btn{background:var(--ink);color:var(--paper);border:none;font-size:16px;font-weight:600;padding:14px 30px;transition:background .14s}
+.btn:hover{background:var(--olive)}
+.btn.ghost{background:transparent;color:var(--mute);border:1px solid var(--rule);padding:13px 22px}
+.btn.ghost:hover{background:var(--card);color:var(--ink)}
+.btn.sm{padding:9px 17px;font-size:14px}
+.status{font-size:14px;color:var(--mute)}
+.alert{background:var(--card);border:1px solid var(--clay);color:var(--clay);padding:12px 16px;font-size:15px;margin-top:14px;display:none}
+textarea{width:100%;height:200px;border:1px solid var(--rule);background:var(--card);font-family:var(--body);font-size:13px;padding:11px;direction:rtl;text-align:right}
+footer{margin-top:54px;padding-top:20px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--mute)}
+
+@media (max-width:620px){
+  body{font-size:16px}.wrap{padding:0 15px 90px}
+  .tally,.scalekey{margin-inline-start:0}
+  .scalekey{font-size:9.5px}
+  .res-head{flex-direction:column;gap:2px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.exl{display:block;font-weight:700;margin:16px 0 6px}.ext{width:100%;box-sizing:border-box;font:inherit;font-size:17px;padding:10px 12px;border:1px solid #DAD5C7;border-radius:8px;background:#fff;color:inherit;min-height:0;height:auto}.exquote{border-right:4px solid #B08A3E;padding:8px 14px;margin:6px 0 4px;background:rgba(176,138,62,.08);border-radius:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><img class="logo" src="CFL_logo.png" alt="חוזה עם החיים — לפתוח · לבחור · לדייק"></header>
+<nav class="rail" id="rail"></nav>
+
+<!-- 0 -->
+<section class="step on" id="s0">
+  <h1>שאלון Learning Agility</h1>
+  <p class="lede">כלי לאבחון עצמי של גמישות הלמידה במסע המקצועי.</p>
+  <p>התואר האקדמי שלמדת והניסיון שצברת לאורך הדרך הם הבסיס שאיתו הגעת עד לכאן. אבל הבסיס ממנו יצאת לדרך מתיישן. גמישות הלמידה מתארת את היכולת שלך להמשיך ללמוד, לעדכן, ולהפעיל את מה שאת/ה יודע/ת בסביבה שלא מפסיקה להשתנות.</p>
+  <p>במשך שנים ההנחה הייתה שאיש מקצוע טוב הוא מי שיודע. היום מתברר שזה כבר לא מספיק: הידע נשאר במקומו, אבל השאלות משתנות. מה שמבחין בין מי שממשיכים לצמוח במסע המקצועי לבין מי שנעצרים אינו האינטליגנציה ואינו הוותק, אלא מה שהם עושים ברגע שהם פוגשים משהו שלא פגשו קודם.</p>
+  <p>השאלון הזה נועד לך בלבד. אין בו תשובות נכונות או שגויות, והוא אינו כלי מיון. הערך שלו נמדד בדבר אחד — כמה כנה/ה תהיה/י איתו.</p>
+
+  <div class="note olive"><b>איך למלא.</b> חמישים היגדים, מחולקים לחמישה פרקים. אחריהם שני תרחישים קצרים. דרגו כל היגד בין 1 ל-6 לפי מידת ההתאמה אליכם. ענו על פי מה שאתם עושים <b>בפועל</b>, ולא על פי מה שנכון היה לעשות. מומלץ למלא ברצף אחד, כרבע שעה.</div>
+
+  <div class="note clay"><b>למה אין כאן פירוט של הממדים.</b> שמות הפרקים מופיעים, אך מה שכל ממד מודד יופיע רק אחרי החישוב. מי שיודע מראש עונה לפי מה שהיה רוצה לקבל.</div>
+
+
+  <div class="note olive" id="cwlStartBox"><label for="cwlStartName" style="display:block;font-weight:700;margin-bottom:6px">השם שלך</label>
+  <input id="cwlStartName" type="text" autocomplete="name" placeholder="שם פרטי ושם משפחה" style="width:100%;box-sizing:border-box;font:inherit;font-size:17px;padding:10px 12px;border:1px solid #DAD5C7;border-radius:8px;background:#fff;color:inherit">
+  <div id="cwlStartMsg" style="color:#9C6B4F;font-size:15px;min-height:1.2em;margin-top:6px"></div></div>
+<script>
+function cwlNeedName(){var i=document.getElementById('cwlStartName'),v=(i&&i.value||'').trim();if(!v){document.getElementById('cwlStartMsg').textContent='כתבו בבקשה את השם שלכם, כדי שאדע ממי התשובות.';i.focus();return false;}try{localStorage.setItem('cwl-return-name',v)}catch(e){}return true;}
+(function(){try{var v=localStorage.getItem('cwl-return-name');if(v)document.getElementById('cwlStartName').value=v}catch(e){}document.getElementById('cwlStartName').addEventListener('input',function(){document.getElementById('cwlStartMsg').textContent=''})})();
+</script>
+
+  <div class="actions">
+    <button class="btn" onclick="if(cwlNeedName())go(1)">מתחילים</button>
+    <span class="status" id="savedNote"></span>
+  </div>
+</section>
+
+<!-- 1 -->
+<section class="step" id="s1">
+  <h1>חמישים היגדים</h1>
+  <p class="lede">1 — בכלל לא נכון לגביי. 6 — נכון מאוד לגביי.</p>
+  <div id="items"></div>
+  <div class="actions">
+    <button class="btn" onclick="calc()">חשב/י את הפרופיל</button>
+    <span class="status" id="prog"></span>
+  </div>
+  <div class="alert" id="al"></div>
+</section>
+
+<!-- 2: עוד רגע -->
+<section class="step" id="s2">
+  <h1>עוד רגע, לפני השיקוף</h1>
+  <p class="lede">שני תרחישים קצרים, שתי דוגמאות ושלוש שאלות. הם יעזרו לי לראות את התשובות שלך מתוך החיים, ולא רק מתוך הדירוג.</p>
+  <h2>שני תרחישים קצרים</h2>
+  <p class="hint">אין כאן תשובה נכונה. בחרו את מה שהכי דומה למה שסביר שתעשו.</p>
+  <div id="scq"></div>
+  <h2>שתי דוגמאות מהחיים</h2>
+  <div id="exq"></div>
+  <h2>שינוי: איפה קל ואיפה קשה</h2>
+  <label class="exl" for="ex_easy">באיזה תחום בחיים שלי קל לי להשתנות?</label>
+  <textarea id="ex_easy" class="ext" rows="2"></textarea>
+  <label class="exl" for="ex_hard">איפה קשה לי להשתנות?</label>
+  <textarea id="ex_hard" class="ext" rows="2"></textarea>
+  <label class="exl" for="ex_why">מה עוצר אותי שם: אני, או המקום שבו אני נמצא/ת?</label>
+  <textarea id="ex_why" class="ext" rows="2"></textarea>
+  <p class="hint">מספיקות כמה מילים לכל שאלה.</p>
+  <div class="actions">
+    <button class="btn" onclick="finishCalc()">לשיקוף</button>
+    <button class="btn ghost" onclick="go(1)">חזרה לדירוג</button>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="step" id="s3">
+  <h1>מה עולה מהשאלון</h1>
+  <p class="lede">זו לא אבחנה ולא ציון. אלה כמה דברים שבלטו לי בתשובות שלך, כנקודת פתיחה לשיחה שלנו.</p>
+  <div class="reflect" id="reflect"></div>
+
+  <h2>אם תרצה/י לנסות כבר עכשיו</h2>
+  <p class="hint" style="margin-top:-6px">שני תרגילים קטנים, אחד לכל אחד מהתחומים שכדאי לשים לב אליהם. זה לא חובה.</p>
+  <div id="exercises"></div>
+
+  <div class="actions">
+    <button class="cwl-send" onclick="CWLReturn.open()">שליחת התשובות אליי</button>
+    <button class="btn ghost" onclick="toggle('cf')">התחלה מחדש</button>
+    <span class="status" id="sm"></span>
+  </div>
+  <div class="note clay" id="cf" style="display:none">
+    <b>למחוק הכול ולהתחיל מחדש?</b> אי אפשר לבטל.
+    <div class="actions" style="margin-top:10px">
+      <button class="btn sm" onclick="restart()">כן, למחוק</button>
+      <button class="btn ghost sm" onclick="toggle('cf')">ביטול</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  כלי לאבחון עצמי. אינו כלי מיון, ואין לו נורמות ישראליות מתוקפות. גרסה 4.<br>
+  <b style="color:var(--olive)">חוזה עם החיים</b> · לפתוח · לבחור · לדייק
+</footer>
+</div>
+
+<script>
+const SCALE=['בכלל לא<br>נכון לגביי','לא נכון<br>לגביי','נוטה שלא<br>להיות נכון','נוטה להיות<br>נכון לגביי','נכון<br>לגביי','נכון מאוד<br>לגביי'];
+
+const CHAPTERS=[
+ {l:'א', name:'גמישות מחשבתית',
+  desc:'קצב וטווח החשיבה. היכולת להגיע לשורש הבעיה, לחבר בין עולמות תוכן רחוקים ולהטיל ספק במוסכמות. המעבר המהותי כאן הוא ממי שתפקידו/ה לדעת הכול — למי שתפקידו/ה ללמוד כל הזמן.',
+  ex:{t:'תרגיל שלושת הפתרונות', d:'בכל בעיה מורכבת נסחו שלושה פתרונות: פתרון סטנדרטי, פתרון משופר, ופתרון חורג לחלוטין מתחום ההתמחות שלכם. בדקו אילו רכיבים מן הפתרון החורג ניתן ליישם בפועל.'},
+  items:[
+   'אני נהנה/ית לפרק בעיות מורכבות ולהגיע לשורש שלהן.',
+   'אני מחפש/ת באופן פעיל חיבורים בין תחומי תוכן שונים.',
+   'אני נוהג/ת לערער על מוסכמות ועל "הדרך שבה דברים תמיד נעשו".',
+   'אני מעדיף/ה להיצמד לפתרונות מוכרים גם כשהבעיה שלפניי חדשה.',
+   'אני חש/ה בנוח במצבים עמומים שבהם אין פתרון אחד ברור.',
+   'אני משנה את עמדתי כשמגיע מידע חדש ואמין יותר.',
+   'אני קורא/ת וצורך/ת תוכן מתחומים שאינם קשורים ישירות לתפקידי.',
+   'אני מזהה קווי דמיון בין בעיה נוכחית לבין התנסויות עבר רחוקות.',
+   'אני מתקשה להחליט כל עוד לא ברור לי כל המידע.',
+   'אני בודק/ת באופן קבוע כיצד טכנולוגיות וכלים חדשים משפיעים על תחום עיסוקי.']},
+ {l:'ב', name:'גמישות בין-אישית',
+  desc:'היכולת ללמוד מבני אדם. הבנת מניעים שאינם נאמרים, ניהול קונפליקט בונה, ובעיקר — בקשת משוב יזומה. המשוב הוא המידע היחיד שמאפשר לראות את מה שאדם אינו יכול לראות בעצמו.',
+  ex:{t:'התלוות ומשוב יזום', d:'בחרו עמית/ה מדיסציפלינה שונה משלכם והתלוו אליו/ה לשעה של פגישות. לאחר מכן שאלו עמית/ה אחד/ת: "מה הדבר האחד שכדאי לי לשנות כדי שהעבודה איתי תהיה טובה יותר?" — והקשיבו בלי להתגונן.'},
+  items:[
+   'בזמן קונפליקט אני מתמקד/ת בפתרון ולא בשאלה מי אשם.',
+   'אני מעדיף/ה לעבוד עם אנשים שחושבים ופועלים בדומה לי.',
+   'אני מבקש/ת משוב באופן קבוע כדי לצמצם את נקודות העיוורון שלי.',
+   'אני מתנהל/ת בתבונה במצבים של מתחים ואינטרסים מנוגדים בארגון.',
+   'אני שואב/ת סיפוק מקידום ההתפתחות של האנשים שאני עובד/ת איתם.',
+   'אני מתאים/ה את סגנון התקשורת שלי לאדם שמולי.',
+   'אני נוטה להתגונן כשמישהו מבקר את שיטות העבודה שלי.',
+   'אני מזהה צרכים ומניעים של אנשים גם כשאינם נאמרים במפורש.',
+   'אני פועל/ת באופן אקטיבי לקידום גיוון מחשבתי בסביבת העבודה שלי.',
+   'אני מנהל/ת שיחות קשות בצורה רגועה גם כשהן טעונות רגשית.']},
+ {l:'ג', name:'גמישות בשינוי',
+  desc:'הנכונות להתנסות ולפעול בתנאים שטרם הוגדרו. אצל מי שיש לו/ה גמישות גבוהה, ניסוי שנכשל אינו כישלון אישי אלא מקור מידע — נתון שמאפשר לכוון מחדש את הצעד הבא.',
+  ex:{t:'ניסוי של שלושים דקות', d:'בחרו כלי טכנולוגי שאינכם מכירים והקדישו לו שלושים דקות של התנסות מאפס, בלי יעד מוגדר. המטרה אינה השליטה בכלי אלא תרגול עצם המעבר למצב של לומד/ת מתחיל/ה.'},
+  items:[
+   'אני מתנסה בשיטות עבודה חדשות גם כשקיים סיכוי לכישלון.',
+   'אני מתנדב/ת להוביל משימות שדרך העבודה בהן עדיין לא הוגדרה.',
+   'אני מעדיף/ה לדבוק בנהלים קבועים ובשיטות עבודה מוכרות.',
+   'אני רואה בשינוי ארגוני הזדמנות ולא איום.',
+   'אני משחרר/ת הרגלי עבודה ותיקים כשהם מפסיקים לייצר ערך.',
+   'אני מציע/ה זוויות ראייה חדשות על רעיונות ותיקים.',
+   'אני מסתגל/ת לשינויים טכנולוגיים מהירים בלי תחושת הצפה.',
+   'אני נוטה לדחות אימוץ של כלים חדשים עד שהוכיחו את עצמם אצל אחרים.',
+   'אני מעודד/ת את האנשים שאני עובד/ת איתם לבחון רעיונות באמצעות ניסויים קטנים.',
+   'אני בוחן/ת מחדש שיטות שהצליחו בעבר, כדי לבדוק אם הן עדיין מתאימות.']},
+ {l:'ד', name:'גמישות בתוצאות',
+  desc:'היכולת לספק ביצועים דווקא כשהמשאבים מצטמצמים, הכללים אינם ברורים והסביבה לוחצת. המיקוד הוא בתוצאה הסופית, והנתיב אליה משתנה תוך כדי תנועה.',
+  ex:{t:'תחקיר של כישלון מהעבר', d:'בחרו פרויקט שלא השיג את יעדיו. אתרו שלושה נתיבים חלופיים שהיו עשויים להוביל לתוצאה אחרת, וזהו את סימני האזהרה המוקדמים שהתעלמתם מהם בזמן אמת.'},
+  items:[
+   'אני משיג/ה יעדים גם בתנאים של עומס, לחץ ואי-ודאות.',
+   'כשהכללים אינם ברורים, אני מתקשה להפיק תוצאות.',
+   'אני יודע/ת לחבר אנשים לעבודה משותפת שמגיעה לתוצאות טובות.',
+   'אני מייצר/ת תוצאות גם כאשר התקציב או המשאבים מצטמצמים.',
+   'אני מתמקד/ת בתוצאה הסופית ומשנה את הדרך אליה תוך כדי תנועה.',
+   'כשמשימה נתקעת, אני ממתין/ה להנחיה מגורם בכיר לפני שאני משנה כיוון.',
+   'יש בי דחף פנימי חזק להשלים משימות מאתגרות גם כשהסיכויים נמוכים.',
+   'אני מקבל/ת החלטות קשות במהירות כשהמצב מחייב זאת.',
+   'אני מצליח/ה לרתום אנשים למשימה גם ללא סמכות פורמלית עליהם.',
+   'אני עוצר/ת יוזמה שאינה מניבה תוצאות, גם לאחר שכבר הושקעו בה משאבים.']},
+ {l:'ה', name:'מודעות עצמית',
+  desc:'הממד המחזיק את כל השאר. על פי מחקר של מכון קורן פרי, מנהלים ומנהלות שמעריכים את היכולות שלהם גבוה בהרבה ממה שהסביבה רואה, מסומנים על ידי הממונים עליהם בסיכון גבוה פי 6.2 להיתקע בדרך. הפער עצמו נסתר מעיניהם — ולכן בלי מודעות עצמית, ארבעת הממדים האחרים אינם ניתנים לתיקון.',
+  ex:{t:'יומן רפלקציה שבועי', d:'שריינו רבע שעה בסוף כל שבוע. רשמו שתי תגובות רגשיות או אוטומטיות שחוויתם, זהו את הטריגר שהפעיל אותן, והגדירו מראש כיצד תגיבו בפעם הבאה.'},
+  items:[
+   'אני יודע/ת להגדיר במדויק את החוזקות והמגבלות המרכזיות שלי.',
+   'אני מודע/ת להשפעה שיש למצב הרוח שלי על האנשים שסביבי.',
+   'בתום כל משימה משמעותית אני מבצע/ת תחקיר על תפקודי שלי.',
+   'אני מופתע/ה לעיתים קרובות ממשוב ביקורתי שאני מקבל/ת.',
+   'אני מבין/ה כיצד אחרים תופסים את סגנון העבודה שלי.',
+   'אני מזהה את הטריגרים הרגשיים שלי ומנהל/ת אותם בזמן אמת.',
+   'אני מודה בטעויותיי בגלוי בפני האנשים שאני עובד/ת איתם.',
+   'אני מקצה זמן קבוע ביומן לחשיבה על ההתפתחות המקצועית שלי.',
+   'במקרים של אי־הצלחה, אני מוצא/ת שלרוב הנסיבות הסביבתיות היו משמעותיות יותר מהפעולות שלי.',
+   'אני רואה בביקורת כלי לשיפור ולא כהתקפה אישית.']}
+];
+
+/* items that are phrased in reverse — 1 becomes 6, 2 becomes 5, and so on */
+const REVERSED = [4,9,12,17,23,28,32,36,44,49];
+
+const BANDS=[
+ {min:4.8, name:'ביצועי שיא', cls:'b-hi',
+  txt:'הממד מוטמע ומהווה מנוע מוביל בהתנהלות המקצועית. המשימה הבאה היא להשתמש בו גם במקומות חדשים.'},
+ {min:3.3, name:'בסיס יציב', cls:'b-mid',
+  txt:'הבסיס קיים ומתפקד, אך נדרשת עבודה ממוקדת כדי שהממד יחזיק גם במצבי קצה ובתנאי לחץ.'},
+ {min:0,   name:'אזור לפיתוח מיידי', cls:'b-low',
+  txt:'ממד שדורש תוכנית עבודה אקטיבית בטווח הקרוב. הזנחה שלו מגדילה את הסיכון להיתקע במסע המקצועי.'}
+];
+function bandOf(v){ return BANDS.find(b=>v>=b.min); }
+
+let S={scores:{},stage:0};
+let CAN_SAVE=false;
+
+async function persist(){ try{ if(window.storage){ await window.storage.set('learning-agility', JSON.stringify(S)); } else localStorage.setItem('cwl-learning-agility', JSON.stringify(S)); }catch(e){ try{localStorage.setItem('cwl-learning-agility', JSON.stringify(S))}catch(_){} } }
+async function probe(){
+  if(!window.storage){ try{ const x=localStorage.getItem('cwl-learning-agility'); CAN_SAVE=true; if(x){ const d=JSON.parse(x); if(d&&d.scores) return d; } }catch(e){} return null; }
+  try{ await window.storage.set('la-probe','1'); CAN_SAVE=true;
+    const r=await window.storage.get('learning-agility');
+    if(r&&r.value){ const d=JSON.parse(r.value); if(d&&d.scores) return d; }
+  }catch(e){ CAN_SAVE=false; }
+  return null;
+}
+
+const LABELS=['פתיחה','דירוג','דוגמאות','תוצאה'];
+function drawRail(){
+  const r=document.getElementById('rail'); r.innerHTML='';
+  for(let i=1;i<=3;i++){
+    if(i>1){const d=document.createElement('span');d.className='dash';r.appendChild(d);}
+    const p=document.createElement('span');
+    p.className='pip'+(S.stage>i?' done':S.stage===i?' now':'');
+    p.textContent=i; r.appendChild(p);
+  }
+  const l=document.createElement('span'); l.className='rail-label';
+  l.textContent=LABELS[S.stage]||'פתיחה'; r.appendChild(l);
+}
+function toggle(id){const e=document.getElementById(id);e.style.display=e.style.display==='none'?'block':'none';}
+
+function go(n){
+  S.stage=n;
+  document.querySelectorAll('.step').forEach(e=>e.classList.remove('on'));
+  document.getElementById('s'+n).classList.add('on');
+  if(n===1) renderItems();
+  drawRail(); persist();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderItems(){
+  const w=document.getElementById('items'); w.innerHTML='';
+  let n=0;
+  CHAPTERS.forEach(ch=>{
+    const h=document.createElement('div'); h.className='chapter';
+    h.innerHTML='<div class="letter">'+ch.l+'</div><div class="title">פרק '+ch.l+' — '+ch.name+'</div>';
+    w.appendChild(h);
+    ch.items.forEach(t=>{
+      n++;
+      const i=n;
+      const d=document.createElement('div'); d.className='item';
+      let tal='<div class="tally">';
+      for(let v=1;v<=6;v++) tal+='<button class="'+(S.scores[i]===v?'on':'')+'" onclick="setScore('+i+','+v+')">'+v+'</button>';
+      tal+='</div>';
+      const key = i===1 ? '<div class="scalekey">'+SCALE.map(s=>'<span>'+s+'</span>').join('')+'</div>' : '';
+      d.innerHTML='<div class="q"><span class="num">'+i+'</span><span class="qt">'+t+'</span></div>'+tal+key;
+      w.appendChild(d);
+    });
+  });
+  updateProg();
+}
+function setScore(i,v){ S.scores[i]=v; renderItems(); persist(); }
+function updateProg(){ document.getElementById('prog').textContent=Object.keys(S.scores).length+' / 50 דורגו'; }
+
+function computed(){
+  let n=0;
+  return CHAPTERS.map(ch=>{
+    let sum=0;
+    ch.items.forEach(()=>{
+      n++;
+      const raw=S.scores[n]||0;
+      sum += REVERSED.includes(n) ? (7-raw) : raw;
+    });
+    return {...ch, sum, avg:+(sum/10).toFixed(1)};
+  });
+}
+
+function cwlJoin(a){a=a.filter(Boolean);return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' ו'+a[a.length-1];}
+const RL={
+ 'גמישות מחשבתית':['היכולת לחשוב בדרכים חדשות, לחבר בין תחומים רחוקים ולשאול שאלות על מה שנראה מובן מאליו.','האם יש בעיה שאת/ה מתמודד/ת איתה עכשיו, שאפשר להסתכל עליה מזווית אחרת לגמרי?'],
+ 'גמישות בין-אישית':['היכולת ללמוד מאנשים שונים ממך, לבקש משוב ולהשתמש בו.','האם יש מישהו שונה ממך שהיית רוצה ללמוד ממנו?'],
+ 'גמישות בשינוי':['היכולת להתנסות בדברים חדשים, גם כשהם לא נוחים בהתחלה.','האם יש משהו חדש שהיית רוצה לנסות, ומשהו עוצר אותך?'],
+ 'גמישות בתוצאות':['היכולת להגיע לתוצאות גם במצבים חדשים, וללמוד גם ממה שלא הצליח.','האם יש משהו שלא הצליח בעבר, שאפשר ללמוד ממנו היום?'],
+ 'מודעות עצמית':['היכולת להכיר את החוזקות ואת המגבלות שלך, ולשים לב איך את/ה מגיב/ה.','האם את/ה יודע/ת מה גורם לך להגיב באופן אוטומטי, ולא כפי שהיית רוצה?']};
+function calc(){
+  const a=document.getElementById('al');
+  const done=Object.keys(S.scores).length;
+  if(done<50){ a.style.display='block'; a.textContent='נותרו '+(50-done)+' היגדים ללא דירוג.'; return; }
+  a.style.display='none';
+  showExtra();
+}
+function allItems(){return CHAPTERS.flatMap(ch=>ch.items);}
+const SCEN=[
+ {t:'תרחיש 1 — הצלחת העבר פוגשת הקשר חדש',q:'נכנסת לתפקיד או לסביבה מקצועית חדשה. את/ה מגלה שדרך פעולה שהביאה לך הצלחה רבה בעבר אינה עובדת כאן כפי שציפית. מה הכי דומה למה שסביר שתעשה/י?',
+  o:['אתן לדרך שלי עוד זמן; היא הוכיחה את עצמה בעבר.','אאמץ את הדרך המקובלת במקום החדש כדי להשתלב מהר.','אבדוק מה שונה בסביבה החדשה, מה מהדרך שלי עדיין מתאים ומה דורש התאמה, ואז אחליט כיצד לפעול.','אמתין עד שאכיר טוב יותר את המקום לפני שאשנה משהו.'],
+  lens:['past','fast','read','clear']},
+ {t:'תרחיש 2 — כללי המשחק אינם ברורים',q:'את/ה מקבל/ת אחריות על תחום חדש. הציפיות אינן ברורות, ואנשים שונים נותנים לך מסרים שונים. מה הכי דומה למה שסביר שתעשה/י?',
+  o:['אבקש הגדרה ברורה של הציפיות לפני שאתקדם.','אפעל לפי הדרך שנראית לי נכונה על בסיס הניסיון שלי.','אאסוף כמה נקודות מבט, אזהה מה כבר ברור, אנסה צעד ראשון ואבדוק את התגובה לפני שאמשיך.','אמתין מעט; בדרך כלל עם הזמן מתברר מה באמת נדרש.'],
+  lens:['clear','past','read','clear']}];
+const LENS={read:'קורא/ת ומסתגל/ת — נוטה לקרוא את הסביבה לפני שינוי הפעולה.',past:'נשען/ת על הצלחת העבר — כדאי לבדוק אילו הנחות עבודה עדיין תקפות.',fast:'מסתגל/ת מהר מדי — כדאי לבדוק שלא ויתר/ה מוקדם מדי על דרכים שעדיין שוות.',clear:'זקוק/ה לבהירות — כדאי לתרגל צעדים קטנים שמייצרים מידע גם לפני שהתמונה ברורה.'};
+const AB=['א','ב','ג','ד'];
+function renderScen(){
+  S.ex=S.ex||{};const w=document.getElementById('scq');
+  w.innerHTML=SCEN.map((s,si)=>'<div class="exbox" style="border-inline-start-color:var(--olive)"><h4>'+s.t+'</h4><p>'+s.q+'</p>'+
+    s.o.map((o,oi)=>'<label style="display:flex;gap:10px;align-items:flex-start;margin:10px 0;cursor:pointer"><input type="radio" name="sc'+si+'" value="'+oi+'" style="margin-top:6px;width:18px;height:18px"'+(S.ex['sc'+si]===oi?' checked':'')+'><span><b>'+AB[oi]+'.</b> '+o+'</span></label>').join('')+'</div>').join('');
+  w.querySelectorAll('input[type=radio]').forEach(r=>r.onchange=()=>{S.ex[r.name]=+r.value;persist();});
+}
+function showExtra(){
+  S.ex=S.ex||{};const it=allItems();let hiI=1,loI=1;
+  for(let n=1;n<=50;n++){if((S.scores[n]||0)>(S.scores[hiI]||0))hiI=n;if((S.scores[n]||7)<(S.scores[loI]||7))loI=n;}
+  S.ex.hiI=hiI;S.ex.loI=loI;
+  const strip=t=>String(t).replace(/<[^>]+>/g,'');
+  document.getElementById('exq').innerHTML=
+   '<label class="exl" for="ex_hi">ההיגד שדירגת הכי גבוה:</label><div class="exquote">'+strip(it[hiI-1])+'</div><p class="hint">ספר/י על פעם אחת שבה זה קרה.</p><textarea id="ex_hi" class="ext" rows="3"></textarea>'+
+   '<label class="exl" for="ex_lo">ההיגד שדירגת הכי נמוך:</label><div class="exquote">'+strip(it[loI-1])+'</div><p class="hint">ספר/י על מצב שבו זה בלט לך.</p><textarea id="ex_lo" class="ext" rows="3"></textarea>';
+  ['hi','lo','easy','hard','why'].forEach(k=>{const el=document.getElementById('ex_'+k);el.value=S.ex[k]||'';el.oninput=()=>{S.ex[k]=el.value;persist();};});
+  renderScen();
+  go(2);
+}
+function finishCalc(){
+  const rows=computed();
+  const hi=[...rows].sort((x,y)=>y.avg-x.avg),lo=[...rows].sort((x,y)=>x.avg-y.avg);
+  const high=hi[0],low=lo.slice(0,2),spread=+(hi[0].avg-lo[0].avg).toFixed(1);
+  let h='<p>החוזקה הבולטת שלך היא <b>'+high.name+'</b>: '+RL[high.name][0]+'</p>';
+  if(hi[1].avg>=high.avg-0.2) h+='<p>קרוב אליה נמצאת גם <b>'+hi[1].name+'</b>.</p>';
+  h+='<p>התחומים שכדאי לשים אליהם לב עכשיו הם <b>'+low[0].name+'</b> ו<b>'+low[1].name+'</b>.</p>';
+  if(spread<0.8) h+='<p>התשובות שלך דומות מאוד בכל התחומים. לכן כדאי לבדוק את התמונה גם מול דוגמאות מהחיים, ולא רק מול השאלון.</p>';
+  else if(spread>=1.5) h+='<p>ההבדל בין התחומים אצלך ברור, ולכן אפשר להתחיל ממה שכדאי לחזק.</p>';
+  const qs=[RL[low[0].name][1],RL[low[1].name][1],'האם יש מישהו בסביבה שלך שיכול לתת לך משוב כן על זה?'];
+  h+='<p style="margin-top:18px"><b>כמה נקודות למחשבה:</b></p><ul>'+qs.map(q=>'<li style="margin:6px 0">'+q+'</li>').join('')+'</ul>';
+  h+='<p>בפגישה נבדוק יחד מה מזה מדויק לך, ומה לא.</p>';
+  document.getElementById('reflect').innerHTML=h;
+  document.getElementById('exercises').innerHTML = low.map(r=>
+    '<div class="exbox"><div class="tag">'+r.name+'</div>'+
+    '<h4>'+r.ex.t+'</h4><p>'+r.ex.d+'</p></div>').join('');
+  go(3);
+}
+
+function buildSummary(){
+  const rows=computed();
+  let t='שאלון Learning Agility · גרסה 4 — '+new Date().toLocaleDateString('he-IL')+'\n\nהפרופיל\n';
+  [...rows].sort((a,b)=>b.avg-a.avg).forEach((r,i)=>{
+    t+=(i+1)+'. '+r.name+' — '+r.avg.toFixed(1)+' ('+bandOf(r.avg).name+')\n'; });
+  t+='\nהדירוגים המלאים\n';
+  let n=0;
+  CHAPTERS.forEach(ch=>{ t+='\n'+ch.name+'\n'; ch.items.forEach(()=>{ n++; t+='  '+n+'. '+(S.scores[n]||0)+'\n'; }); });
+  if(S.ex){const it=allItems(),strip=x=>String(x).replace(/<[^>]+>/g,''),E=S.ex,L=[];
+   if(E.hiI)L.push('ההיגד שדורג הכי גבוה ('+E.hiI+', דירוג '+(S.scores[E.hiI]||'-')+'): '+strip(it[E.hiI-1])+'\n   הדוגמה: '+((E.hi||'').trim()||'-'));
+   if(E.loI)L.push('ההיגד שדורג הכי נמוך ('+E.loI+', דירוג '+(S.scores[E.loI]||'-')+'): '+strip(it[E.loI-1])+'\n   הדוגמה: '+((E.lo||'').trim()||'-'));
+   L.push('באיזה תחום קל לי להשתנות: '+((E.easy||'').trim()||'-'));L.push('איפה קשה לי להשתנות: '+((E.hard||'').trim()||'-'));L.push('מה עוצר אותי שם: '+((E.why||'').trim()||'-'));
+   t+='\n\nדוגמאות ושאלות על שינוי\n'+L.join('\n');
+   const SL=SCEN.map((s,si)=>{const v=E['sc'+si];return s.t+': '+(v===undefined?'לא נבחר':AB[v]+'. '+s.o[v]+'\n   עדשת ההקשר: '+LENS[s.lens[v]]);});
+   t+='\n\nשני התרחישים (לא משנים את הציונים)\n'+SL.join('\n');}
+  {const r=document.getElementById('reflect');if(r&&r.innerText.trim())t+='\n\nהשיקוף שקיבלתי בסוף השאלון\n'+r.innerText.trim();}
+  t+='\nכלי לאבחון עצמי. אינו כלי מיון.';
+  return t;
+}
+function copySummary(){
+  const t=buildSummary();
+  document.getElementById('sumout').value=t;
+  document.getElementById('sumbox').style.display='block';
+  const m=document.getElementById('sm');
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t).then(()=>{m.textContent='הועתק.';setTimeout(()=>m.textContent='',2600);})
+      .catch(()=>{m.textContent='סמנו את הטקסט והעתיקו ידנית.';});
+  } else m.textContent='סמנו את הטקסט והעתיקו ידנית.';
+}
+function restart(){
+  S={scores:{},stage:0,ex:{}};
+  ['cf','sumbox'].forEach(id=>document.getElementById(id).style.display='none');
+  persist();
+  document.querySelectorAll('.step').forEach(e=>e.classList.remove('on'));
+  document.getElementById('s0').classList.add('on');
+  drawRail(); window.scrollTo({top:0,behavior:'smooth'});
+}
+
+(async function init(){
+  const saved=await probe();
+  if(saved && Object.keys(saved.scores).length){
+    S=saved;
+    document.getElementById('savedNote').textContent='יש כאן עבודה שהתחלת — '+Object.keys(S.scores).length+' מתוך 50 דורגו.';
+  }
+  S.stage=0; drawRail();
+})();
+</script>
+<script>window.CWL_CFG={tool:'la',fill:'את שאלון הגמישות בלמידה',title:'גמישות בלמידה (Learning Agility)',summary:()=>buildSummary(),name:()=>{var i=document.getElementById('cwlStartName');return (i&&i.value||'').trim()}};</script>
+
+
+
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap" rel="stylesheet"><style id="cfl-font">body,body *{font-family:"Heebo",Arial,"Arial Hebrew",sans-serif!important}</style>
+
+<!-- חוזה עם החיים: חיבור לאתר (שמירה בגיליון במקום שליחה במייל) -->
+<script src="CFL_config.js"></script>
+<script src="CFL_bridge.js"></script>
+<script>
+window.CFL_PAGE={id:'la',keys:['cwl-learning-agility'],fields:false,ignore:['stage'],
+lockSel:'.tally button, [onclick*=restart], [onclick*=toggle]',
+results:function(){if(Object.keys(S.scores||{}).length>=50){showExtra();finishCalc();}else go(1);},
+answers:function(){go(1);}};
+</script>
+<script src="CFL_cwl.js"></script>
+</body>
+</html>

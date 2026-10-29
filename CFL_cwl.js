@@ -10,7 +10,11 @@
 //     results: function () { … },    // optional: shows the page's own results screen
 //     staffView: function () { … },  // optional: extra parts shown only on the יועצים site
 //     fields: false,                  // optional: don't copy the fields (only for pages whose own copy is complete)
-//     flush: function () { … }       // optional: makes the page save to the browser right now
+//     flush: function () { … },      // optional: makes the page save to the browser right now
+//     ignore: ['stage'],             // optional: parts of the page's saved copy that aren't answers (which screen is open)
+//     lockSel: '.tally button',      // optional: more answer buttons to disable in read-only mode
+//     answers: function () { … },    // optional: the יועצים "answers" view opens here (instead of the page's first screen)
+//     blank: ['v']                   // optional: parts that have a value before anything is answered (a default choice)
 //   }
 // and keeps its own  window.CWL_CFG = { summary: () => '…' }  (the text for the יועץ).
 //
@@ -26,6 +30,8 @@
 
   // ---------- the answers: what the page keeps in the browser + every field ----------
   const KEYS = Array.isArray(PAGE.keys) ? PAGE.keys : [];
+  // not answers: which screen is open, a save time, the name; and the page's own (ignore) and defaults (blank)
+  const IGNORE = ['i', 'page', 'step', 't', 'name'].concat(Array.isArray(PAGE.ignore) ? PAGE.ignore : [], Array.isArray(PAGE.blank) ? PAGE.blank : []);
   const lsGet = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
   const lsSet = (k, v) => { try { if (v === null || v === undefined) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) { } };
   function pageKept() {
@@ -59,7 +65,12 @@
   }
   function collect() { flush(); return { v: 2, ls: pageKept(), f: USE_FIELDS ? snapshot() : {} }; }
   function lsMeaningful(v) {
-    try { const o = JSON.parse(v); return meaningful(o && typeof o === 'object' ? Object.assign({}, o, { i: 0, page: 0, step: 0, t: 0 }) : o); }
+    try {
+      const o = JSON.parse(v);
+      if (!o || typeof o !== 'object' || Array.isArray(o)) return meaningful(o);
+      const c = Object.assign({}, o); IGNORE.forEach(k => { delete c[k]; });
+      return meaningful(c);
+    }
     catch (e) { return !!String(v || '').trim(); }
   }
   function isEmpty(st) {
@@ -108,7 +119,14 @@
     const ls = {};
     Object.keys(st.ls || {}).sort().forEach(k => {
       let v = st.ls[k];
-      try { v = JSON.parse(v); if (v && typeof v === 'object' && typeof v.t === 'number') delete v.t; v = sort(v); } catch (e) { } // a save time isn't a change
+      try { // a save time or the open screen isn't a change
+        v = JSON.parse(v);
+        if (v && typeof v === 'object' && !Array.isArray(v)) {
+          if (typeof v.t === 'number') delete v.t;
+          (PAGE.ignore || []).forEach(x => { delete v[x]; });
+        }
+        v = sort(v);
+      } catch (e) { }
       ls[k] = v;
     });
     return JSON.stringify(sort({ ls: ls, f: st.f || {} }));
@@ -188,10 +206,20 @@
     const off = () => {
       fields().forEach(el => { el.disabled = true; });
       // answer buttons (toggles) can't be pressed; moving between screens still works
-      document.querySelectorAll('button[aria-pressed], button[data-v], .cwl-send, #reset, #addAb, #addG, [id^=add]').forEach(b => { b.disabled = true; });
+      document.querySelectorAll('button[aria-pressed], button[data-v], .cwl-send, #reset, #addAb, #addG, [id^=add]' + (PAGE.lockSel ? ', ' + PAGE.lockSel : '')).forEach(b => { b.disabled = true; });
     };
     off();
     new MutationObserver(off).observe(document.body, { childList: true, subtree: true }); // pages that redraw themselves
+  }
+  // the יועצים site: what the page saves while it's being looked at isn't kept in this browser
+  function keepNothing() {
+    try {
+      const set = Storage.prototype.setItem;
+      Storage.prototype.setItem = function (k, v) {
+        if (this === window.localStorage && (KEYS.indexOf(k) !== -1 || k === NAME_KEY)) return;
+        return set.apply(this, arguments);
+      };
+    } catch (e) { }
   }
   function showResults() { try { if (typeof PAGE.results === 'function') PAGE.results(); } catch (e) { } }
 
@@ -225,6 +253,7 @@
 
   // The browser keeps one person's drafts: when someone else signs in here, the previous drafts are cleared
   const OWNER = 'cfl_cwl_owner';
+  const NAME_KEY = 'cwl-return-name'; // the name some pages keep for the next questionnaire
   function ownDrafts() { // returns true when the page is reloaded without the previous person's drafts
     const me = (CFL.email || '').toLowerCase();
     const was = lsGet(OWNER);
@@ -232,7 +261,7 @@
       let all = [];
       try { all = JSON.parse(lsGet('cfl_cwl_keys') || '[]'); } catch (e) { }
       const had = all.concat(KEYS).some(k => lsGet(k) !== null);
-      all.concat(KEYS).forEach(k => lsSet(k, null));
+      all.concat(KEYS, [NAME_KEY]).forEach(k => lsSet(k, null));
       lsSet('cfl_cwl_keys', null);
       lsSet(OWNER, me);
       if (had) { location.reload(); return true; } // this page already showed them: start it again, empty
@@ -252,17 +281,20 @@
         // the יועצים site: show the saved answers, then take them out of this browser again
         if (restore(info.saved)) return;
         KEYS.forEach(k => lsSet(k, null));
+        keepNothing();
         lock();
         if (typeof PAGE.staffView === 'function') { try { PAGE.staffView(); } catch (e) { } }
         if (info.viewMode !== 'answers') showResults();
+        else if (typeof PAGE.answers === 'function') { try { PAGE.answers(); } catch (e) { } }
         return;
       }
       if (ownDrafts()) return;
-      fillName(CFL.name);
-      if (info.status === 'submitted' && info.saved) {
+      const sent = info.status === 'submitted' && info.saved;
+      // what's on the page now (a draft in this browser) wins; an empty page gets the sent answers
+      if (sent && isEmpty(collect()) && restore(info.saved)) return;
+      fillName(CFL.name); // after: the name alone isn't an answer, but some pages save it right away
+      if (sent) {
         SENT = { json: canon(Object.assign({ ls: {}, f: {} }, info.saved)), at: info.submittedAt || '', upd: info.updatedAt || '' };
-        // what's on the page now (a draft in this browser) wins; an empty page gets the sent answers
-        if (isEmpty(collect()) && restore(info.saved)) return;
         if (info.readOnly) {
           lock();
           showResults();
