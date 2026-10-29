@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>עוגני קריירה · חוזה עם החיים</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;700;900&family=Assistant:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#2B2B2B; --olive:#5E6A41; --olive-l:#7E8C5A; --clay:#9C6B4F;
+  --gold:#B08A3E; --paper:#FAF9F5; --card:#FFFFFF; --rule:#DCD7CA; --mute:#6E6A5F;
+  --tint:#F4F5EF; --tint2:#FAFAF6; --claybg:#FBF6F2;
+  --display:'Frank Ruhl Libre','David Libre',Georgia,serif;
+  --body:'Assistant','Segoe UI',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:820px;margin:0 auto;padding:0 22px 120px}
+button{font-family:var(--body);cursor:pointer}
+
+header{padding:34px 0 22px}
+.logo{display:block;width:225px;max-width:60%;height:auto}
+
+.rail{display:flex;align-items:center;gap:8px;padding:14px 0 26px;border-bottom:1px solid var(--rule);margin-bottom:32px;flex-wrap:wrap}
+.pip{width:26px;height:26px;border-radius:50%;border:1px solid var(--rule);background:var(--card);font-family:var(--display);font-size:13px;font-weight:700;color:var(--mute);display:flex;align-items:center;justify-content:center}
+.pip.done{background:var(--olive);border-color:var(--olive);color:#fff}
+.pip.now{border-color:var(--olive);border-width:2px;color:var(--olive)}
+.dash{width:16px;height:1px;background:var(--rule)}
+.rail-label{font-size:13px;color:var(--mute);margin-inline-start:8px}
+
+h1{font-family:var(--display);font-weight:900;font-size:clamp(32px,5.6vw,46px);line-height:1.12;margin:0 0 12px}
+h2{font-family:var(--display);font-weight:700;font-size:23px;margin:32px 0 10px}
+.lede{font-size:19px;color:var(--mute);margin:0 0 24px;max-width:56ch}
+p{margin:0 0 14px}
+.hint{font-size:14.5px;color:var(--mute)}
+
+.step{display:none}
+.step.on{display:block;animation:fade .28s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.note{background:var(--card);border:1px solid var(--rule);border-right:3px solid var(--gold);padding:15px 18px;margin:18px 0;font-size:15.5px}
+.note.olive{border-right-color:var(--olive);background:var(--tint)}
+.note.clay{border-right-color:var(--clay);background:var(--claybg)}
+.note b{font-weight:700}
+
+/* anchors table */
+.anchors{width:100%;border-collapse:collapse;margin:14px 0 8px;font-size:15.5px}
+.anchors td{border:1px solid var(--rule);padding:9px 12px;vertical-align:middle}
+.anchors .code{background:var(--olive);color:#fff;font-weight:700;text-align:center;width:52px;font-size:13px}
+.anchors .nm{font-weight:600;width:150px}
+.anchors tr:nth-child(even) td:not(.code){background:var(--tint2)}
+
+/* items */
+.item{padding:15px 0;border-bottom:1px solid var(--rule)}
+.item:last-child{border-bottom:none}
+.q{display:flex;gap:11px;margin-bottom:11px}
+.num{font-family:var(--display);font-size:14px;font-weight:700;color:var(--clay);min-width:24px;padding-top:3px}
+.qt{font-size:16.5px;line-height:1.5}
+.tally{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-inline-start:35px}
+.tally button{height:34px;border:1px solid var(--rule);background:var(--card);font-size:14px;color:var(--mute);padding:0;transition:.1s}
+.tally button:hover{border-color:var(--olive)}
+.tally button.on{background:var(--olive);border-color:var(--olive);color:#fff;font-weight:700}
+.tally button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.scalekey{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin:0 0 14px 0;margin-inline-start:35px;font-size:11px;color:var(--mute);text-align:center}
+
+/* key picks */
+.pick{display:flex;align-items:flex-start;gap:11px;padding:11px 13px;border:1px solid var(--rule);background:var(--card);margin-bottom:7px;cursor:pointer;transition:.12s}
+.pick:hover{border-color:var(--olive)}
+.pick.sel{background:var(--tint);border-color:var(--olive);border-inline-start:4px solid var(--olive)}
+.pick .sc{font-family:var(--display);font-size:17px;font-weight:900;color:var(--olive);min-width:26px;text-align:center}
+.pick .tx{font-size:15.5px;line-height:1.45}
+.pick.dim{opacity:.45}
+
+/* results */
+.res{background:var(--card);border:1px solid var(--rule);padding:15px 18px;margin-bottom:10px}
+.res.top{border-inline-start:4px solid var(--olive)}
+.res-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:8px}
+.res-name{font-family:var(--display);font-size:19px;font-weight:700}
+.res-name small{font-family:var(--body);font-size:12px;color:var(--mute);font-weight:400;margin-inline-start:7px}
+.res-score{font-family:var(--display);font-size:24px;font-weight:900;color:var(--olive)}
+.meter{height:8px;background:var(--paper);border:1px solid var(--rule)}
+.meter span{display:block;height:100%;background:var(--olive)}
+.res.dim .meter span{background:#C2C7B4}
+.res .desc{font-size:13.5px;color:var(--mute);margin-top:7px}
+.rank{font-family:var(--display);font-size:11px;font-weight:700;color:var(--clay);letter-spacing:.1em}
+
+.actions{display:flex;gap:11px;align-items:center;flex-wrap:wrap;margin-top:28px}
+.btn{background:var(--ink);color:var(--paper);border:none;font-size:16px;font-weight:600;padding:14px 30px;transition:background .14s}
+.btn:hover{background:var(--olive)}
+.btn.ghost{background:transparent;color:var(--mute);border:1px solid var(--rule);padding:13px 22px}
+.btn.ghost:hover{background:var(--card);color:var(--ink)}
+.btn.sm{padding:9px 17px;font-size:14px}
+.status{font-size:14px;color:var(--mute)}
+.alert{background:var(--card);border:1px solid var(--clay);color:var(--clay);padding:12px 16px;font-size:15px;margin-top:14px;display:none}
+textarea{width:100%;height:190px;border:1px solid var(--rule);background:var(--card);font-family:var(--body);font-size:13px;padding:11px;direction:rtl;text-align:right}
+footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--mute)}
+
+@media (max-width:620px){
+  body{font-size:16px}
+  .wrap{padding:0 15px 90px}
+  .tally,.scalekey{margin-inline-start:0}
+  .anchors .nm{width:auto}
+  .res-head{flex-direction:column;gap:2px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+#grid40{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:16px 0}
+.cell40{display:flex;align-items:center;gap:6px;border:1px solid var(--rule,#D8D8CE);border-radius:3px;padding:5px 8px;background:#fff}
+.cell40 label{font-size:13px;color:var(--muted,#777);min-width:22px}
+.cell40 input{width:100%;border:0;font-size:16px;font-family:inherit;text-align:center;padding:4px 0}
+.cell40.bad{border-color:#A9603F;background:#FBF3EF}
+.cell40.done{background:#F7F9F3}
+.picks3{display:flex;gap:10px;margin:10px 0 4px}
+.picks3 input{width:90px;padding:9px;border:1px solid var(--rule,#D8D8CE);border-radius:3px;font-size:16px;font-family:inherit;text-align:center}
+.bd{margin-top:26px}
+.bd h3{font-family:var(--display,serif);font-size:19px;margin:18px 0 6px}
+.bd table{width:100%;border-collapse:collapse}
+.bd td{border-bottom:1px solid var(--rule,#D8D8CE);padding:6px 4px;font-size:14px;vertical-align:top}
+.bd td.n{width:34px;color:var(--muted,#777)}
+.bd td.v{width:52px;text-align:center;font-weight:600}
+.bd tr.picked td{background:#F2F5EA}
+.bd tr.picked td.v:after{content:" +4";font-size:11px;color:#5E6A41;font-weight:400}
+@media(max-width:640px){#grid40{grid-template-columns:repeat(2,1fr)}}
+</style>
+<script src="CFL_config.js"></script>
+<script src="CFL_bridge.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<header><img class="logo" src="CFL_logo.png" alt="חוזה עם החיים" alt="חוזה עם החיים — לפתוח · לבחור · לדייק"></header>
+<nav class="rail" id="rail"></nav>
+
+<!-- 0 -->
+<section class="step on" id="s0">
+  <h1>עוגני קריירה</h1>
+  <p class="lede">המצפן הפנימי שמכוון את הבחירות המקצועיות שלך.</p>
+  <p>הקריירה שלך אינה מסלול קבוע מראש, אלא ביטוי של הערכים, הכישורים והמוטיבציות הייחודיים לך. ההנחה שבבסיס הכלי היא שלכל אדם יש עוגן אחד או יותר — ערך, צורך או מוטיבציה עמוקה שעליהם קשה לו להתפשר.</p>
+  <p><b>העוגן אינו מה שאנחנו רוצים. הוא מה שאיננו מוכנים להחליף.</b></p>
+
+  <h2>שמונת העוגנים</h2>
+  <table class="anchors" id="anchTable"></table>
+
+  <div class="note clay"><b>חשוב לדעת לפני שמתחילים.</b> העוגן מתגבש רק אחרי חמש עד עשר שנות עבודה, מתוך התנסות ולא מתוך מחשבה. מי שממלא/ת מוקדם יותר יקבל/תקבל תמונה של שאיפות, לא של עוגן. ואין עוגן טוב מאחר — יש רק התאמה, או היעדרה, בין העוגן שלך לתפקיד שאת/ה ממלא/ת.</div>
+
+  <div class="note"><b>שתי דרכים למלא.</b> אפשר לדרג כאן על המסך, ואפשר לדרג על הטופס המודפס ואז להזין לכאן רק את הארבעים המספרים. בשני המסלולים החישוב זהה לחלוטין — הוא מבצע בדיוק את מה שכתוב בדף החישוב הידני.</div>
+
+
+  <div class="actions">
+    <button class="btn" onclick="go(1)">לדרג כאן על המסך</button>
+    <button class="btn ghost" onclick="openEntry()">מילאתי על נייר — להזנת התוצאות</button>
+    <span class="status" id="savedNote"></span>
+  </div>
+</section>
+
+<!-- 1 -->
+<section class="step" id="s1">
+  <h1>שלב א — דירוג</h1>
+  <p class="lede">עד כמה כל היגד נכון לגביך? 1 — לעולם לא. 6 — תמיד.</p>
+  <div id="items"></div>
+  <div class="actions">
+    <button class="btn" onclick="toStep2()">לשלב הבא</button>
+    <span class="status" id="prog"></span>
+  </div>
+  <div class="alert" id="al1"></div>
+</section>
+
+
+<!-- 1b : entry from a printed form -->
+<section class="step" id="s1b">
+  <h1>הזנת טופס מודפס</h1>
+  <p class="lede">הקלידו את הדירוג שרשמתם לצד כל סעיף, 1 עד 6.</p>
+  <p>אין צורך לקרוא את ההיגדים שוב — רק להעתיק מספרים. אפשר לנוע בין התיבות עם מקש הטאב.</p>
+
+  <div id="grid40"></div>
+
+  <h2>שלושת הסעיפים שבחרתם</h2>
+  <p>רשמו את מספרי שלושת הסעיפים שסימנתם בשלב ב׳ בטופס, אלה שקיבלו ארבע נקודות נוספות.</p>
+  <div class="picks3">
+    <input class="p3" type="number" min="1" max="40" placeholder="סעיף">
+    <input class="p3" type="number" min="1" max="40" placeholder="סעיף">
+    <input class="p3" type="number" min="1" max="40" placeholder="סעיף">
+  </div>
+
+  <div class="actions">
+    <button class="btn" onclick="submitEntry()">חישוב הפרופיל</button>
+    <button class="btn ghost" onclick="go(0)">חזרה</button>
+    <span class="status" id="progEntry"></span>
+  </div>
+  <div class="alert" id="alEntry"></div>
+</section>
+
+<!-- 2 -->
+<section class="step" id="s2">
+  <h1>שלב ב — שלושת הסעיפים</h1>
+  <p class="lede">מתוך ההיגדים שדירגת גבוה, בחר/י את שלושת הנכונים ביותר לגביך. לכל אחד מהם יתווספו 4 נקודות.</p>
+  <div class="note olive"><b>למה השלב הזה קיים.</b> אפשר לדרג הכול גבוה, אבל אי אפשר לבחור יותר משלושה. זה המנגנון שמנטרל מענה מחמיא ומאלץ הכרעה אמיתית.</div>
+  <div id="picks"></div>
+  <div class="actions">
+    <button class="btn" onclick="calc()">חשב/י את הפרופיל</button>
+    <span class="status" id="pcount"></span>
+  </div>
+  <div class="alert" id="al2"></div>
+</section>
+
+<!-- 3 -->
+<section class="step" id="s3">
+  <h1>מה עולה מהשאלון</h1>
+  <p class="lede">זו לא אבחנה ולא ציון. אלה כמה דברים שבלטו לי בתשובות שלך, כנקודת פתיחה לשיחה שלנו.</p>
+  <div class="reflect" id="reflect"></div>
+  <div id="verdict"></div>
+  <div class="note clay"><b>וחשוב לזכור:</b> אדגר שיין, שפיתח את השאלון, בנה אותו כמפה לשיחה, ולא כמבחן. בפגישה נבדוק יחד מה מזה מדויק לך, ומה לא.</div>
+  <div class="actions">
+    <button class="btn" id="cflSend" onclick="cflSubmit()">שליחה</button>
+    <button class="btn ghost" id="cflRestart" onclick="toggle('cf')">התחלה מחדש</button>
+    <span class="status" id="sm"></span>
+  </div>
+  <div class="note clay" id="cf" style="display:none">
+    <b>למחוק הכול ולהתחיל מחדש?</b> אי אפשר לבטל.
+    <div class="actions" style="margin-top:10px">
+      <button class="btn sm" onclick="restart()">כן, למחוק</button>
+      <button class="btn ghost sm" onclick="toggle('cf')">ביטול</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  מבוסס על שאלון עוגני הקריירה של Edgar H. Schein. הנוסח מותאם לעברית ולשימוש בשיחה מקצועית, ואין לו נורמות ישראליות מתוקפות.<br>
+  <b style="color:var(--olive)">חוזה עם החיים</b> · לפתוח · לבחור · לדייק
+</footer>
+</div>
+
+<script>
+const ANCHORS = [
+ {c:'TF', n:'מקצועי-טכני',     d:'להיות מומחה/ית. ההנאה היא מהתוכן עצמו ומרמת המיומנות, לא מהיקף הניהול.'},
+ {c:'GM', n:'ניהול כללי',       d:'לנהל, לשאת באחריות כוללת ולהשפיע על מערכת שלמה.'},
+ {c:'AU', n:'אוטונומיה',        d:'לעבוד בדרך שלי, בקצב שלי, בלי שמישהו יגדיר לי איך.'},
+ {c:'SE', n:'ביטחון ויציבות',   d:'לדעת שיש קרקע יציבה — תעסוקתית או כלכלית.'},
+ {c:'EC', n:'יצירתיות יזמית',   d:'להקים משהו שלא היה, ושיהיה שלי.'},
+ {c:'SV', n:'שירות ומחויבות',   d:'שהעבודה תשרת ערך או אנשים, מעבר לעצמי.'},
+ {c:'CH', n:'אתגר טהור',        d:'לפתור את מה שאי אפשר, לנצח את הקשה.'},
+ {c:'LS', n:'סגנון חיים',       d:'שהעבודה תשתלב בחיים השלמים, ולא תבלע אותם.'}
+];
+
+const ITEMS = [
+ 'אני חולם/ת שאני כל כך טוב/ה במה שאני עושה, שאנשים תמיד יפנו אליי ויבקשו את עצתי כמומחה/ית בתחום.',
+ 'יש לי סיפוק גדול ביותר מעבודתי כאשר אני מצליח/ה לשלב בה ולנהל את ניסיונם של אחרים.',
+ 'אני חולם/ת על קריירה שתאפשר לי חופש פעולה בביצוע העבודה בדרכי שלי ועל פי לו״ז שאני קובע/ת.',
+ 'ביטחון ויציבות חשובים לי יותר מאשר חופש ועצמאות.',
+ 'אני תמיד מחפש/ת רעיונות שיאפשרו לי להקים עסק משלי.',
+ 'ארגיש כ״מצליחן/ית״ בקריירה שלי רק אם אהיה סבור/ה שבאמת ובתמים תרמתי לרווחת החברה שבה אני חי/ה.',
+ 'אני חולם/ת על קריירה שבה אוכל לפתור בעיות או לקצור הצלחה במצבים המעמידים בפניי אתגר מרבי.',
+ 'אעדיף לעזוב את מקום עבודתי מאשר לבצע תפקיד שיגרום לי להתפשר על יכולותיי, על ענייניי האישיים וענייני משפחתי.',
+ 'ארגיש כ״מצליחן/ית״ בקריירה שלי רק אם אוכל לפתח את כישוריי המקצועיים לרמה גבוהה מאוד של מיומנות.',
+ 'אני חולם/ת לנהל ארגון מורכב ולקבל החלטות המשפיעות על אנשים רבים.',
+ 'אני שבע/ת רצון ביותר מהעבודה שלי כאשר אני חופשי/ה לחלוטין להגדיר את המטלות, לוח הזמנים והנהלים שלי.',
+ 'אעדיף לפרוש מהארגון מאשר לקבל על עצמי תפקיד שיסכן את ביטחוני בו.',
+ 'להקים עסק משלי חשוב לי יותר מאשר לקבל משרת ניהול בכירה בחברה של מישהו אחר.',
+ 'אני מסופק/ת ביותר בקריירה שלי כאשר אני יכול/ה להעמיד את כישוריי לשירות אחרים.',
+ 'ארגיש כ״מצליחן/ית״ בקריירה שלי רק אם אעמוד בפני אתגרים קשים ואצליח להתגבר עליהם.',
+ 'אני חולם/ת על קריירה שתאפשר לי לשלב את דרישותיי האישיות, המשפחתיות והעסקיות.',
+ 'מושך אותי יותר להתמנות כמנהל/ת בכיר/ה בתחום התמחותי מאשר להתמנות למנכ״ל/ית.',
+ 'ארגיש כ״מצליחן/ית״ בקריירה שלי רק אם אתמנה למנכ״ל/ית חברה.',
+ 'ארגיש כ״מצליחן/ית״ בקריירה שלי רק אם אשיג עצמאות וחופש פעולה מוחלט.',
+ 'אני מחפש/ת עבודה בארגונים שנותנים לי תחושה של ביטחון ויציבות.',
+ 'אני שבע/ת רצון ביותר מהקריירה שלי כשאני מצליח/ה להקים משהו המבוסס אך ורק על רעיונותיי ומאמציי.',
+ 'ניצול הידע המקצועי שלי כדי לגרום לעולם להיות מקום טוב יותר לחיות ולעבוד בו, חשוב לי יותר מאשר להשיג משרת ניהול בדרג בכיר.',
+ 'הסיפוק הגדול ביותר בקריירה שלי נגרם לי כשהצלחתי לפתור בעיות שלכאורה לא ניתן לפתור, או כשהצלחתי להתגבר על מכשולים.',
+ 'אני מרגיש/ה שאני מצליח/ה בחיים רק כאשר אני יכול/ה לאזן בין חיי הפרטיים, המשפחתיים והעסקיים.',
+ 'אעדיף לפרוש ממקום עבודתי מאשר לקבל משרה שתוציא אותי מתחום התמחותי.',
+ 'להתמנות כמנכ״ל/ית מושך אותי יותר מאשר להיות מנהל/ת בכיר/ה בתחום התמחותי הקיים.',
+ 'ההזדמנות לבצע את העבודה בדרך שלי, ללא הוראות ואילוצים, חשובה לי יותר מאשר ביטחון.',
+ 'אני הכי מרוצה מעבודתי כשיש לי תחושה של ביטחון כלכלי מלא ותעסוקה קבועה.',
+ 'ארגיש כ״מצליחן/ית״ בקריירה שלי רק אם אוכל ליצור או להקים משהו המבוסס לגמרי על רעיון או מוצר משלי.',
+ 'אני חולם/ת על קריירה שיש בה תרומה ממשית לאנושות ולחברה שבה אני חי/ה.',
+ 'אני מחפש/ת הזדמנויות תעסוקה המהוות אתגר גדול לכישוריי התחרותיים או ליכולתי לפתור בעיות.',
+ 'היכולת לאזן בין חיי האישיים והמקצועיים חשובה לי יותר מאשר השגת משרת ניהול בכירה.',
+ 'אני הכי שבע/ת רצון מעבודתי כשאני יכול/ה לנצל את מיומנויותיי או את כישוריי המיוחדים.',
+ 'אעדיף לפרוש ממקום עבודתי מאשר לקבל עבודה שתרחיק אותי מהמסלול הניהולי.',
+ 'אעדיף לפרוש ממקום עבודתי מאשר לקבל עבודה שתצמצם את עצמאותי וחופש הפעולה שלי.',
+ 'אני חולם/ת על קריירה שתיתן לי הרגשה של ביטחון ויציבות.',
+ 'אני חולם/ת להקים עסק משלי.',
+ 'אעדיף לפרוש ממקום עבודתי מאשר לקבל על עצמי תפקיד שיפחית מיכולתי לעזור לאחרים.',
+ 'חשוב לי יותר לטפל בבעיות שכמעט לא ניתנות לפתרון מאשר להשיג תפקיד ניהולי בכיר.',
+ 'תמיד חיפשתי לי תפקידים שישבשו כמה שפחות את חיי האישיים והמשפחתיים.'
+];
+
+const KEY = ['1–2 לעולם לא','','3 לעיתים לא','4–5 בדרך כלל','','6 תמיד'];
+
+let S = { scores:{}, picks:[], stage:0 };
+let CAN_SAVE = false;
+
+let LOCKED = false; /* true once the answers were sent: nothing is saved or changed anymore */
+async function persist(){ if(LOCKED) return; try{ localStorage.setItem(CFL.draftKey('anchors'), JSON.stringify(S)); }catch(e){} }
+async function probe(){
+  try{ const x=localStorage.getItem(CFL.draftKey('anchors')); CAN_SAVE=true; if(x){ const d=JSON.parse(x); if(d&&d.scores) return d; } }catch(e){}
+  return null;
+}
+
+const LABELS=['פתיחה','דירוג','בחירה','תוצאה'];
+function drawRail(){
+  const r=document.getElementById('rail'); r.innerHTML='';
+  for(let i=1;i<=3;i++){
+    if(i>1){ const d=document.createElement('span'); d.className='dash'; r.appendChild(d); }
+    const pip=document.createElement('span');
+    pip.className='pip'+(S.stage>i?' done':S.stage===i?' now':'');
+    pip.textContent=i; pip.title=LABELS[i]; r.appendChild(pip);
+  }
+  const lab=document.createElement('span'); lab.className='rail-label';
+  lab.textContent = LABELS[Math.max(S.stage,0)] || 'פתיחה';
+  r.appendChild(lab);
+}
+
+function toggle(id){ const e=document.getElementById(id); e.style.display = e.style.display==='none'?'block':'none'; }
+
+function go(n){
+  S.stage=n;
+  document.querySelectorAll('.step').forEach(e=>e.classList.remove('on'));
+  document.getElementById('s'+n).classList.add('on');
+  if(n===1) renderItems();
+  if(n===2) renderPicks();
+  if(n==='1b'){ drawRail(); persist(); window.scrollTo({top:0,behavior:'smooth'}); return; }
+  drawRail(); persist();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderAnchors(){
+  document.getElementById('anchTable').innerHTML = ANCHORS.map(a=>
+    '<tr><td class="code">'+a.c+'</td><td class="nm">'+a.n+'</td><td>'+a.d+'</td></tr>').join('');
+}
+
+function renderItems(){
+  const w=document.getElementById('items'); w.innerHTML='';
+  ITEMS.forEach((t,i)=>{
+    const d=document.createElement('div'); d.className='item';
+    let tally='<div class="tally">';
+    for(let v=1;v<=6;v++) tally+='<button data-v="'+v+'" class="'+(S.scores[i]===v?'on':'')+'" onclick="setScore('+i+','+v+')">'+v+'</button>';
+    tally+='</div>';
+    const key = i===0 ? '<div class="scalekey">'+KEY.map(k=>'<span>'+k+'</span>').join('')+'</div>' : '';
+    d.innerHTML='<div class="q"><span class="num">'+(i+1)+'</span><span class="qt">'+t+'</span></div>'+tally+key;
+    w.appendChild(d);
+  });
+  updateProg();
+}
+function setScore(i,v){ S.scores[i]=v; renderItems(); persist(); }
+function updateProg(){
+  const n=Object.keys(S.scores).length;
+  document.getElementById('prog').textContent = n+' / 40 דורגו';
+}
+function toStep2(){
+  const n=Object.keys(S.scores).length;
+  const a=document.getElementById('al1');
+  if(n<40){ a.style.display='block'; a.textContent='נותרו '+(40-n)+' היגדים ללא דירוג.'; return; }
+  a.style.display='none'; go(2);
+}
+
+function renderPicks(){
+  const order = ITEMS.map((t,i)=>({i,t,s:S.scores[i]||0})).sort((a,b)=>b.s-a.s);
+  const max = order[0].s;
+  const w=document.getElementById('picks'); w.innerHTML='';
+  order.forEach(o=>{
+    const d=document.createElement('div');
+    d.className='pick'+(S.picks.includes(o.i)?' sel':'')+(o.s<max-1?' dim':'');
+    d.innerHTML='<span class="sc">'+o.s+'</span><span class="tx">'+o.t+'</span>';
+    d.onclick=()=>togglePick(o.i);
+    w.appendChild(d);
+  });
+  document.getElementById('pcount').textContent = S.picks.length+' / 3 נבחרו';
+}
+function togglePick(i){
+  const k=S.picks.indexOf(i);
+  if(k>=0) S.picks.splice(k,1);
+  else { if(S.picks.length>=3){ const a=document.getElementById('al2'); a.style.display='block'; a.textContent='אפשר לבחור שלושה בלבד. הסירו אחד כדי לבחור אחר.'; setTimeout(()=>a.style.display='none',2600); return; } S.picks.push(i); }
+  renderPicks(); persist();
+}
+
+
+/* ---------- entry from a printed form ---------- */
+function openEntry(){
+  const w = document.getElementById('grid40');
+  if(!w.children.length){
+    for(let i = 0; i < 40; i++){
+      const d = document.createElement('div');
+      d.className = 'cell40';
+      d.innerHTML = '<label>' + (i+1) + '.</label><input type="number" min="1" max="6" data-e="' + i + '">';
+      w.appendChild(d);
+    }
+    w.addEventListener('input', entryProg);
+  }
+  go('1b');
+}
+
+function entryVals(){
+  return [...document.querySelectorAll('#grid40 input')].map(i => i.value.trim());
+}
+
+function entryProg(){
+  const v = entryVals();
+  let ok = 0;
+  document.querySelectorAll('#grid40 input').forEach((inp, i) => {
+    const n = +v[i];
+    const cell = inp.parentNode;
+    const bad = v[i] !== '' && (!(n >= 1 && n <= 6) || v[i].indexOf('.') >= 0);
+    cell.classList.toggle('bad', bad);
+    cell.classList.toggle('done', !bad && v[i] !== '');
+    if(!bad && v[i] !== '') ok++;
+  });
+  document.getElementById('progEntry').textContent = ok + ' / 40 הוזנו';
+}
+
+function submitEntry(){
+  const a = document.getElementById('alEntry');
+  const show = m => { a.style.display = 'block'; a.textContent = m; };
+  const v = entryVals();
+
+  for(let i = 0; i < 40; i++){
+    const n = +v[i];
+    if(v[i] === '') return show('חסר דירוג לסעיף ' + (i+1) + '.');
+    if(!(n >= 1 && n <= 6) || v[i].indexOf('.') >= 0) return show('הדירוג בסעיף ' + (i+1) + ' חייב להיות מספר שלם בין 1 ל-6.');
+  }
+
+  const p = [...document.querySelectorAll('.p3')].map(i => i.value.trim());
+  if(p.some(s => s === '')) return show('יש לרשום את שלושת מספרי הסעיפים שבחרתם בשלב ב׳.');
+  const nums = p.map(Number);
+  if(nums.some(n => !(n >= 1 && n <= 40))) return show('מספר סעיף חייב להיות בין 1 ל-40.');
+  if(new Set(nums).size !== 3) return show('שלושת הסעיפים צריכים להיות שונים זה מזה.');
+
+  S.scores = {};
+  v.forEach((s, i) => { S.scores[i] = +s; });
+  S.picks = nums.map(n => n - 1);
+
+  /* a soft check only: the printed page asks to choose from among the highest rated */
+  const max = Math.max(...v.map(Number));
+  const low = S.picks.filter(i => S.scores[i] < max - 1);
+  a.style.display = 'none';
+  persist();
+  calc();
+  go(3);
+  if(low.length){
+    const note = document.getElementById('verdict');
+    note.innerHTML += '<p style="margin-top:10px"><b>שימו לב:</b> ' + low.length +
+      ' מהסעיפים שבחרתם אינם מבין הגבוהים שדירגתם. הטופס מבקש לבחור מתוך הגבוהים ביותר — ' +
+      'שווה לוודא שלא נפלה טעות בהעתקת המספרים. החישוב בוצע כפי שהוזן.</p>';
+  }
+}
+
+/* ---------- the full forty, grouped by anchor ---------- */
+function drawBreakdown(){
+  const w = document.getElementById('breakdown');
+  if(!w) return;
+  let h = '<div class="bd"><h2>ארבעים ההיגדים, לפי עוגן</h2>' +
+          '<p>כך הורכב כל ממוצע. סעיף מסומן הוא אחד משלושת הסעיפים שקיבלו ארבע נקודות נוספות.</p>';
+  ANCHORS.forEach((an, ai) => {
+    let sum = 0;
+    let rows = '';
+    for(let r = 0; r < 5; r++){
+      const idx = r * 8 + ai;
+      const base = S.scores[idx] || 0;
+      const add = S.picks.includes(idx) ? 4 : 0;
+      sum += base + add;
+      rows += '<tr class="' + (add ? 'picked' : '') + '"><td class="n">' + (idx + 1) + '.</td>' +
+              '<td>' + ITEMS[idx] + '</td><td class="v">' + base + '</td></tr>';
+    }
+    h += '<h3>' + an.n + ' <span style="font-size:14px;color:#777">· סה״כ ' + sum +
+         ' · ממוצע ' + (sum / 5).toFixed(1) + '</span></h3><table>' + rows + '</table>';
+  });
+  w.innerHTML = h + '</div>';
+}
+
+function computed(){
+  const out = ANCHORS.map((a,ai)=>{
+    let sum=0;
+    for(let r=0;r<5;r++){
+      const idx = r*8 + ai;
+      sum += (S.scores[idx]||0) + (S.picks.includes(idx)?4:0);
+    }
+    return { ...a, sum, avg: +(sum/5).toFixed(1) };
+  });
+  return out.sort((x,y)=>y.avg-x.avg);
+}
+
+function cwlJoin(a){a=a.filter(Boolean);return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' ו'+a[a.length-1];}
+const RA={
+ TF:['נראה שחשוב לך להיות טוב/ה מאוד במה שאת/ה עושה, ולהעמיק בתוכן עצמו.','האם בתפקיד שלך היום יש מספיק מקום להעמיק ולהשתפר בתחום שלך?'],
+ GM:['נראה שחשוב לך לשאת באחריות רחבה, ולהוביל דברים שמשפיעים על מערכת שלמה.','האם יש לך היום את ההשפעה ואת האחריות שהיית רוצה?'],
+ AU:['נראה שחשוב לך לעבוד בדרך שלך ובקצב שלך, בלי שמישהו יגדיר לך איך.','האם יש לך היום מספיק חופש להחליט איך לעבוד?'],
+ SE:['נראה שחשוב לך לדעת שיש קרקע יציבה מתחת לרגליים.','האם מה שנותן לך היום תחושת ביטחון מגיע מהעבודה, או ממקום אחר?'],
+ EC:['נראה שחשוב לך ליצור משהו חדש, משהו שיהיה שלך.','האם יש היום משהו שהתחלת או בנית בעצמך, או משהו שהיית רוצה לבנות?'],
+ SV:['נראה שחשוב לך שהעבודה תשרת ערך או אנשים, מעבר לעצמך.','האם את/ה מרגיש/ה היום שהעבודה שלך משרתת משהו שחשוב לך?'],
+ CH:['נראה שמושך אותך להתמודד עם הקשה, ולפתור את מה שנראה בלתי אפשרי.','האם יש היום בעבודה שלך מספיק אתגר?'],
+ LS:['נראה שחשוב לך שהעבודה תשתלב בחיים כולם, ולא תשתלט עליהם.','האם יש היום איזון שטוב לך בין העבודה לבין שאר החיים?']};
+function calc(){
+  const a=document.getElementById('al2');
+  if(S.picks.length!==3){ a.style.display='block'; a.textContent='יש לבחור בדיוק שלושה היגדים.'; return; }
+  a.style.display='none';
+  const rows=computed(),top=rows[0],sec=rows[1],low=rows[rows.length-1];
+  const gap=+(top.avg-sec.avg).toFixed(1);
+  let h='';
+  if(gap>=1) h+='<p>בולט אצלך דבר אחד: <b>'+top.n+'</b>. '+RA[top.c][0]+'</p><p>כשמשהו בעבודה יתנגש בזה, סביר שזה מה שיכריע אצלך.</p>';
+  else if(gap>=0.4) h+='<p>הדבר שהכי חשוב לך הוא <b>'+top.n+'</b>. '+RA[top.c][0]+'</p><p>קרוב אליו נמצא <b>'+sec.n+'</b>. '+RA[sec.c][0]+'</p>';
+  else h+='<p>שני דברים חשובים לך במידה כמעט שווה: <b>'+top.n+'</b> ו<b>'+sec.n+'</b>.</p><p>'+RA[top.c][0]+' '+RA[sec.c][0]+'</p><p>ייתכן שהם משלימים זה את זה אצלך. וייתכן שלפעמים הם מושכים לכיוונים שונים.</p>';
+  h+='<p>מה שפחות מרכזי לך הוא <b>'+low.n+'</b>. ייתכן שתפקיד שבנוי כולו סביב זה יעייף אותך, גם אם תצליח/י בו.</p>';
+  const pn=S.picks.map(i=>ANCHORS[i%8].n).filter((x,i,arr)=>arr.indexOf(x)===i);
+  h+='<p>כשהתבקשת לבחור את שלושת המשפטים שהכי נכונים לך, בחרת משפטים שקשורים לנושאים האלה: '+cwlJoin(pn)+'.</p>';
+  if(!pn.includes(top.n)) h+='<p>מעניין שהבחירה הזו לא כוללת את '+top.n+'. לפעמים מה שבוחרים כשצריך להכריע מספר משהו נוסף.</p>';
+  const qs=[RA[top.c][1]];if(gap<1)qs.push(RA[sec.c][1]);qs.push('האם התמונה הזו מוכרת לך, או שמשהו בה מפתיע אותך?');
+  h+='<p style="margin-top:18px"><b>כמה נקודות למחשבה:</b></p><ul>'+qs.map(q=>'<li style="margin:6px 0">'+q+'</li>').join('')+'</ul>';
+  document.getElementById('reflect').innerHTML=h;
+  go(3);
+}
+
+function buildSummary(){
+  const rows=computed();
+  let t='עוגני קריירה — '+new Date().toLocaleDateString('he-IL')+'\n\nהפרופיל\n';
+  rows.forEach((r,i)=>{ t+=(i+1)+'. '+r.n+' ('+r.c+') — '+r.avg.toFixed(1)+'\n'; });
+  t+='\nשלושת הסעיפים שנבחרו\n';
+  S.picks.forEach(i=>{ t+='· ['+ANCHORS[i%8].c+'] '+ITEMS[i]+'\n'; });
+  t+='\nהדירוגים המלאים\n';
+  ITEMS.forEach((x,i)=>{ t+=(i+1)+'. '+(S.scores[i]||0)+(S.picks.includes(i)?' (+4)':'')+'\n'; });
+  {const r=document.getElementById('reflect');if(r&&r.innerText.trim())t+='\n\nהשיקוף שקיבלתי בסוף השאלון\n'+r.innerText.trim();}
+  t+='\nמבוסס על שאלון עוגני הקריירה של Edgar H. Schein. כלי תומך שיחה, לא אבחון.';
+  return t;
+}
+function restart(){
+  S={scores:{},picks:[],stage:0};
+  document.getElementById('cf').style.display='none';
+  try{ localStorage.removeItem(CFL.draftKey('anchors')); }catch(e){}
+  persist(); go(0);
+  document.querySelectorAll('.step').forEach(e=>e.classList.remove('on'));
+  document.getElementById('s0').classList.add('on');
+  drawRail();
+}
+
+/* ---------- sending to the site ---------- */
+function lockSent(when){
+  LOCKED = true;
+  ['cflSend','cflRestart','cf'].forEach(function(id){ const e=document.getElementById(id); if(e) e.style.display='none'; });
+  const s3=document.getElementById('s3');
+  if(!document.querySelector('#s3 .cfl-sent')) s3.insertBefore(CFL.sentNote(when), s3.children[1]);
+}
+async function cflSubmit(){
+  const m=document.getElementById('sm'), b=document.getElementById('cflSend');
+  if(Object.keys(S.scores).length<40 || S.picks.length!==3){ m.textContent='חסרים דירוגים או בחירות. חזרו לשלבים הקודמים.'; return; }
+  if(!confirm('לאחר השליחה לא ניתן יהיה לשנות את התשובות. לשלוח?')) return;
+  b.disabled=true; b.textContent='שולח…'; m.textContent='';
+  const r = await CFL.submit('anchors', { scores:S.scores, picks:S.picks }, buildSummary());
+  b.disabled=false; b.textContent='שליחה';
+  if(!r.ok){ m.textContent=r.message||'השליחה לא הצליחה. נסו שוב.'; return; }
+  lockSent('');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+(async function init(){
+  renderAnchors();
+  const info = await CFL.start('anchors');
+  if(info.status==='submitted' && info.saved && info.saved.scores){
+    /* already sent: show the results screen only, read-only */
+    LOCKED = true;
+    S = { scores: info.saved.scores, picks: info.saved.picks, stage: 0 };
+    calc();
+    lockSent(info.submittedAt);
+    return;
+  }
+  const saved = await probe();
+  if(saved && (Object.keys(saved.scores).length || saved.picks.length)){
+    S = saved;
+    document.getElementById('savedNote').textContent = 'יש כאן עבודה שהתחלת — '+Object.keys(S.scores).length+' מתוך 40 דורגו.';
+  }
+  S.stage = 0;
+  drawRail();
+})();
+</script>
+
+<style id="cwl-font">body,body *{font-family:Arial,"Arial Hebrew","Helvetica Neue",sans-serif!important}body{zoom:1.15}</style>
+</body>
+</html>

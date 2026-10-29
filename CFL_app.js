@@ -1,9 +1,8 @@
 // חוזה עם החיים (CFL) – צד לקוח
 
-// ===================== Settings =====================
-// Paste the Apps Script web app URL here (ends with /exec)
-const API_URL = 'https://script.google.com/macros/s/AKfycbwC8VvcGZVy7fv5SRa_Kp7GJlGTPgkaQYVfV-unUmsnCvM0kvfH3e0QdC7fSVdwuwBE/exec';
+// The server address is set in CFL_config.js
 const TOKEN_KEY = 'cfl_token';
+const EMAIL_KEY = 'cfl_email';
 
 const app = document.getElementById('app');
 const logoutBtn = document.getElementById('logoutBtn');
@@ -26,7 +25,7 @@ async function api(action, data) {
   let res;
   try {
     // text/plain keeps this a "simple" request, so the browser doesn't block the reply from Google
-    res = await fetch(API_URL, {
+    res = await fetch(CFL_API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify(body)
@@ -64,7 +63,7 @@ function el(tag, props, ...children) {
 }
 
 function render(...nodes) {
-  app.replaceChildren(...nodes);
+  app.replaceChildren(...nodes.filter(n => n !== null && n !== undefined));
   window.scrollTo(0, 0);
 }
 
@@ -192,6 +191,7 @@ function showForgot(prefill) {
 async function logout() {
   await api('logout');
   store(TOKEN_KEY, null);
+  store(EMAIL_KEY, null);
   showLogin();
 }
 logoutBtn.addEventListener('click', logout);
@@ -206,17 +206,21 @@ async function showHome(notice) {
   const r = await api('home');
   if (!r.ok) { if (!r.handled) errorView(r.message, () => showHome()); return; }
   currentUser = { name: r.name, email: r.email };
+  store(EMAIL_KEY, r.email); // questionnaire pages use it to keep each user's draft separate
   logoutBtn.hidden = false;
 
   const cards = r.questionnaires.map(q => {
     let badge, action = null;
+    const isTool = q.type === 'tool';
     if (q.status === 'submitted') {
       badge = el('span', { class: 'badge submitted' }, 'נשלח');
-      action = el('button', { type: 'button', class: 'btn secondary', onclick: () => showAnswers(q.id) }, 'צפייה בתשובות');
+      action = el('button', { type: 'button', class: 'btn secondary',
+        onclick: () => isTool ? openPage(q.page) : showAnswers(q.id) }, isTool ? 'צפייה בתוצאות' : 'צפייה בתשובות');
     } else if (q.status === 'open') {
       badge = el('span', { class: 'badge open' }, 'פתוח למילוי');
       const hasDraft = !!load(draftKey(q.id));
-      action = el('button', { type: 'button', class: 'btn primary', onclick: () => showQuestionnaire(q.id) },
+      action = el('button', { type: 'button', class: 'btn primary',
+        onclick: () => isTool ? openPage(q.page) : showQuestionnaire(q.id) },
         hasDraft ? 'המשך מילוי' : 'למילוי');
     } else {
       badge = el('span', { class: 'badge locked' }, 'ייפתח בהמשך');
@@ -232,6 +236,11 @@ async function showHome(notice) {
     el('p', { class: 'sub' }, 'אלה השאלונים שלך. שאלונים חדשים ייפתחו לאורך התהליך.'),
     el('div', { class: 'q-list' }, cards)
   );
+}
+
+// A questionnaire with its own page (like עוגני קריירה)
+function openPage(page) {
+  location.href = page;
 }
 
 // ===================== Filling a questionnaire =====================
@@ -374,8 +383,8 @@ async function showAnswers(id) {
 }
 
 // ===================== Start =====================
-if (API_URL.indexOf('PASTE_') === 0) {
-  render(msgBox('האתר עדיין לא חובר לשרת: יש להדביק את כתובת ה-Web App בקובץ CFL_app.js.'));
+if (CFL_API_URL.indexOf('PASTE_') === 0) {
+  render(msgBox('האתר עדיין לא חובר לשרת: יש להדביק את כתובת ה-Web App בקובץ CFL_config.js.'));
 } else if (load(TOKEN_KEY)) {
   showHome();
 } else {
