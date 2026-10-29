@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>הצלחה · חוזה עם החיים</title>
+<style>
+:root{--paper:#F7F5EF;--card:#FFF;--ink:#2B2B28;--mute:#6E6B62;--olive:#6B7A4F;--olive-d:#4E5A3A;
+--olive-l:#8C9A72;--clay:#A9633F;--claybg:#F4E9E1;--gold:#B8933F;--goldbg:#F2EDDC;
+--rule:#DAD5C7;--tint:#F0EEE5;--tint2:#FAF9F4;--slate:#3E4A55;--slatebg:#EAEDF0;--acc:#A9633F;--acc-d:#85482B;--accbg:#F4E9E1}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Assistant","Heebo","Segoe UI",Arial,sans-serif;font-size:17px;line-height:1.65}
+.wrap{max-width:780px;margin:0 auto;padding:0 20px 100px}
+header{padding:42px 0 26px;border-bottom:2px solid var(--acc)}
+.roof{display:inline-block;font-size:12.5px;font-weight:700;padding:4px 12px;background:var(--accbg);color:var(--acc-d);margin:0 0 12px}
+.brand{font-size:14px;color:var(--mute);font-weight:700;margin:0 0 6px}
+h1{font-size:31px;line-height:1.25;margin:0 0 10px;font-weight:800}
+.lede{font-size:18px;color:var(--mute);margin:0;max-width:56ch}
+.note{background:var(--claybg);border-right:4px solid var(--clay);padding:16px 20px;margin:26px 0;font-size:15.5px}
+.note b{color:var(--clay)}
+section.block{margin:38px 0 0;background:var(--card);border:1px solid var(--rule);padding:26px 24px}
+section.block h2{font-size:23px;margin:0 0 6px;font-weight:800}
+section.block .sub{font-size:16px;color:var(--mute);margin:0 0 20px;max-width:52ch}
+.dim{display:inline-block;font-size:12.5px;font-weight:700;padding:3px 10px;margin-bottom:10px;background:var(--tint);color:var(--olive-d)}
+.item{padding:15px 0;border-top:1px solid var(--rule)}
+.item:first-of-type{border-top:none}
+.qt{margin:0 0 10px;font-size:16.5px}
+.rev{font-size:12.5px;color:var(--clay);font-weight:700}
+.scale{display:flex;gap:6px}
+.scale label{flex:1}
+.scale input{position:absolute;opacity:0;width:0;height:0}
+.scale span{display:block;text-align:center;padding:10px 0;cursor:pointer;border:1px solid var(--rule);background:var(--tint2);font-size:15px;font-weight:600}
+.scale input:checked + span{background:var(--acc);border-color:var(--acc-d);color:#fff}
+.scale input:focus-visible + span{outline:3px solid var(--gold);outline-offset:2px}
+.ends{display:flex;justify-content:space-between;font-size:12.5px;color:var(--mute);margin-top:6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.grid2 label{font-size:15px}
+.grid2 input{width:100%;margin-top:7px;padding:11px;font-size:17px;border:1px solid var(--rule);background:var(--tint2);font-family:inherit}
+.cap{font-size:13.5px;color:var(--mute);margin:13px 0 0}
+.actions{margin:36px 0 0;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+button{font-family:inherit;font-size:16.5px;font-weight:700;cursor:pointer;background:var(--ink);color:var(--paper);border:none;padding:15px 34px}
+button:hover{background:var(--acc-d)}
+button.ghost{background:transparent;color:var(--mute);border:1px solid var(--rule);padding:14px 24px;font-weight:600}
+.status{font-size:14.5px;color:var(--clay)}
+#out{display:none;margin-top:44px}
+#out.on{display:block}
+.switchwrap{margin:0 0 28px}
+.switchlabel{font-size:14px;color:var(--mute);margin:0 0 8px;font-weight:700}
+.tabs{display:flex;gap:0;border:2px solid var(--acc);padding:4px;background:var(--card)}
+.tabs button{flex:1;background:transparent;color:var(--acc-d);border:none;padding:14px 10px;font-size:16px;font-weight:700}
+.tabs button.on{background:var(--acc);color:#fff}
+.tabs button:not(.on):hover{background:var(--accbg)}
+.pane{display:none}.pane.on{display:block}
+.res{padding:15px 0;border-top:1px solid var(--rule)}
+.res:first-of-type{border-top:2px solid var(--acc)}
+.res{padding:18px 0}
+.rhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.rname{font-size:18.5px;font-weight:800}
+.rname{margin-bottom:4px}
+.mirtext{font-size:16.5px;margin:8px 0 0;max-width:56ch}
+.meter{height:8px;background:var(--tint);border:1px solid var(--rule);margin:9px 0 6px}
+.meter i{display:block;height:100%;background:var(--olive-l)}
+.res.low .meter i{background:var(--clay)}
+
+.tag{font-size:13px;color:var(--clay);font-weight:700}
+.gapline{font-size:14px;color:var(--mute);margin-top:4px}
+.read{background:var(--tint);padding:22px 24px;margin-top:24px}
+.read h3{margin:0 0 6px;font-size:19px}
+.read h3.n{margin-top:22px}
+.read p{margin:0 0 10px;font-size:16px}.read p:last-child{margin:0}
+.flag{background:var(--claybg);border-right:4px solid var(--clay);padding:14px 18px;margin:15px 0;font-size:15.5px}
+.rank{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--rule);font-size:16px}
+.rank b{color:var(--acc-d)}
+.cons{background:var(--slatebg);border-right:4px solid var(--slate);padding:16px 20px;margin:0 0 24px;font-size:15px}
+.cons b{color:var(--slate)}
+.cbox{background:var(--card);border:1px solid var(--rule);padding:20px 22px;margin-top:20px}
+.cbox h3{margin:0 0 12px;font-size:18px;color:var(--slate)}
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th,td{text-align:right;padding:8px 6px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-size:13px;color:var(--mute);font-weight:700}
+td.n{text-align:center;font-weight:700;width:52px}
+tr.rv td{color:var(--clay)}
+tr.hi td.n{background:var(--goldbg)}
+tr.lo td.n{background:var(--claybg)}
+.eg{font-weight:800;font-size:15px;background:var(--tint);padding:10px 6px!important}
+ul.q{margin:0;padding-right:20px}
+ul.q li{margin-bottom:9px;font-size:15.5px}
+.ok{color:var(--olive-d);font-weight:700}
+.warn{color:var(--clay);font-weight:700}
+.bridge{background:var(--goldbg);border-right:4px solid var(--gold);padding:16px 20px;margin:20px 0;font-size:15.5px}
+.bridge b{color:var(--gold)}
+.p2act{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 22px}
+.p2act button{background:var(--slate);color:#fff;font-size:15px;padding:12px 20px}
+.p2act button:hover{background:var(--ink)}
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+#rawbox{width:100%;min-height:300px;margin-top:14px;padding:14px;font-family:inherit;
+  font-size:14px;border:1px solid var(--rule);background:var(--tint2);display:none}
+#rawbox.on{display:block}
+@media print{
+  body{background:#fff}
+  header,form,.actions,.tabs,.switchwrap,.p2act,footer,.note,#p1{display:none!important}
+  #out{display:block!important;margin:0}
+  .pane{display:none!important}
+  #p2{display:block!important}
+  .cbox{border:1px solid #ccc;page-break-inside:avoid}
+  .cons{border-right:3px solid #333}
+}
+footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--rule);font-size:13px;color:var(--mute)}
+@media(max-width:620px){body{font-size:16px}h1{font-size:25px}.scale{gap:4px}
+.scale span{padding:9px 0;font-size:14px}section.block{padding:20px 16px}.grid2{grid-template-columns:1fr}
+.tabs button{padding:11px 14px;font-size:15px}table{font-size:13px}}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap" rel="stylesheet"><style id="cfl-font">body,body *{font-family:"Heebo",Arial,"Arial Hebrew",sans-serif!important}</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <p class="roof">חוזה עם החיים · כלי ההצלחה</p>
+  <p class="brand">חוזה עם החיים</p>
+  <h1>הצלחה</h1>
+  <p class="lede">מה מקדם אותנו, ומה לא.</p>
+</header>
+<div class="note">שלושים פריטים, כעשר דקות. אין תשובה נכונה.</div>
+<form id="f">
+<section class="block" data-eng="לקרוא את הכללים"><span class="dim">רגל ראשונה</span><h2>לקרוא את הכללים</h2><p class="sub">בכל ארגון יש כללים שאיש לא כתב, ולפיהם נקבע מי מתקדם.</p></section>
+<section class="block" data-eng="לתפוס מקום"><span class="dim">רגל שנייה</span><h2>לתפוס מקום</h2><p class="sub">עבודה טובה שעשינו לא מספרת על עצמה. מישהו צריך לספר אותה.</p></section>
+<section class="block" data-eng="לבנות על מה שיש"><span class="dim">רגל שלישית</span><h2>לבנות על מה שיש</h2><p class="sub">אותה עבודה יכולה להוסיף למה שכבר בנינו, או לעמוד בפני עצמה.</p></section>
+<section class="block" data-eng="מה קרה בפועל"><h2>מה קרה בפועל</h2><p class="sub">שלוש שאלות על מה שקרה בפועל בשנה האחרונה.</p></section>
+<section class="block" data-eng="מה מושך"><h2>מה מושך אותנו</h2><p class="sub">ארבעה דברים שאנשים רוצים מהעבודה. מה מושך יותר, ומה פחות.</p></section>
+
+
+<section class="block">
+<h2>מאיפה זה הגיע</h2>
+<p class="sub">ארבעה מספרים בין 0 ל-100. הממצא הוא התנועה, לא המספר. גיל חמש־עשרה נבחר כי מה שכבר היה שם לא נבנה מתוך תוכנית קריירה.</p>
+<div class="grid2">
+<label>כמה חשוב היה לנו להצליח בגיל 15?<input type="number" id="w15" min="0" max="100" placeholder="0–100"></label>
+<label>כמה חשוב לנו להצליח היום?<input type="number" id="wnow" min="0" max="100" placeholder="0–100"></label>
+<label>כמה האמנו שנצליח בגיל 15?<input type="number" id="b15" min="0" max="100" placeholder="0–100"></label>
+<label>כמה אנחנו מאמינים שנצליח היום?<input type="number" id="bnow" min="0" max="100" placeholder="0–100"></label>
+</div>
+<p class="cap">השורה העליונה היא רצון. התחתונה היא אמונה. הן יכולות לזוז בכיוונים הפוכים.</p>
+</section>
+
+
+<div class="actions">
+<button type="button" id="go">סיום</button>
+<button type="button" class="ghost" id="clr">ניקוי</button>
+<span class="status" id="msg"></span>
+</div>
+<p id="saved" class="cap" style="margin-top:14px"></p>
+</form>
+<div id="out">
+  <div class="switchwrap">
+    <p class="switchlabel">שני מסכים · לחצי כדי להחליף</p>
+    <div class="tabs">
+      <button type="button" id="t1" class="on">מה הנועץ רואה</button>
+      <button type="button" id="t2">מה היועץ רואה</button>
+    </div>
+  </div>
+  <div class="pane on" id="p1">
+    <h2 style="font-size:26px;margin:0 0 6px">המראה</h2>
+    <p style="color:var(--mute);margin:0 0 22px">שלוש תמונות, ומה מושך אותך.</p>
+    <div id="bars"></div><div id="extra1"></div><div class="read" id="read"></div>
+    <div class="cwl-card" style="border:1px solid var(--rule);border-top:5px solid #B8933F;background:#fff;border-radius:8px;padding:20px 22px;margin:26px 0;font-size:18px">
+    <h3 style="margin-top:0">שליחה אליי</h3><p>נשאר רק לשלוח לי את התשובות. הן יגיעו רק אליי, ונסתכל עליהן יחד בפגישה שלנו.</p>
+    <button type="button" class="cwl-send" onclick="CWLReturn.open()">שליחת התשובות אליי</button></div>
+  </div>
+  <div class="pane" id="p2">
+    <div class="p2act">
+      <button type="button" id="pr">הדפסה או שמירה כ־PDF</button>
+      <button type="button" id="cp">הצגה כטקסט להעתקה</button>
+    </div>
+    <div id="p2body"></div>
+    <textarea id="rawbox" readonly></textarea>
+  </div>
+</div>
+<footer>חוזה עם החיים · עודכן 13.09.2026 · 16:12. התשובות נשמרות בדפדפן שלך, ומגיעות אליי רק כשתשלחי אותן.</footer>
+</div>
+<script>
+const T0=Date.now();
+const raw=(e,i)=>{const el=document.querySelector('input[name="'+e+'_'+i+'"]:checked');return el?+el.value:null;};
+const sc=(e,i)=>{const v=raw(e,i);return v===null?null:(DATA[e][i][1]?7-v:v);};
+const avg=e=>{let s=0,n=0;DATA[e].forEach((_,i)=>{const v=sc(e,i);if(v!==null){s+=v;n++;}});return n?s/n:null;};
+const num=id=>{const el=document.getElementById(id);if(!el)return null;const v=parseFloat(el.value);return isNaN(v)?null:v;};
+const sd=a=>{const m=a.reduce((x,y)=>x+y,0)/a.length;return Math.sqrt(a.reduce((x,y)=>x+(y-m)**2,0)/a.length);};
+
+function renderItems(){
+  document.querySelectorAll('section.block[data-eng]').forEach(sec=>{
+    const eng=sec.dataset.eng;
+    if(!DATA[eng]){console.warn('אין נתונים עבור',eng);return;}
+    DATA[eng].forEach((it,i)=>{
+      const d=document.createElement('div');d.className='item';
+      let s='<p class="qt">'+it[0]+'</p><div class="scale">';
+      for(let v=1;v<=6;v++) s+='<label><input type="radio" name="'+eng+'_'+i+'" value="'+v+'"><span>'+v+'</span></label>';
+      s+='</div><div class="ends"><span>כלל לא</span><span>במידה רבה מאוד</span></div>';
+      d.innerHTML=s;sec.appendChild(d);
+    });
+  });
+}
+
+function qaBlock(scored){
+  const all=[];for(const e in DATA) DATA[e].forEach((_,i)=>{const v=raw(e,i);if(v!==null)all.push(v);});
+  const mins=Math.round((Date.now()-T0)/60000), S=sd(all);
+  const ext=all.filter(v=>v===1||v===6).length/all.length, mid=all.filter(v=>v===3||v===4).length/all.length;
+  let c='<div class="cbox"><h3>איכות המילוי</h3><table><tr><th>מדד</th><th>ערך</th><th>קריאה</th></tr>';
+  c+='<tr><td>זמן מילוי</td><td class="n">'+mins+"'</td><td>"+(mins<9?'<span class="warn">מהיר מאוד — ייתכן מילוי שטחי</span>':'<span class="ok">סביר</span>')+'</td></tr>';
+  c+='<tr><td>פיזור התשובות</td><td class="n">'+S.toFixed(2)+'</td><td>'+(S<0.85?'<span class="warn">נמוך — חשד לסימון אחיד</span>':'<span class="ok">תקין</span>')+'</td></tr>';
+  c+='<tr><td>שימוש בקצוות</td><td class="n">'+Math.round(ext*100)+'%</td><td>'+(ext>0.6?'<span class="warn">גבוה — סגנון קוטבי</span>':'<span class="ok">תקין</span>')+'</td></tr>';
+  c+='<tr><td>ריכוז במרכז</td><td class="n">'+Math.round(mid*100)+'%</td><td>'+(mid>0.65?'<span class="warn">גבוה — הימנעות מהכרעה</span>':'<span class="ok">תקין</span>')+'</td></tr></table></div>';
+  let inc=[];
+  scored.forEach(e=>{const dir=[],rev=[];DATA[e].forEach((it,i)=>{const v=sc(e,i);if(v!==null)(it[1]?rev:dir).push(v);});
+    if(rev.length&&dir.length){const md=dir.reduce((a,b)=>a+b,0)/dir.length,mr=rev.reduce((a,b)=>a+b,0)/rev.length;
+      if(Math.abs(md-mr)>=1.5) inc.push([e,md,mr]);}});
+  c+='<div class="cbox"><h3>סתירות פנימיות</h3>';
+  if(inc.length){c+='<p style="font-size:15px;margin:0 0 12px">פער בין הפריטים הישירים להפוכים באותו ממד. לרוב מעיד על רצייה חברתית או על פריט שלא נקרא נכון.</p><table><tr><th>ממד</th><th>ישירים</th><th>הפוכים</th></tr>';
+    inc.forEach(x=>c+='<tr><td>'+x[0]+'</td><td class="n">'+x[1].toFixed(1)+'</td><td class="n">'+x[2].toFixed(1)+'</td></tr>');c+='</table>';}
+  else c+='<p style="font-size:15px;margin:0"><span class="ok">אין סתירה חריגה.</span> הפריטים הישירים וההפוכים מסכימים בכל הממדים.</p>';
+  return c+'</div>';
+}
+
+function answerTable(order){
+  let c='<div class="cbox"><h3>כל התשובות</h3><table>';
+  order.forEach(e=>{const a=avg(e);
+    c+='<tr><td class="eg" colspan="3">'+e+(a?' · '+a.toFixed(1):'')+'</td></tr>';
+    DATA[e].forEach((it,i)=>{const rv=raw(e,i),s=sc(e,i);
+      c+='<tr class="'+(it[1]?'rv':'')+(s>=5?' hi':s<=2?' lo':'')+'"><td>'+it[0]+'</td><td class="n">'+rv+'</td><td class="n">'+(it[1]?s:'')+'</td></tr>';});});
+  return c+'</table><p class="cap">העמודה הראשונה — הסימון הגולמי. השנייה — הציון אחרי היפוך, לפריטים ההפוכים בלבד (מודגשים בחום).</p></div>';
+}
+
+function hidden(){return '<div class="cbox"><h3>מה הנועץ אינו רואה</h3><p style="font-size:15px;margin:0">דגלי איכות המילוי · הסתירות הפנימיות · מדד הרצייה החברתית · טבלת התשובות · השאלות לשיחה. <b>הנועץ רואה ציונים וקריאה בלבד.</b> זו החלטה מתודולוגית ולא טכנית.</p></div>';}
+
+/* מסך הנועץ: תמונה, לא ציון. ללא מספרים וללא תגית "אילוץ". */
+function mirror(order,R,LEVEL,lows){
+  const lvl=v=>v<=3.4?0:(v<=4.4?1:2);
+  let h='';
+  order.forEach(e=>{const v=R[e],low=lows.includes(e);
+    h+='<div class="res'+(low?' low':'')+'"><div class="rname">'+e+'</div>'
+      +'<div class="meter"><i style="width:'+((v-1)/5*100).toFixed(0)+'%"></i></div>'
+      +'<p class="mirtext">'+LEVEL[e][lvl(v)]+'</p>'
+      +(low?'<span class="tag">'+(v>=4.5?'הנמוך מבין החמישה — ועדיין גבוה':'כאן הפער הגדול ביותר')+'</span>':'')+'</div>';});
+  return h;
+}
+/* מסך היועץ בלבד: מספרים */
+function numbers(order,R){
+  let h='<div class="cbox"><h3>ציונים</h3><table><tr><th>ממד</th><th>ממוצע לפריט</th></tr>';
+  order.forEach(e=>h+='<tr><td>'+e+'</td><td class="n">'+R[e].toFixed(1)+'</td></tr>');
+  return h+'</table><p class="cap">המספרים אינם מוצגים לנועץ. הם כאן להשוואה בין מפגשים ולאיתור תנועה לאורך זמן.</p></div>';
+}
+
+function tab(n){['1','2'].forEach(k=>{document.getElementById('t'+k).classList.toggle('on',k===n);
+  document.getElementById('p'+k).classList.toggle('on',k===n);});}
+/* ── שמירה אוטומטית בדפדפן ── */
+const SKEY='cim_'+(document.title||'tool').replace(/[^֐-׿a-zA-Z0-9]/g,'_');
+let saveTimer=null;
+function collectState(){
+  const st={r:{},n:{}};
+  document.querySelectorAll('#f input[type=radio]:checked').forEach(el=>{st.r[el.name]=el.value;});
+  document.querySelectorAll('#f input[type=number]').forEach(el=>{if(el.value!=='')st.n[el.id]=el.value;});
+  return st;
+}
+function saveState(){
+  try{
+    localStorage.setItem(SKEY,JSON.stringify({t:Date.now(),s:collectState()}));
+    const el=document.getElementById('saved');
+    if(el) el.textContent='נשמר · '+new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
+  }catch(e){}
+}
+function queueSave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveState,250);}
+function restoreState(){
+  let raw=null;
+  try{raw=localStorage.getItem(SKEY);}catch(e){return false;}
+  if(!raw)return false;
+  let d;try{d=JSON.parse(raw);}catch(e){return false;}
+  const st=d&&d.s;if(!st)return false;
+  let n=0;
+  for(const k in st.r){
+    const el=document.querySelector('input[name="'+k+'"][value="'+st.r[k]+'"]');
+    if(el){el.checked=true;n++;}
+  }
+  for(const k in st.n){const el=document.getElementById(k);if(el){el.value=st.n[k];n++;}}
+  if(n){
+    const el=document.getElementById('saved');
+    if(el) el.textContent='שוחזרה עבודה קודמת · '+n+' תשובות. אפשר להמשיך מאיפה שהפסקת, או ללחוץ ניקוי כדי להתחיל מחדש.';
+  }
+  return n>0;
+}
+function clearState(){try{localStorage.removeItem(SKEY);}catch(e){}}
+
+function checkMissing(){let m=0;for(const e in DATA) DATA[e].forEach((_,i)=>{if(raw(e,i)===null)m++;});return m;}
+function writeConsultant(html){
+  document.getElementById('p2body').innerHTML=html;
+  const w=document.getElementById('p2body');
+  if(!w||!w.querySelectorAll)return;
+  w.querySelectorAll('table').forEach(t=>{
+    if(t.parentElement.className==='tblwrap')return;
+    const d=document.createElement('div');d.className='tblwrap';
+    t.parentNode.insertBefore(d,t);d.appendChild(t);
+  });
+}
+function boot(){
+  renderItems();
+  restoreState();
+  document.getElementById('f').addEventListener('change',queueSave);
+  window.addEventListener('beforeunload',saveState);
+  document.getElementById('pr').onclick=()=>window.print();
+  document.getElementById('cp').onclick=()=>{
+    const box=document.getElementById('rawbox');
+    if(box.classList.contains('on')){box.classList.remove('on');return;}
+    let out=[];
+    document.querySelectorAll('#p2body .cbox, #p2body .cons').forEach(el=>{
+      const h=el.querySelector('h3');
+      if(h){out.push('');out.push('=== '+h.textContent.trim()+' ===');}
+      el.querySelectorAll('p,li').forEach(x=>{const t=x.textContent.trim();if(t)out.push(t);});
+      el.querySelectorAll('tr').forEach(r=>{
+        const c=[...r.children].map(y=>y.textContent.trim()).filter(Boolean);
+        if(c.length) out.push(c.join('  |  '));
+      });
+    });
+    box.value=out.join(String.fromCharCode(10));box.classList.add('on');box.select();
+  };
+  document.getElementById('t1').onclick=()=>tab('1');
+  document.getElementById('t2').onclick=()=>tab('2');
+  document.getElementById('clr').onclick=()=>{
+    if(!confirm('למחוק את כל התשובות ולהתחיל מחדש?'))return;
+    document.getElementById('f').reset();clearState();
+    document.getElementById('out').classList.remove('on');
+    document.getElementById('msg').textContent='';
+    const sv=document.getElementById('saved');if(sv)sv.textContent='';
+    window.scrollTo({top:0,behavior:'smooth'});};
+}
+
+
+const DATA={"לקרוא את הכללים": [["אנחנו יודעים לפי מה נמדדים בארגון שלנו, גם כשאיש לא אמר לנו במפורש.", 0], ["כשמישהו מתקדם בארגון, אנחנו מבינים למה דווקא הוא.", 0], ["מספיק לנו לעשות עבודה טובה; מה שנספר בסופו של דבר פחות מעסיק אותנו.", 1], ["אנחנו יודעים מי מקבל את ההחלטות שנוגעות להתקדמות שלנו.", 0], ["כשמתברר לנו שהשקענו במשהו שאינו נספר, אנחנו משנים כיוון.", 0], ["פחות מעניין אותנו איך רואים אותנו הממונים שלנו.", 1]], "לתפוס מקום": [["אנחנו מוכנים לבקש דבר שאין לנו ביטחון שנקבל.", 0], ["כשמשהו שעשינו מוצג בלי שמנו, אנחנו מעירים או מתקנים את זה.", 0], ["אנחנו מוכנים שיֵדעו שאנחנו רוצים להתקדם, גם כשזה לא מקובל לומר.", 0], ["נעדיף לוותר על הכרה שהגיעה לנו, מאשר לבקש אותה.", 1], ["חשוב לנו שהאנשים שמחליטים יידעו במה אנחנו טובים.", 0], ["מעדיפים לא לבלוט, גם במחיר שלא יידעו מה עשינו.", 1]], "לבנות על מה שיש": [["כשאנחנו שוקלים צעד חדש, אנחנו בודקים מה הוא מוסיף למה שכבר יש לנו.", 0], ["חשוב לנו שמה שאנחנו בונים יישאר גם אחרי שנעזוב.", 0], ["אנחנו נהנים להתחיל מחדש, גם במחיר של ויתור על מה שנצבר.", 1], ["אנחנו מתחזקים קשרים מקצועיים גם כשאין להם שימוש כרגע.", 0], ["אנחנו שומרים ומחדדים שיטות ותובנות במקום להמציא מחדש כל פעם.", 0], ["מה שעשינו בעבר פחות משרת אותנו במה שאנחנו עושים היום.", 1]], "מה קרה בפועל": [["בשנה האחרונה ביררנו במפורש לפי מה נמדדת העבודה שלנו.", 0], ["בשנה האחרונה ביקשנו דבר שלא היינו בטוחים שנקבל — תפקיד, במה, או קרדיט.", 0], ["בשנה האחרונה בחרנו צעד מקצועי בגלל מה שהוא מוסיף לנו בהמשך, ולא בגלל מה שהוא נותן עכשיו.", 0]], "מה מושך": [["חשוב לנו שתהיה לנו השפעה על החלטות שנוגעות לאחרים.", 0], ["חשוב לנו שיהיה לנו חופש כלכלי אמיתי.", 0], ["חשוב לנו שיכירו בנו כסמכות בתחום שלנו.", 0], ["חשוב לנו שהשם שלנו מוכר גם מחוץ למקום העבודה.", 0], ["חשוב לנו להיות במקום שבו מחליטים, ולא רק במקום שבו מבצעים.", 0], ["חשוב לנו שהכסף יאפשר לנו לבחור ולא רק להתקיים.", 0], ["חשוב לנו שאנשים בתחום יידעו שאנחנו טובים במה שאנחנו עושים.", 0], ["חשוב לנו להיות בחדרים שבהם נוצרות ההזדמנויות.", 0]]};
+const LEGS=["לקרוא את הכללים","לתפוס מקום","לבנות על מה שיש"];
+const WANT=[["כוח",[0,4]],["כסף",[1,5]],["מעמד מקצועי",[2,6]],["נראות",[3,7]]];
+const DOCMAP={"לקרוא את הכללים":0,"לתפוס מקום":1,"לבנות על מה שיש":2};
+
+boot();
+document.getElementById('go').addEventListener('click',()=>{
+  const m=checkMissing(), msg=document.getElementById('msg');
+  if(m){msg.textContent='נותרו '+m+' פריטים ללא סימון.';return;} msg.textContent='';
+  const R={};LEGS.forEach(d=>R[d]=avg(d));
+  const vals=LEGS.map(d=>R[d]),mn=Math.min(...vals),mx=Math.max(...vals);
+  const lows=LEGS.filter(d=>Math.abs(R[d]-mn)<0.05), highs=LEGS.filter(d=>Math.abs(R[d]-mx)<0.05);
+  const tot=vals.reduce((a,b)=>a+b,0)/3;
+  const wr=WANT.map(w=>[w[0],(raw("מה מושך",w[1][0])+raw("מה מושך",w[1][1]))/2]).sort((a,b)=>b[1]-a[1]);
+  const w15=num('w15'),wn=num('wnow'),b15=num('b15'),bn=num('bnow'),rsn=num('rsn'),imp=num('imp');
+
+  const LEVEL={
+   "לקרוא את הכללים":["את שמה את מרב הכוח בעבודה עצמה, ופחות בשאלה לפי מה היא נמדדת. הרבה אנשים טובים עושים כך — ולפעמים זה אומר שעבודה טובה לא נספרת.",
+     "את מבררת את הכללים כשמשהו כבר השתבש, ופחות לפני כן.",
+     "את יודעת לפי מה מודדים כאן ומי מחליט, גם כשאיש לא אמר לך."],
+   "לתפוס מקום":["את עושה, ופחות מספרת. יש בזה משהו נכון — וזה גם אומר שמי שמחליט לא תמיד יודע מה עשית.",
+     "את תופסת מקום מול חלק מהאנשים ולא מול אחרים.",
+     "את דואגת שהאנשים שמחליטים יידעו במה את טובה."],
+   "לבנות על מה שיש":["מה שאת עושה עכשיו נשען פחות על מה שעשית קודם. לפעמים זו בחירה, ולפעמים כך הסתדרו הדברים — ושווה לדעת מה מבין השניים.",
+     "חלק ממה שאת עושה מוסיף למה שכבר בנית, וחלק עומד בפני עצמו.",
+     "כל צעד שאת בוחרת מוסיף למה שכבר יש לך, ולכן זה נערם."]};
+  let h=mirror(LEGS,R,LEVEL,lows);
+  LEGS.forEach(e=>{const dd=raw("מה קרה בפועל",DOCMAP[e]),g=R[e]-dd;
+    if(g>=1.3) h+='<p class="gapline"><b>'+e+'</b> — הנכונות שלך גבוהה ממה שקרה בפועל השנה.</p>';
+    else if(g<=-1.3) h+='<p class="gapline"><b>'+e+'</b> — עשית השנה יותר ממה שאת מצהירה שאת מוכנה לעשות.</p>';});
+  document.getElementById('bars').innerHTML=h;
+
+  document.getElementById('extra1').innerHTML='';
+
+  let t='<h3>מה שווה להסתכל עליו</h3>';
+  t+=lows.length===1
+    ?'<p><b>'+lows[0]+'</b> הוא הנמוך מבין השלושה. זה מה שיעצור לפני כל השאר, ולכן תנועה קטנה כאן תיתן יותר מתנועה גדולה במקום שכבר חזק.</p>'
+    :'<p><b>'+lows.join(' ו')+'</b> יצאו זהים. כששתי רגליים נמוכות יחד, הן לרוב מחזיקות זו את זו.</p>';
+
+  const hi=x=>R[x]>=4.0, lo=x=>R[x]<=3.6;
+  if(hi("לתפוס מקום")&&lo("לקרוא את הכללים"))
+    t+='<p>את מוכנה לתפוס מקום, ופחות בודקת אם זה נספר. <b>האנרגיה מושקעת בגלוי, ולא תמיד במקום שסופרים בו.</b></p>';
+  else if(hi("לקרוא את הכללים")&&lo("לתפוס מקום"))
+    t+='<p>את יודעת לפי מה מודדים, ופחות נכנסת לזה. <b>הידיעה קיימת, המהלך חסר.</b></p>';
+  else if(hi("לתפוס מקום")&&lo("לבנות על מה שיש"))
+    t+='<p>יודעים עלייך, ומה שאת עושה פחות נערם. <b>ההישגים אמיתיים — הם פשוט לא בהכרח מצטרפים לאותו מקום.</b></p>';
+  else if(hi("לבנות על מה שיש")&&lo("לתפוס מקום"))
+    t+='<p>בנית הרבה, ומעטים יודעים. <b>הנכס קיים ואינו ידוע.</b></p>';
+
+  let gapLeg=null;
+  LEGS.forEach(e=>{if(R[e]-raw("מה קרה בפועל",DOCMAP[e])>=1.5&&!gapLeg)gapLeg=e;});
+  if(gapLeg) t+='<p><b>ב'+gapLeg+'</b> יש פער בין מה שאת מוכנה לעשות לבין מה שקרה בשנה האחרונה. <b>שווה לברר מה עמד בדרך — לרוב יש סיבה טובה.</b></p>';
+
+  t+='<h3 class="n">מה מושך אותך</h3><p>'+wr[0][0]+' מושך אותך יותר מהשאר, ו'+wr[3][0]+' פחות מכולם.';
+  if(wr[0][1]-wr[3][1]<0.7) t+=' <b>אבל ארבעתם קרובים מאוד</b> — ייתכן שאין העדפה ברורה, וייתכן שקשה היה להכריע.';
+  t+='</p>';
+  if(wr[0][0]==="נראות"&&lo("לתפוס מקום"))
+    t+='<p><b>ומשהו שכדאי לשים לב אליו:</b> מה שמושך אותך ביותר הוא בדיוק הרגל הנמוכה שלך. הרצון קיים, המהלך פחות.</p>';
+
+  t+='<p class="cap" style="margin-top:20px">זו מראה ולא מבחן. התמונה כאן מספיקה כדי להתחיל לחשוב — ההעמקה נעשית בשיחה.</p>';
+  document.getElementById('read').innerHTML=t;
+
+  let c='<div class="cons"><b>מסך יועץ.</b> כולל נתונים שאינם מוצגים לנועץ.</div>';
+  c+=numbers(LEGS,R);
+
+  c+='<div class="cbox"><h3>מה שלא נאמר לנועץ</h3>';
+  if(rsn!==null){
+    c+='<p style="font-size:15px;margin:0 0 10px"><b>מול הריסון ('+rsn.toFixed(1)+').</b> '+(rsn<=3.4&&R["לבנות על מה שיש"]<=3.6
+      ?'ריסון נמוך והצטברות נמוכה — <b>אלה אינם שני ממצאים אלא אחד.</b>'
+      :(rsn>=4.3&&R["לבנות על מה שיש"]<=3.6?'ריסון גבוה והצטברות נמוכה. <b>צירוף לא שכיח ששווה לפתוח</b> — הסבלנות קיימת, והמהלכים בכל זאת לא נערמים.'
+      :'נעים יחד, כצפוי.'))+'</p>';
+  }
+  if(imp!==null){
+    const d=imp-tot;
+    c+='<p style="font-size:15px;margin:0 0 10px"><b>מאזן.</b> השפעה '+imp.toFixed(1)+' · הצלחה '+tot.toFixed(1)+'. '+(Math.abs(d)<0.4
+      ?'קרובים — שני המסלולים פתוחים.'
+      :(d>0?'ההשפעה מובילה. המסלול הטבעי הוא השפעה שמולידה הכרה — איטי, ותלוי בכך שמישהו יבחין. <b>הסיכון: העבודה תיוותר לא נספרת.</b>'
+      :'ההצלחה מובילה. המסלול הוא לצבור ואז להסב. <b>הסיכון: ה"אחר כך" נדחה שוב ושוב.</b> שאלה לשיחה: מה הסימן שיגיד לה שהצטברה מספיק?'))+'</p>';
+  }
+  if(w15!==null&&wn!==null){
+    const dw=wn-w15;
+    c+='<p style="font-size:15px;margin:0 0 10px"><b>שאפתנות.</b> '+w15+' בגיל 15 → '+wn+' היום. '+(Math.abs(dw)<15
+      ?'יציבה. מה שהיה בגיל חמש־עשרה עדיין שם — מוטמע ולא נבנה מנסיבות.'
+      :(dw>0?'עלתה. לא הגיעה מהבית אלא נרכשה בדרך — <b>לרוב יש אירוע אחד, וזה כמעט תמיד סיפור טוב.</b>'
+      :'ירדה. ויתור או דיוק — <b>ההבדל ביניהם הוא כל השיחה.</b>'))+'</p>';
+    if(b15!==null&&bn!==null){
+      const g15=w15-b15, db=bn-b15;
+      if(g15>=20) c+='<p style="font-size:15px;margin:0 0 10px"><b>בגיל 15 רצתה יותר משהאמינה</b> ('+w15+' מול '+b15+'). דפוס של מי שהמקום שממנו באה לא הבטיח דבר — <b>ההגעה לכאן היא ההישג.</b></p>';
+      else if(g15<=-20) c+='<p style="font-size:15px;margin:0 0 10px"><b>בגיל 15 האמינה יותר משרצתה</b> ('+b15+' מול '+w15+'). לרוב ציפייה מבחוץ — <b>של מי היא הייתה?</b></p>';
+      if(Math.sign(db)!==Math.sign(dw)&&Math.abs(db)>=15&&Math.abs(dw)>=15)
+        c+='<p style="font-size:15px;margin:0 0 10px"><b>הרצון והאמונה זזו בכיוונים הפוכים.</b> זה המצב המעניין ביותר בכלי ומבקש הסבר.</p>';
+    }
+  }
+  if(w15===null) c+='<p style="font-size:15px;margin:0">ארבעת מספרי השאפתנות לא מולאו.</p>';
+  c+='<p class="cap" style="margin:10px 0 0">המאזן מול הריסון ומול שאלוני ההשפעה נעשה במנגנון היועצת ולא כאן.</p>';
+  c+='</div>';
+  c+='<div class="cbox"><h3>דירוג הרצון — עם ערכים</h3><table><tr><th>תחום</th><th>ממוצע</th></tr>'
+    +wr.map(w=>'<tr><td>'+w[0]+'</td><td class="n">'+w[1].toFixed(1)+'</td></tr>').join('')+'</table></div>';
+  c+=qaBlock(LEGS);
+  const dsr=(R["לתפוס מקום"]+R["לקרוא את הכללים"])/2;
+  c+='<div class="cbox"><h3>רצייה חברתית</h3><p style="font-size:15px;margin:0">שתי הרגליים הרגישות לתשובה מחמיאה יצאו בממוצע <b>'+dsr.toFixed(1)+'</b>. '
+    +(dsr>=4.8?'<span class="warn">גבוה. לאמת מול אירוע ממשי מהשנה האחרונה.</span>':'<span class="ok">בטווח שאינו מעורר חשד.</span>')+'</p></div>';
+  c+='<div class="cbox"><h3>פער ההצהרה — לכל רגל</h3><table><tr><th>רגל</th><th>נכונות</th><th>בפועל</th><th>פער</th></tr>';
+  LEGS.forEach(e=>{const dd=raw("מה קרה בפועל",DOCMAP[e]),g=R[e]-dd;
+    c+='<tr class="'+(Math.abs(g)>=1.3?'lo':'')+'"><td>'+e+'</td><td class="n">'+R[e].toFixed(1)+'</td><td class="n">'+dd+'</td><td class="n">'+(g>0?'+':'')+g.toFixed(1)+'</td></tr>';});
+  c+='</table><p class="cap">פער חיובי מעל 1.3 — מוכנוּת שלא תורגמה לפעולה. פער שלילי — פעולה שקדמה להצהרה, לרוב בכפייה.</p></div>';
+  let qs=[];
+  qs.push('<b>'+lows[0]+'</b> היא הפער הגדול ביותר. מתי לאחרונה זה עלה בכסף או בהזדמנות?');
+  LEGS.forEach(e=>{if(R[e]-raw("מה קרה בפועל",DOCMAP[e])>=1.3) qs.push('הנכונות ב<b>'+e+'</b> גבוהה, השנה האחרונה לא. מה מנע?');});
+  qs.push('<b>'+highs[0]+'</b> היא החזקה. איפה היא כבר עלתה במחיר?');
+  if(dsr>=4.8) qs.push('בקשי אירוע קונקרטי מהשנה האחרונה לכל אחת מהרגליים הגבוהות.');
+  if(w15!==null&&wn!==null&&Math.abs(wn-w15)>=25) qs.push('השאפתנות זזה '+Math.abs(wn-w15)+' נקודות. מה קרה בין גיל חמש־עשרה להיום?');
+  qs.push('האם היה פריט שהתקשית לסמן עליו נמוך?');
+  c+='<div class="cbox"><h3>שאלות לשיחה</h3><ul class="q"><li>'+qs.join('</li><li>')+'</li></ul></div>';
+  c+=answerTable(LEGS.concat(["מה קרה בפועל","מה מושך"]))+hidden();
+  writeConsultant(c);
+  document.getElementById('out').classList.add('on');
+  document.getElementById('out').scrollIntoView({behavior:'smooth'});
+});
+
+</script>
+<style>.switchwrap,#p2{display:none!important}#p1{display:block!important}</style>
+<script>window.cwlSuccSummary=function(){const L=[];
+ Object.keys(DATA).forEach(d=>{L.push('',d);DATA[d].forEach((it,i)=>{const v=raw(d,i);L.push('• '+it[0]+'\n   ← '+(v===null?'-':v+' מתוך 6'))})});
+ const nv=id=>{const e=document.getElementById(id);return e&&e.value!==''?e.value:'-'};
+ L.push('','מאיפה זה הגיע (0–100)','• כמה חשוב היה לי להצליח בגיל 15: '+nv('w15'),'• כמה חשוב לי להצליח היום: '+nv('wnow'),'• כמה האמנתי שאצליח בגיל 15: '+nv('b15'),'• כמה אני מאמינה שאצליח היום: '+nv('bnow'));
+ const b=document.getElementById('p2body');if(b&&b.innerHTML.trim()){const T=[];
+  b.querySelectorAll('.cbox').forEach(el=>{const h=el.querySelector('h3');const ht=h?h.textContent.trim():'';if(ht==='כל התשובות'||ht==='מה הנועץ אינו רואה')return;
+   T.push('','['+ht+']');el.querySelectorAll('p,li').forEach(x=>{const t=x.textContent.trim();if(t)T.push(t)});
+   el.querySelectorAll('tr').forEach(r=>{const c=[...r.children].map(y=>y.textContent.trim()).filter(Boolean);if(c.length)T.push(c.join(' | '))})});
+  L.push('','— נתונים ליועצת (החישוב האוטומטי) —',...T)}
+ return L.join('\n').trim()};</script>
+<script>window.CWL_CFG={tool:'success',fill:'את שאלון ההצלחה',title:'הצלחה',summary:()=>window.cwlSuccSummary()};</script>
+
+
+
+<!-- חוזה עם החיים: חיבור לאתר (שמירה בגיליון במקום שליחה במייל) -->
+<script src="CFL_config.js"></script>
+<script src="CFL_bridge.js"></script>
+<script>
+window.CFL_PAGE={id:'success',keys:['cim_'+(document.title||'tool').replace(/[^֐-׿a-zA-Z0-9]/g,'_')],lockSel:'#clr',
+flush:function(){if(typeof saveState==='function')saveState();},results:function(){var b=document.getElementById('go');if(b)b.click();},
+staffView:function(){/* the יועצים site also gets the tab 'מה היועץ רואה' */document.querySelectorAll('style').forEach(function(s){if(s.textContent.indexOf('.switchwrap,#p2{display:none!important}')!==-1)s.remove();});}};
+</script>
+<script src="CFL_cwl.js"></script>
+</body>
+</html>

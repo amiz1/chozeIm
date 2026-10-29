@@ -14,7 +14,10 @@
 //     ignore: ['stage'],             // optional: parts of the page's saved copy that aren't answers (which screen is open)
 //     lockSel: '.tally button',      // optional: more answer buttons to disable in read-only mode
 //     answers: function () { … },    // optional: the יועצים "answers" view opens here (instead of the page's first screen)
-//     blank: ['v']                   // optional: parts that have a value before anything is answered (a default choice)
+//     blank: ['v'],                  // optional: parts that have a value before anything is answered (a default choice)
+//                                    //   (ignore/blank may name an inner part: 's.step')
+//     onReady: function (info) { … },// optional: runs once the page can be filled in (not in read-only views)
+//     lockCss: '.chip{…}'            // optional: CSS for read-only mode (answers that aren't buttons or fields)
 //   }
 // and keeps its own  window.CWL_CFG = { summary: () => '…' }  (the text for the יועץ).
 //
@@ -64,11 +67,17 @@
     try { if (typeof PAGE.flush === 'function') PAGE.flush(); } catch (e) { }
   }
   function collect() { flush(); return { v: 2, ls: pageKept(), f: USE_FIELDS ? snapshot() : {} }; }
+  // removes a part named 'a' or 'a.b' from a saved copy
+  function drop(o, path) {
+    const p = String(path).split('.');
+    for (let i = 0; i < p.length - 1; i++) { o = o && typeof o === 'object' ? o[p[i]] : null; }
+    if (o && typeof o === 'object' && !Array.isArray(o)) delete o[p[p.length - 1]];
+  }
   function lsMeaningful(v) {
     try {
       const o = JSON.parse(v);
       if (!o || typeof o !== 'object' || Array.isArray(o)) return meaningful(o);
-      const c = Object.assign({}, o); IGNORE.forEach(k => { delete c[k]; });
+      const c = JSON.parse(JSON.stringify(o)); IGNORE.forEach(k => drop(c, k));
       return meaningful(c);
     }
     catch (e) { return !!String(v || '').trim(); }
@@ -123,7 +132,7 @@
         v = JSON.parse(v);
         if (v && typeof v === 'object' && !Array.isArray(v)) {
           if (typeof v.t === 'number') delete v.t;
-          (PAGE.ignore || []).forEach(x => { delete v[x]; });
+          (PAGE.ignore || []).forEach(x => drop(v, x));
         }
         v = sort(v);
       } catch (e) { }
@@ -203,6 +212,7 @@
   function lock() {
     LOCKED = true;
     document.documentElement.classList.add('cfl-locked');
+    if (PAGE.lockCss) { const st = document.createElement('style'); st.textContent = PAGE.lockCss; document.head.appendChild(st); }
     const off = () => {
       fields().forEach(el => { el.disabled = true; });
       // answer buttons (toggles) can't be pressed; moving between screens still works
@@ -305,6 +315,7 @@
         const recheck = () => setTimeout(() => showNote(canon(collect()) !== SENT.json), 30); // after the page saved
         ['input', 'change', 'click'].forEach(ev => document.addEventListener(ev, recheck));
       }
+      if (typeof PAGE.onReady === 'function') { try { PAGE.onReady(info); } catch (e) { } }
     });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();

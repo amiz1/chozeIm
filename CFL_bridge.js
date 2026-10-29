@@ -183,6 +183,13 @@
       return r;
     },
 
+    /** What this נועץ sent in other questionnaires (only their own): { id: { status, saved, … } }. */
+    async mine(ids) {
+      if (VIEW) return {};
+      const r = await api('tools', { ids: ids });
+      return r && r.ok ? r.tools || {} : {};
+    },
+
     /** Sends the answers. state = raw answers (to show the results again later),
      *  summary = the text for HR, fields = extra display columns. Resolves with { ok, message }. */
     async submit(id, state, summary, fields) {
