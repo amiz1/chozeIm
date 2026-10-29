@@ -587,6 +587,14 @@ function showAnswersView(){
     if(info.viewMode==='answers') showAnswersView(); else calc();
     return;
   }
+  if(info.readOnly && info.saved && info.saved.scores){
+    /* sent, then closed by a יועץ: summary and answers, read-only */
+    LOCKED = true;
+    S = { scores: info.saved.scores, picks: info.saved.picks, stage: 0 };
+    calc();
+    CFL.readOnlyBar(function(){ calc(); }, showAnswersView);
+    return;
+  }
   if(info.status==='submitted' && info.saved && info.saved.scores){
     /* sent before: open on the summary; "הסתכל בתשובות" goes back to the answers for editing */
     SENT = { json: canon(info.saved), at: info.submittedAt||'', upd: info.updatedAt||'' };

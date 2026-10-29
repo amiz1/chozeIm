@@ -1021,6 +1021,14 @@ CFL.start('intake').then(function(info){
     if(info.viewMode==='answers')renderAllAnswers();else render();
     return;
   }
+  if(info.readOnly&&info.saved){
+    /* sent, then closed by a יועץ: summary and answers, read-only */
+    S=Object.assign({name:'',date:'',a:{},t:{},page:0,done:true},info.saved,{name:CFL.name,done:true});
+    LOCKED=true;
+    render();
+    CFL.readOnlyBar(function(){ $('app').style.pointerEvents=''; S.done=true; render(); }, renderAllAnswers);
+    return;
+  }
   KEY=CFL.draftKey('intake');
   if(info.status==='submitted'&&info.saved){
     /* sent before: open on the end screen; "הסתכל בתשובות" goes back to the answers for editing */

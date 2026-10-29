@@ -906,6 +906,15 @@ CFL.start('tours').then(function(info){
     if(info.viewMode==='answers') showAnswersView(); else refreshS3();
     return;
   }
+  if(info.readOnly && info.saved){
+    /* sent, then closed by a יועץ: summary and answers, read-only */
+    LOCKED = true;
+    var d0 = info.saved; d0.step = 's2b';
+    restoreNow(d0);            /* builds the answers sections */
+    render();                  /* then shows the summary */
+    CFL.readOnlyBar(function(){ ['s1','s2','s2b'].forEach(function(id){ $(id).classList.add('hidden'); }); render(); }, showAnswersView);
+    return;
+  }
   SK = CFL.draftKey('tours');
   if(info.status==='submitted' && info.saved){
     /* sent before: open on the summary; "הסתכל בתשובות" goes back to the answers for editing */

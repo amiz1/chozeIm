@@ -196,6 +196,33 @@
       return n;
     },
 
+    /** A questionnaire that was sent and then closed by a יועץ: a note + a switch between the summary and
+     *  the answers (both read-only). onSummary / onAnswers draw each one. */
+    readOnlyBar(onSummary, onAnswers) {
+      const box = document.createElement('div');
+      box.id = 'cflReadOnly';
+      box.className = 'noprint';
+      box.style.cssText = 'max-width:860px;margin:6px auto 0;padding:12px 20px;direction:rtl;font-size:15px;color:#6E6A5F;' +
+        'display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:#F4F5EF;border-right:4px solid #5E6A41';
+      const note = document.createElement('span');
+      note.textContent = 'השאלון סגור לעריכה. אפשר לצפות בסיכום ובתשובות.';
+      const segs = document.createElement('span');
+      segs.style.cssText = 'display:flex;gap:6px';
+      const mk = (label, on, go) => {
+        const b = document.createElement('button');
+        b.type = 'button'; b.textContent = label; b.dataset.on = on ? '1' : '';
+        const paint = () => { const o = b.dataset.on === '1'; b.style.cssText = 'font:inherit;font-size:14px;padding:6px 14px;cursor:pointer;border:1px solid #5E6A41;' + (o ? 'background:#5E6A41;color:#fff' : 'background:#fff;color:#5E6A41'); };
+        b.addEventListener('click', () => { segs.querySelectorAll('button').forEach(x => { x.dataset.on = ''; }); b.dataset.on = '1'; segs.querySelectorAll('button').forEach(x => x._paint()); go(); window.scrollTo(0, 0); });
+        b._paint = paint; paint();
+        return b;
+      };
+      segs.append(mk('סיכום', true, onSummary), mk('התשובות שלי', false, onAnswers));
+      box.append(note, segs);
+      const bar = document.getElementById('cflBar');
+      if (bar) bar.after(box); else document.body.insertBefore(box, document.body.firstChild);
+      return box;
+    },
+
     /** Replaces (or adds) the sent note at the top of a container. */
     showSentNote(container, submittedAt, updatedAt, unsent) {
       const old = container.querySelector('.cfl-sent');

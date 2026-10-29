@@ -230,7 +230,10 @@ async function showHome(notice) {
   const cards = r.questionnaires.map(q => {
     let badge, action = null;
     const isTool = q.type === 'tool';
-    if (q.status === 'submitted') {
+    if (q.status === 'submitted' && q.readOnly) {
+      badge = el('span', { class: 'badge submitted' }, 'נשלח · לצפייה בלבד');
+      action = el('button', { type: 'button', class: 'btn secondary', onclick: () => openPage(q.page) }, 'צפייה');
+    } else if (q.status === 'submitted') {
       badge = el('span', { class: 'badge submitted' }, 'נשלח');
       action = el('button', { type: 'button', class: 'btn secondary',
         onclick: () => isTool ? openPage(q.page) : showAnswers(q.id) }, isTool ? 'צפייה בתוצאות' : 'צפייה בתשובות');
