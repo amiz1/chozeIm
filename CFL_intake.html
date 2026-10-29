@@ -948,6 +948,18 @@ function renderYoetzHome(){
   if(DB)bindRegistry();
   bindEntryCards(null);
 }
+/* ---------- wording by the chosen gender, on every screen ----------
+   G() turns "את/ה", "בחר/י" etc. into the chosen form. It is applied to the page's own text only
+   (never to what the user typed), including parts that redraw when an answer reveals a follow-up. */
+function cflGender(root){
+  if(S.g!=='f'&&S.g!=='m')return;
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentNode&&n.parentNode.closest('textarea,script,style')?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});
+  const nodes=[];while(w.nextNode())nodes.push(w.currentNode);
+  nodes.forEach(n=>{if(n.nodeValue.indexOf('/')>-1){const v=G(n.nodeValue);if(v!==n.nodeValue)n.nodeValue=v;}});
+  (root.querySelectorAll?root.querySelectorAll('[placeholder]'):[]).forEach(el=>{const v=G(el.getAttribute('placeholder'));if(v!==el.getAttribute('placeholder'))el.setAttribute('placeholder',v);});
+}
+new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1)cflGender(n);else if(n.nodeType===3&&n.parentNode)cflGender(n.parentNode);}))).observe(document.getElementById('app'),{childList:true,subtree:true});
+
 /* ---------- sending to the site ---------- */
 let SENT_AT='';
 function cflState(){return {date:S.date||'',g:S.g||'',age:S.age||'',years:S.years||'',role:S.role||'',path:S.path||'',a:S.a,t:S.t,fbk:S.fbk||null};}
