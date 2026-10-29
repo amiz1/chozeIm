@@ -217,6 +217,7 @@ footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--rule);font-si
   <div class="note clay"><b>וחשוב לזכור:</b> אדגר שיין, שפיתח את השאלון, בנה אותו כמפה לשיחה, ולא כמבחן. בפגישה נבדוק יחד מה מזה מדויק לך, ומה לא.</div>
   <div class="actions">
     <button class="btn" id="cflSend" onclick="cflSubmit()">שליחה</button>
+    <button class="btn ghost" id="cflAnswers" onclick="go(1)" hidden>הסתכל בתשובות</button>
     <button class="btn ghost" id="cflRestart" onclick="toggle('cf')">התחלה מחדש</button>
     <span class="status" id="sm"></span>
   </div>
@@ -295,7 +296,8 @@ const KEY = ['1–2 לעולם לא','','3 לעיתים לא','4–5 בדרך כ
 let S = { scores:{}, picks:[], stage:0 };
 let CAN_SAVE = false;
 
-let LOCKED = false; /* true once the answers were sent: nothing is saved or changed anymore */
+let LOCKED = false; /* true only in the יועצים view: nothing is saved or changed */
+let SENT = null;     /* once sent: { json, at, upd } – the answers as last sent, to spot unsent changes */
 async function persist(){ if(LOCKED) return; try{ localStorage.setItem(CFL.draftKey('anchors'), JSON.stringify(S)); }catch(e){} }
 async function probe(){
   try{ const x=localStorage.getItem(CFL.draftKey('anchors')); CAN_SAVE=true; if(x){ const d=JSON.parse(x); if(d&&d.scores) return d; } }catch(e){}
@@ -325,6 +327,7 @@ function go(n){
   if(n===1) renderItems();
   if(n===2) renderPicks();
   if(n==='1b'){ drawRail(); persist(); window.scrollTo({top:0,behavior:'smooth'}); return; }
+  if(n===3) refreshS3();
   drawRail(); persist();
   window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -537,33 +540,60 @@ function restart(){
 }
 
 /* ---------- sending to the site ---------- */
-function lockSent(when){
-  LOCKED = true;
-  ['cflSend','cflRestart','cf'].forEach(function(id){ const e=document.getElementById(id); if(e) e.style.display='none'; });
-  const s3=document.getElementById('s3');
-  if(!document.querySelector('#s3 .cfl-sent')) s3.insertBefore(CFL.sentNote(when), s3.children[1]);
+/* the answers in a fixed form, to compare what's on screen with what was last sent */
+function canon(st){ const sc={}; for(let i=0;i<40;i++) sc[i]=Number((st.scores||{})[i])||0; return JSON.stringify({scores:sc,picks:(st.picks||[]).map(Number).slice().sort((a,b)=>a-b)}); }
+
+/* the summary screen's buttons and note, depending on whether it was sent and whether it changed since */
+function refreshS3(){
+  const send=document.getElementById('cflSend'), ans=document.getElementById('cflAnswers'),
+        rst=document.getElementById('cflRestart'), s3=document.getElementById('s3');
+  if(LOCKED){ s3.querySelectorAll('.actions').forEach(e=>e.style.display='none'); document.getElementById('cf').style.display='none'; return; }
+  if(!SENT){ send.hidden=false; send.textContent='שליחה'; ans.hidden=true; rst.hidden=false; return; }
+  const dirty = canon(S)!==SENT.json;
+  send.hidden=!dirty; send.textContent='שליחת העדכון';
+  ans.hidden=false; rst.hidden=true; document.getElementById('cf').style.display='none';
+  CFL.showSentNote(s3, SENT.at, SENT.upd, dirty);
 }
+
 async function cflSubmit(){
   const m=document.getElementById('sm'), b=document.getElementById('cflSend');
   if(Object.keys(S.scores).length<40 || S.picks.length!==3){ m.textContent='חסרים דירוגים או בחירות. חזרו לשלבים הקודמים.'; return; }
-  if(!confirm('לאחר השליחה לא ניתן יהיה לשנות את התשובות. לשלוח?')) return;
-  b.disabled=true; b.textContent='שולח…'; m.textContent='';
+  if(!SENT && !confirm('לשלוח את התשובות? אפשר יהיה לחזור אליהן ולעדכן אותן גם אחר כך.')) return;
+  const label=b.textContent; b.disabled=true; b.textContent='שולח…'; m.textContent='';
   const r = await CFL.submit('anchors', { scores:S.scores, picks:S.picks }, buildSummary());
-  b.disabled=false; b.textContent='שליחה';
+  b.disabled=false; b.textContent=label;
   if(!r.ok){ m.textContent=r.message||'השליחה לא הצליחה. נסו שוב.'; return; }
-  lockSent('');
+  SENT = { json: canon(S), at: r.submittedAt||'', upd: r.updatedAt||'' };
+  refreshS3();
+  m.textContent = r.updated ? 'העדכון נשלח.' : 'התשובות נשלחו. תודה!';
   window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* "תשובות הנועץ" for the יועצים site: the rating and the three picks, read-only */
+function showAnswersView(){
+  renderItems(); renderPicks();
+  document.querySelectorAll('.step').forEach(e=>e.classList.remove('on'));
+  ['s1','s2'].forEach(id=>{ const s=document.getElementById(id); s.classList.add('on'); s.style.pointerEvents='none';
+    s.querySelectorAll('.actions,.alert').forEach(e=>e.style.display='none'); });
+  document.getElementById('rail').style.display='none';
 }
 
 (async function init(){
   renderAnchors();
   const info = await CFL.start('anchors');
-  if(info.status==='submitted' && info.saved && info.saved.scores){
-    /* already sent: show the results screen only, read-only */
+  if(info.view){
     LOCKED = true;
+    S = { scores: (info.saved||{}).scores||{}, picks: (info.saved||{}).picks||[], stage: 0 };
+    if(info.viewMode==='answers') showAnswersView(); else calc();
+    return;
+  }
+  if(info.status==='submitted' && info.saved && info.saved.scores){
+    /* sent before: open on the summary; "הסתכל בתשובות" goes back to the answers for editing */
+    SENT = { json: canon(info.saved), at: info.submittedAt||'', upd: info.updatedAt||'' };
     S = { scores: info.saved.scores, picks: info.saved.picks, stage: 0 };
-    calc();
-    lockSent(info.submittedAt);
+    const draft = await probe(); /* edits made here and not sent yet */
+    if(draft && canon(draft)!==SENT.json){ S = draft; S.stage = 0; }
+    if(Object.keys(S.scores).length===40 && S.picks.length===3) calc(); else go(1);
     return;
   }
   const saved = await probe();

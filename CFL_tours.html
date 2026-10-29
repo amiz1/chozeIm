@@ -278,6 +278,7 @@ footer{text-align:center;padding:32px 0 0;margin-top:44px;border-top:1px solid v
 
   <div class="btnrow noprint">
     <button class="btn" id="cflSend" type="button">שליחה</button>
+    <button class="btn ghost" id="cflAnswers" type="button" hidden>הסתכל בתשובות</button>
     <button class="btn ghost" id="back2">חזרה לתפקיד שלי</button>
     <span id="cflMsg" style="font-size:15px;color:var(--clay)"></span>
   </div>
@@ -494,6 +495,7 @@ function render(){
   $('s2').classList.add('hidden');
   $('s2b').classList.add('hidden');
   $('s3').classList.remove('hidden');
+  refreshS3();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -784,7 +786,7 @@ window.toursSummary = function(){
 
 tally1();
 /* ---------- שמירה אוטומטית בדפדפן ---------- */
-var SK='', restoring=false, stT=null, LOCKED=false;
+var SK='', restoring=false, stT=null, LOCKED=false, SENT=null; /* SENT = { json, at, upd } once sent */
 function stepNow(){ return ['s3','s2b','s2','s1'].filter(function(id){ return !$(id).classList.contains('hidden'); })[0] || 's1'; }
 function stateNow(){
   var bl=chosen().map(function(c){ return c.blank||null; });
@@ -839,37 +841,81 @@ function restoreNow(fromSite){
   restoring=false;
 }
 /* ---------- sending to the site ---------- */
-function lockSent(when){
-  LOCKED = true;
-  ['cflSend','back2'].forEach(function(id){ var e=$(id); if(e) e.style.display='none'; });
-  $('cflMsg').textContent='';
-  ['q1','q2','q3','q4'].forEach(function(k){ $(k).readOnly = true; });
-  $('cmp').style.pointerEvents='none';
-  var r=$('cwlRestored'); if(r) r.remove();
-  if(!document.querySelector('#s3 .cfl-sent')) $('s3').insertBefore(CFL.sentNote(when), $('s3').firstChild);
+/* the answers in a fixed form (like the server keeps them), to compare what's on screen with what was sent */
+function sortKeys(o){ if(Array.isArray(o)) return o.map(sortKeys); if(o&&typeof o==='object'){ var r={}; Object.keys(o).sort().forEach(function(k){ r[k]=sortKeys(o[k]); }); return r; } return o; }
+function canon(d){
+  d=d||{}; var txt=function(o){ var r={}; Object.keys(o||{}).forEach(function(k){ var s=String(o[k]==null?'':o[k]).trim(); if(s) r[k]=s; }); return r; };
+  var marks={}; Object.keys(d.marks||{}).forEach(function(k){ var v=Number(d.marks[k]); if(v>=1&&v<=3) marks[k]=v; });
+  var mm={}; Object.keys(d.mineMark||{}).forEach(function(k){ var v=Number(d.mineMark[k]); if(v>=1&&v<=3) mm[k]=v; });
+  var miss={}; Object.keys(d.missing||{}).forEach(function(k){ if(d.missing[k]) miss[k]=true; });
+  return JSON.stringify(sortKeys({ picked:(d.picked||[]).map(Number), custom:(d.custom||[]).map(function(c){ return String(c&&c.n||'').trim(); }),
+    bl:(d.bl||[]).map(function(b){ var x=b?txt(b):null; return x&&Object.keys(x).length?x:null; }),
+    marks:marks, extras:txt(d.extras), mineTxt:txt(d.mineTxt), mineMark:mm, missing:miss,
+    myRole:String(d.myRole||'').trim(), q:[0,1,2,3].map(function(i){ return String((d.q||[])[i]||'').trim(); }) }));
 }
+
+/* the summary screen's buttons and note, depending on whether it was sent and whether it changed since */
+function refreshS3(){
+  if(LOCKED){
+    document.querySelectorAll('#s3 .btnrow').forEach(function(e){ e.style.display='none'; });
+    ['q1','q2','q3','q4'].forEach(function(k){ $(k).readOnly = true; });
+    $('cmp').style.pointerEvents='none';
+    return;
+  }
+  if(!SENT){ $('cflSend').hidden=false; $('cflSend').textContent='שליחה'; $('cflAnswers').hidden=true; return; }
+  var dirty = canon(stateNow())!==SENT.json;
+  $('cflSend').hidden=!dirty; $('cflSend').textContent='שליחת העדכון'; $('cflAnswers').hidden=false;
+  CFL.showSentNote($('s3'), SENT.at, SENT.upd, dirty);
+}
+var s3T=null;
+['input','click'].forEach(function(ev){ $('s3').addEventListener(ev, function(){ clearTimeout(s3T); s3T=setTimeout(refreshS3, 250); }); });
+
+$('cflAnswers').addEventListener('click', function(){ showStep('s1'); window.scrollTo({ top: 0 }); });
+
 $('cflSend').addEventListener('click', function(){
-  if(!confirm('לאחר השליחה לא ניתן יהיה לשנות את התשובות. לשלוח?')) return;
-  var b=$('cflSend'); b.disabled=true; b.textContent='שולח…'; $('cflMsg').textContent='';
+  if(!SENT && !confirm('לשלוח את התשובות? אפשר יהיה לחזור אליהן ולעדכן אותן גם אחר כך.')) return;
+  var b=$('cflSend'), label=b.textContent; b.disabled=true; b.textContent='שולח…'; $('cflMsg').textContent='';
   var fields={ professions: chosen().map(function(x){ return x.n; }).join(', ') };
-  CFL.submit('tours', stateNow(), window.toursSummary(), fields).then(function(r){
-    b.disabled=false; b.textContent='שליחה';
+  var st=stateNow();
+  CFL.submit('tours', st, window.toursSummary(), fields).then(function(r){
+    b.disabled=false; b.textContent=label;
     if(!r.ok){ $('cflMsg').textContent=r.message||'השליחה לא הצליחה. נסו שוב.'; return; }
-    lockSent('');
+    SENT={ json: canon(st), at: r.submittedAt||'', upd: r.updatedAt||'' };
+    var rr=$('cwlRestored'); if(rr) rr.remove();
+    refreshS3();
+    $('cflMsg').style.color='var(--olive-dk)';
+    $('cflMsg').textContent = r.updated ? 'העדכון נשלח.' : 'התשובות נשלחו. תודה!';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 });
 
+/* "תשובות הנועץ" for the יועצים site: the chosen professions, the marks and the own role, read-only */
+function showAnswersView(){
+  ['s1','s2','s2b'].forEach(function(id){ $(id).classList.remove('hidden'); $(id).style.pointerEvents='none'; });
+  $('s3').classList.add('hidden');
+  document.querySelectorAll('.stickybar,.own').forEach(function(e){ e.style.display='none'; });
+  document.querySelectorAll('#s1 .fam').forEach(function(e){ if(e.textContent.indexOf('מקצוע שאינו ברשימה')>-1){ e.style.display='none'; if(e.nextElementSibling) e.nextElementSibling.style.display='none'; } });
+}
+
 CFL.start('tours').then(function(info){
-  if(info.status==='submitted' && info.saved){
-    /* already sent: show the summary only, read-only */
+  if(info.view){
     LOCKED = true;
-    info.saved.step = 's3';
-    restoreNow(info.saved);
-    lockSent(info.submittedAt);
+    var d = info.saved || {};
+    d.step = info.viewMode==='answers' ? 's2b' : 's3';
+    restoreNow(d);
+    if(info.viewMode==='answers') showAnswersView(); else refreshS3();
     return;
   }
   SK = CFL.draftKey('tours');
+  if(info.status==='submitted' && info.saved){
+    /* sent before: open on the summary; "הסתכל בתשובות" goes back to the answers for editing */
+    SENT = { json: canon(info.saved), at: info.submittedAt||'', upd: info.updatedAt||'' };
+    var draft=null; try{ draft=JSON.parse(localStorage.getItem(SK)||'null'); }catch(e){}
+    if(draft && draft.picked && canon(draft)!==SENT.json){ restoreNow(); refreshS3(); return; } /* unsent edits */
+    info.saved.step = 's3';
+    restoreNow(info.saved);
+    return;
+  }
   restoreNow();
 });
 

@@ -117,17 +117,20 @@
   }
 
   // ---------- read-only view for the staff site ----------
-  // The staff site shows this same page inside its own page, at  <page>#view , and hands over the client's
-  // saved answers with postMessage. Only a parent page on the same site is accepted; nothing goes to the server.
-  const VIEW = /(^|[#&])view\b/.test(location.hash) && window.parent !== window;
+  // The יועצים site shows this same page inside its own page and hands over the נועץ's saved answers with
+  // postMessage. Only a parent page on the same site is accepted; nothing goes to the server.
+  //   <page>#view          -> the summary screen ("סיכום לנועץ")
+  //   <page>#view-answers  -> the questionnaire itself with the answers filled in ("תשובות הנועץ")
+  const VIEW = /(^|[#&])view(-answers)?\b/.test(location.hash) && window.parent !== window;
+  const VIEW_MODE = /(^|[#&])view-answers\b/.test(location.hash) ? 'answers' : 'results';
   function waitForStaffPage() {
     return new Promise(resolve => {
       window.addEventListener('message', e => {
         if (e.source !== window.parent || e.origin !== location.origin) return;
         const d = e.data || {};
         if (d.type !== 'cfl-view') return;
-        resolve({ ok: true, status: 'submitted', view: true, saved: d.state, submittedAt: d.submittedAt || '',
-          name: d.name || '', gender: d.gender || '' });
+        resolve({ ok: true, status: 'submitted', view: true, viewMode: VIEW_MODE, saved: d.state,
+          submittedAt: d.submittedAt || '', updatedAt: d.updatedAt || '', name: d.name || '', gender: d.gender || '' });
       });
       window.parent.postMessage({ type: 'cfl-view-ready' }, location.origin);
     });
@@ -174,16 +177,30 @@
       return r;
     },
 
-    /** Grey box shown at the top of the results once the questionnaire was sent. */
-    sentNote(submittedAt) {
+    /** Box at the top of the summary once the questionnaire was sent. unsent = there are edits not sent yet. */
+    sentNote(submittedAt, updatedAt, unsent) {
       const n = document.createElement('div');
-      if (VIEW) { n.className = 'cfl-sent'; n.hidden = true; return n; } // the staff page shows its own heading
       n.className = 'cfl-sent noprint';
-      n.style.cssText = 'background:#F4F5EF;border-right:4px solid #5E6A41;padding:12px 16px;margin:18px 0;font-size:16px;direction:rtl';
+      if (VIEW) { n.hidden = true; return n; } // the יועצים page shows its own heading
+      n.style.cssText = 'background:' + (unsent ? '#FBF6F2' : '#F4F5EF') + ';border-right:4px solid ' + (unsent ? '#9C6B4F' : '#5E6A41') +
+        ';padding:12px 16px;margin:18px 0;font-size:16px;direction:rtl';
       const b = document.createElement('b');
-      b.textContent = 'התשובות נשלחו' + (submittedAt ? ' (' + submittedAt + ')' : '') + '. ';
-      n.append(b, document.createTextNode('זה העמוד שלך לצפייה בלבד. תודה!'));
+      if (unsent) {
+        b.textContent = 'יש שינויים שעוד לא נשלחו. ';
+        n.append(b, document.createTextNode('כדי שיישמרו, לחצו על "שליחת העדכון".'));
+      } else {
+        const when = updatedAt && updatedAt !== submittedAt ? ' (עודכנו ' + updatedAt + ')' : (submittedAt ? ' (' + submittedAt + ')' : '');
+        b.textContent = 'התשובות נשלחו' + when + '. ';
+        n.append(b, document.createTextNode('אפשר לחזור לתשובות ולעדכן אותן בכל זמן, דרך "הסתכל בתשובות".'));
+      }
       return n;
+    },
+
+    /** Replaces (or adds) the sent note at the top of a container. */
+    showSentNote(container, submittedAt, updatedAt, unsent) {
+      const old = container.querySelector('.cfl-sent');
+      const n = CFL.sentNote(submittedAt, updatedAt, unsent);
+      if (old) old.replaceWith(n); else container.insertBefore(n, container.firstChild);
     }
   };
 

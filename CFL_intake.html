@@ -961,42 +961,82 @@ function cflGender(root){
 new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1)cflGender(n);else if(n.nodeType===3&&n.parentNode)cflGender(n.parentNode);}))).observe(document.getElementById('app'),{childList:true,subtree:true});
 
 /* ---------- sending to the site ---------- */
-let SENT_AT='';
+let SENT=null; /* once sent: { json, at, upd } – the answers as last sent, to spot unsent changes */
 function cflState(){return {date:S.date||'',g:S.g||'',age:S.age||'',years:S.years||'',role:S.role||'',path:S.path||'',a:S.a,t:S.t,fbk:S.fbk||null};}
+/* the answers in a fixed form (like the server keeps them), to compare what's on screen with what was sent */
+function cflSort(o){if(Array.isArray(o))return o.map(cflSort);if(o&&typeof o==='object'){const r={};Object.keys(o).sort().forEach(k=>{if(o[k]!==undefined&&o[k]!==null)r[k]=cflSort(o[k])});return r}return o}
+function cflCanon(d){d=d||{};const t={};Object.keys(d.t||{}).forEach(k=>{const s=String(d.t[k]==null?'':d.t[k]).trim();if(s)t[k]=s});
+  return JSON.stringify(cflSort({date:String(d.date||'').trim(),age:String(d.age||'').trim(),years:String(d.years||'').trim(),role:String(d.role||'').trim(),path:String(d.path||'').trim(),a:d.a||{},t:t,fbk:d.fbk&&(d.fbk.agree||String(d.fbk.note||'').trim())?{agree:String(d.fbk.agree||''),note:String(d.fbk.note||'').trim()}:null}));}
+
 function cflAfterEnd(){
-  const send=$('cflSend'), card=send&&send.closest('.card');
-  if(LOCKED){
+  const send=$('cflSend'), card=send&&send.closest('.card'), edit=$('edit'), app=$('app');
+  /* the "back to the answers" button lives in the send box in the original; keep it outside, so hiding the box keeps it */
+  const nav=edit&&edit.closest('.nav');
+  if(nav&&card&&card.contains(nav)){nav.style.marginTop='14px';card.after(nav);}
+  if(LOCKED){ /* the יועצים view */
     if(card)card.style.display='none';
-    const e=$('edit');if(e)e.style.display='none';
-    $('app').querySelectorAll('.claybox').forEach(x=>x.remove()); /* "you can go back and complete" no longer applies */
-    const app=$('app');if(!app.querySelector('.cfl-sent'))app.insertBefore(CFL.sentNote(SENT_AT),app.children[1]||null);
+    if(edit)edit.style.display='none';
+    app.querySelectorAll('.claybox').forEach(x=>x.remove());
     return;
   }
+  if(SENT){
+    const dirty=cflCanon(cflState())!==SENT.json;
+    if(edit)edit.textContent='הסתכל בתשובות';
+    if(card){card.style.display=dirty?'':'none';send.textContent='שליחת העדכון';}
+    const old=app.querySelector('.cfl-sent'),n=CFL.sentNote(SENT.at,SENT.upd,dirty);
+    if(old)old.replaceWith(n);else app.insertBefore(n,app.children[1]||null);
+  }
   send.onclick=async()=>{
-    if(!confirm('לאחר השליחה לא ניתן יהיה לשנות את התשובות. לשלוח?'))return;
-    send.disabled=true;send.textContent='שולח…';$('cflMsg').textContent='';
-    const r=await CFL.submit('intake',cflState(),cwlReadable(pack()),{path:pathOf()});
-    send.disabled=false;send.textContent='שליחה';
+    if(!SENT&&!confirm('לשלוח את התשובות? אפשר יהיה לחזור אליהן ולעדכן אותן גם אחר כך.'))return;
+    const label=send.textContent;send.disabled=true;send.textContent='שולח…';$('cflMsg').textContent='';
+    const st=cflState();
+    const r=await CFL.submit('intake',st,cwlReadable(pack()),{path:pathOf()});
+    send.disabled=false;send.textContent=label;
     if(!r.ok){$('cflMsg').textContent=r.message||'השליחה לא הצליחה. נסו שוב.';return;}
-    LOCKED=true;renderEnd();scrollTo(0,0);
+    SENT={json:cflCanon(st),at:r.submittedAt||'',upd:r.updatedAt||''};
+    renderEnd();scrollTo(0,0);
   };
 }
+
+/* "תשובות הנועץ" for the יועצים site: every section with the answers, read-only */
+function renderAllAnswers(){
+  const app=$('app');
+  let h=brand('התשובות כפי שמולאו')+
+    `<div class="card"><div class="qt" style="margin-bottom:6px">פרטי פתיחה</div>`+
+    `<div class="qn"><b>גיל:</b> ${esc(S.age||'—')} · <b>שנות ניסיון מקצועי:</b> ${esc(S.years||'—')}</div>`+
+    `<div class="qn"><b>תפקיד או עיסוק נוכחי:</b> ${esc(S.role||'—')}</div>`+
+    `<div class="qn"><b>הפרק הכי משמעותי במסע המקצועי:</b> ${esc(S.path||'—')}</div></div>`;
+  secs().forEach(sec=>{h+=`<h2>${esc(sec.title)}</h2>`;if(sec.intro)h+=`<p class="qn">${esc(sec.intro)}</p>`;sec.qs.forEach(q=>{h+=qHTML(q)});});
+  app.innerHTML=h;
+  app.querySelectorAll('input,textarea').forEach(e=>{e.readOnly=true;});
+  app.style.pointerEvents='none';
+}
+
 CFL.start('intake').then(function(info){
   /* the לשון פניה chosen at signup: hides this page's own chooser and sets the wording */
   if(info.gender==='f'||info.gender==='m')HASHG=info.gender;
-  if(info.status==='submitted'&&info.saved){
-    S=Object.assign({name:'',date:'',a:{},t:{},page:0,done:true},info.saved,{name:CFL.name,done:true});
-    LOCKED=true;SENT_AT=info.submittedAt||'';
-    render();
+  if(info.view){
+    S=Object.assign({name:'',date:'',a:{},t:{},page:0,done:true},info.saved||{},{name:CFL.name,done:true});
+    LOCKED=true;
+    if(info.viewMode==='answers')renderAllAnswers();else render();
     return;
   }
   KEY=CFL.draftKey('intake');
+  if(info.status==='submitted'&&info.saved){
+    /* sent before: open on the end screen; "הסתכל בתשובות" goes back to the answers for editing */
+    SENT={json:cflCanon(info.saved),at:info.submittedAt||'',upd:info.updatedAt||''};
+    let draft=null;try{draft=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){}
+    if(draft&&cflCanon(draft)!==SENT.json){load();}  /* edits made here and not sent yet */
+    else{S=Object.assign({name:'',date:'',a:{},t:{},page:0},info.saved,{done:true});}
+    S.name=CFL.name;
+    render();
+    return;
+  }
   load();
   S.name=CFL.name;
   render();
 });
 </script>
-<form hidden="" method="POST" name="cwl-answers"><input type="hidden" name="form-name" value="cwl-answers"><input type="hidden" name="subject"><input type="text" name="questionnaire"><input type="text" name="name"><textarea name="note"></textarea><textarea name="answers"></textarea><textarea name="code"></textarea><input type="text" name="bot-field"></form>
 
 <script>
 /* שאלון הכניסה: תשובות בטקסט קריא (לשליחה ליועצת) */
