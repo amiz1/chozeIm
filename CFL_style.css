@@ -93,18 +93,29 @@ textarea { resize: vertical; }
 .msg.info { border-right: 3px solid var(--gold); }
 .msg.success { border-right: 3px solid var(--olive); background: var(--tint); }
 
-/* Home page */
-.q-list { display: grid; gap: 12px; }
+/* Home page: a compact list (one line per questionnaire) */
+.section-title { font-size: 17px; font-weight: 700; color: var(--olive); margin: 26px 0 10px; }
+.q-list { background: var(--card); border: 1px solid var(--rule); }
 .q-card {
-  display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0;
-  border-right: 4px solid var(--olive);
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  padding: 12px 18px; border-right: 4px solid var(--olive);
 }
-.q-card p { margin: 4px 0 0; color: var(--mute); font-size: 16px; }
+.q-card + .q-card { border-top: 1px solid var(--rule); }
+.q-card.submitted { border-right-color: var(--clay); }
+.q-card.readonly { border-right-color: var(--rule); }
 .q-card.locked { opacity: .6; border-right-color: var(--rule); }
-.q-card .actions { flex-shrink: 0; text-align: center; }
+.q-text { min-width: 0; }
+.q-title { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.q-card h3, .cv-card h3 { font-size: 17px; font-weight: 700; margin: 0; }
+.q-card p { margin: 2px 0 0; color: var(--mute); font-size: 14px; line-height: 1.5; }
+.q-card .actions, .cv-card .actions { flex-shrink: 0; }
+.btn.small { font-size: 14px; padding: 7px 16px; }
+.btn.secondary.small { padding: 6px 15px; }
+.small { font-size: 14px; }
+.muted { color: var(--mute); }
 .badge {
-  display: inline-block; font-size: 13px; font-weight: 700;
-  padding: 2px 10px; margin-bottom: 8px; letter-spacing: .02em;
+  display: inline-block; font-size: 12px; font-weight: 700;
+  padding: 1px 8px; letter-spacing: .02em; white-space: nowrap;
 }
 .badge.open { background: var(--tint); color: var(--olive); }
 .badge.submitted { background: var(--claybg); color: var(--clay); }
@@ -160,16 +171,17 @@ footer b { color: var(--olive); }
   .site-nav { gap: 14px; }
   .wrap { padding: 0 15px 50px; }
   .card { padding: 18px; }
-  .q-card { flex-direction: column; align-items: stretch; }
-  .q-card .actions { text-align: start; }
+  .q-card { padding: 11px 14px; }
 }
 
 
 /* Two choices side by side (לשון פניה) */
 .options.two { grid-template-columns: 1fr 1fr; }
 
-/* קורות חיים card on the home page */
-.cv-card { margin-top: 22px; border-right: 4px solid var(--gold); }
-.cv-note { color: var(--mute); font-size: 15px; margin: 0 0 10px; }
-.cv-status { margin: 0 0 14px; }
+/* קורות חיים card on the home page (top, one line) */
+.cv-card { padding: 14px 18px; margin: 18px 0 0; border-right: 4px solid var(--gold); }
+.cv-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.cv-status { margin: 2px 0 0; color: var(--mute); font-size: 14px; line-height: 1.5; }
+.cv-status b { color: var(--ink); font-weight: 500; }
+.cv-card .msg { margin: 10px 0 0; font-size: 15px; padding: 8px 12px; }
 .cv-input { display: none; }

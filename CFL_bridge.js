@@ -30,6 +30,17 @@
 
   function goHome() { location.href = 'index.html'; }
 
+  // The home page loads this page's data ahead (CFL_app.js); use it once if it's fresh and for this login
+  function takeLoaded(id) {
+    try {
+      const k = 'cfl_tool_' + id;
+      const o = JSON.parse(sessionStorage.getItem(k) || 'null');
+      sessionStorage.removeItem(k);
+      if (o && o.token === load(TOKEN_KEY) && Date.now() - o.at < 3 * 60000 && o.r && o.r.ok) return o.r;
+    } catch (e) { }
+    return null;
+  }
+
   // Replaces the page with a short message and a way back (used when the page can't be used)
   function fatal(message) {
     document.body.innerHTML = '';
@@ -46,6 +57,8 @@
   }
 
   async function logout() {
+    store('cfl_home', null);
+    try { Object.keys(sessionStorage).filter(k => k.indexOf('cfl_tool_') === 0).forEach(k => sessionStorage.removeItem(k)); } catch (e) { }
     await api('logout');
     store(TOKEN_KEY, null);
     store(EMAIL_KEY, null);
@@ -157,7 +170,7 @@
       }
       if (CFL_API_URL.indexOf('PASTE_') === 0) { fatal('האתר עדיין לא חובר לשרת (CFL_config.js).'); return NEVER; }
       if (!load(TOKEN_KEY)) { goHome(); return NEVER; }
-      const r = await api('getTool', { id: id });
+      const r = takeLoaded(id) || await api('getTool', { id: id });
       if (r.auth === false) { store(TOKEN_KEY, null); goHome(); return NEVER; }
       if (!r.ok) { fatal(r.message); return NEVER; }
       CFL.name = r.name || '';

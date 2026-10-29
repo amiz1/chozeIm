@@ -65,7 +65,36 @@ function el(tag, props, ...children) {
 
 function render(...nodes) {
   app.replaceChildren(...nodes.filter(n => n !== null && n !== undefined));
+  app.dataset.view = ''; // which screen is showing (set by the home page, so a late refresh doesn't draw over another screen)
   window.scrollTo(0, 0);
+}
+
+// ===================== Remembering the last answers from the server (makes the site feel fast) =====================
+// The home page is drawn at once from the last visit and refreshed in the background. Questionnaire pages are
+// loaded ahead while you're on the home page. Everything is tied to the current login.
+const HOME_CACHE = 'cfl_home';
+const TOOL_CACHE = 'cfl_tool_'; // + id, in this tab only (sessionStorage), read by CFL_bridge.js
+function cacheGet(key) {
+  try {
+    const o = JSON.parse(localStorage.getItem(key) || 'null');
+    return o && o.token === load(TOKEN_KEY) ? o.r : null;
+  } catch (e) { return null; }
+}
+function cachePut(key, r, session) {
+  try { (session ? sessionStorage : localStorage).setItem(key, JSON.stringify({ token: load(TOKEN_KEY), at: Date.now(), r: r })); } catch (e) { }
+}
+function clearToolCaches() {
+  try { Object.keys(sessionStorage).filter(k => k.indexOf(TOOL_CACHE) === 0).forEach(k => sessionStorage.removeItem(k)); } catch (e) { }
+}
+function clearCaches() {
+  store(HOME_CACHE, null);
+  clearToolCaches();
+}
+async function prefetchTools(r) {
+  const ids = r.questionnaires.filter(q => q.type === 'tool').map(q => q.id);
+  if (!ids.length) return;
+  const x = await api('tools', { ids: ids });
+  if (x.ok) ids.forEach(id => { if (x.tools[id] && x.tools[id].ok) cachePut(TOOL_CACHE + id, x.tools[id], true); });
 }
 
 function msgBox(text, kind) {
@@ -202,6 +231,7 @@ function showForgot(prefill) {
 }
 
 async function logout() {
+  clearCaches();
   await api('logout');
   store(TOKEN_KEY, null);
   store(EMAIL_KEY, null);
@@ -215,49 +245,69 @@ function draftKey(id) {
   return 'cfl_draft_' + (currentUser ? currentUser.email : '') + '_' + id;
 }
 
+let homeSeq = 0;
 async function showHome(notice) {
-  loadingView();
+  const seq = ++homeSeq;
+  clearToolCaches(); // pages loaded ahead earlier may be out of date; they are loaded again below
+  const cached = cacheGet(HOME_CACHE);
+  if (cached) drawHome(cached, notice);
+  else { loadingView(); app.dataset.view = 'home'; }
   const r = await api('home');
-  if (!r.ok) { if (!r.handled) errorView(r.message, () => showHome()); return; }
+  if (seq !== homeSeq || app.dataset.view !== 'home') return; // another screen was opened meanwhile
+  if (!r.ok) { if (!r.handled && !cached) errorView(r.message, () => showHome()); return; }
+  cachePut(HOME_CACHE, r);
+  prefetchTools(r);
+  if (cached && JSON.stringify(cached) === JSON.stringify(r)) return; // nothing changed
+  if (app.querySelector('button:disabled')) return; // an upload is running; keep the screen as it is
+  drawHome(r, notice, !!cached);
+}
+
+function drawHome(r, notice, keepScroll) {
+  const y = window.scrollY;
   currentUser = { name: r.name, email: r.email };
   store(EMAIL_KEY, r.email); // questionnaire pages use it to keep each user's draft separate
   logoutBtn.hidden = false;
   homeBtn.hidden = false;
 
   // Signed up before 'לשון פניה' existed: ask once, then every questionnaire uses it
-  if (!r.gender) { showGenderQuestion(r.name); return; }
+  if (!r.gender) { showGenderQuestion(r.name); app.dataset.view = 'home'; return; }
 
   const cards = r.questionnaires.map(q => {
     let badge, action = null;
     const isTool = q.type === 'tool';
     if (q.status === 'submitted' && q.readOnly) {
       badge = el('span', { class: 'badge submitted' }, 'נשלח · לצפייה בלבד');
-      action = el('button', { type: 'button', class: 'btn secondary', onclick: () => openPage(q.page) }, 'צפייה');
+      action = el('button', { type: 'button', class: 'btn secondary small', onclick: () => openPage(q.page) }, 'צפייה');
     } else if (q.status === 'submitted') {
       badge = el('span', { class: 'badge submitted' }, 'נשלח');
-      action = el('button', { type: 'button', class: 'btn secondary',
+      action = el('button', { type: 'button', class: 'btn secondary small',
         onclick: () => isTool ? openPage(q.page) : showAnswers(q.id) }, isTool ? 'צפייה בתוצאות' : 'צפייה בתשובות');
     } else if (q.status === 'open') {
       badge = el('span', { class: 'badge open' }, 'פתוח למילוי');
       const hasDraft = !!load(draftKey(q.id));
-      action = el('button', { type: 'button', class: 'btn primary',
+      action = el('button', { type: 'button', class: 'btn primary small',
         onclick: () => isTool ? openPage(q.page) : showQuestionnaire(q.id) },
         hasDraft ? 'המשך מילוי' : 'למילוי');
     } else {
       badge = el('span', { class: 'badge locked' }, 'ייפתח בהמשך');
     }
-    return el('div', { class: 'card q-card' + (q.status === 'locked' ? ' locked' : '') },
-      el('div', {}, badge, el('h2', {}, q.title), q.description ? el('p', {}, q.description) : null),
+    return el('div', { class: 'q-card ' + q.status + (q.readOnly ? ' readonly' : '') },
+      el('div', { class: 'q-text' }, el('div', { class: 'q-title' }, el('h3', {}, q.title), badge),
+        q.description ? el('p', {}, q.description) : null),
       action ? el('div', { class: 'actions' }, action) : null);
   });
 
   render(
     notice ? msgBox(notice, 'success') : null,
     el('h1', {}, 'שלום, ' + r.name),
-    el('p', { class: 'sub' }, 'אלה השאלונים שלך. שאלונים חדשים ייפתחו לאורך התהליך.'),
-    el('div', { class: 'q-list' }, cards),
-    cvCard(r.cv)
+    cvCard(r.cv),
+    el('h2', { class: 'section-title' }, 'השאלונים שלך'),
+    cards.length ? el('div', { class: 'q-list' }, cards)
+      : el('p', { class: 'muted' }, 'עדיין אין שאלונים פתוחים. שאלונים חדשים ייפתחו לאורך התהליך.'),
+    cards.length ? el('p', { class: 'muted small' }, 'שאלונים נוספים ייפתחו לאורך התהליך.') : null
   );
+  app.dataset.view = 'home';
+  if (keepScroll) window.scrollTo(0, y);
 }
 
 // ===================== CV (קורות חיים) =====================
@@ -275,18 +325,19 @@ function readBase64(file) {
 
 function cvCard(cv) {
   const status = el('p', { class: 'cv-status' });
+  const NOTE = 'PDF או Word, עד 5MB. נשמר באופן פרטי, ורק היועצים יכולים לצפות בו.';
   const msg = el('div');
   const paint = (c) => {
     status.replaceChildren(c
-      ? el('span', {}, 'הקובץ שהועלה: ', el('b', { dir: 'auto' }, c.name), ' · ' + c.uploadedAt)
-      : 'עדיין לא הועלו קורות חיים.');
+      ? el('span', {}, 'הקובץ שהועלה: ', el('bdi', {}, el('b', {}, c.name)), ' · ' + c.uploadedAt)
+      : NOTE);
     btn.textContent = c ? 'החלפת הקובץ' : 'העלאת קורות חיים';
   };
   const input = el('input', {
     type: 'file', class: 'cv-input', 'aria-label': 'בחירת קובץ קורות חיים',
     accept: '.pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
   });
-  const btn = el('button', { type: 'button', class: 'btn primary', onclick: () => input.click() });
+  const btn = el('button', { type: 'button', class: 'btn primary small', onclick: () => input.click() });
   input.addEventListener('change', async () => {
     const f = input.files && input.files[0];
     input.value = '';
@@ -308,9 +359,10 @@ function cvCard(cv) {
   });
   paint(cv);
   return el('div', { class: 'card cv-card' },
-    el('h2', {}, 'קורות חיים'),
-    el('p', { class: 'cv-note' }, 'PDF או Word, עד 5MB. הקובץ נשמר באופן פרטי, ורק היועצים יכולים לצפות בו.'),
-    status, msg, btn, input);
+    el('div', { class: 'cv-row' },
+      el('div', { class: 'q-text' }, el('h3', {}, 'קורות חיים'), status),
+      el('div', { class: 'actions' }, btn)),
+    msg, input);
 }
 
 // A questionnaire with its own page (like עוגני קריירה)
@@ -333,6 +385,7 @@ function showGenderQuestion(name) {
         await withBusy(btn, async () => {
           const r = await api('setGender', { gender: gender.value() });
           if (!r.ok) { if (!r.handled) msg.append(msgBox(r.message)); return; }
+          store(HOME_CACHE, null); // the saved home page is from before the choice
           showHome();
         });
       }
@@ -489,4 +542,6 @@ if (CFL_API_URL.indexOf('PASTE_') === 0) {
   showHome();
 } else {
   showLogin();
+  // wake the server up while the person types, so the first answer comes faster
+  try { fetch(CFL_API_URL, { mode: 'no-cors' }).catch(() => { }); } catch (e) { }
 }
