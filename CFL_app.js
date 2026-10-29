@@ -6,6 +6,7 @@ const EMAIL_KEY = 'cfl_email';
 
 const app = document.getElementById('app');
 const logoutBtn = document.getElementById('logoutBtn');
+const homeBtn = document.getElementById('homeBtn');
 let currentUser = null; // { name, email } after the home page loads
 
 // ===================== Browser storage =====================
@@ -100,6 +101,7 @@ function showLogin(opts) {
   opts = opts || {};
   currentUser = null;
   logoutBtn.hidden = true;
+  homeBtn.hidden = true;
   const msg = el('div');
   if (opts.message) msg.append(msgBox(opts.message));
   if (opts.info) msg.append(msgBox(opts.info, 'info'));
@@ -195,6 +197,7 @@ async function logout() {
   showLogin();
 }
 logoutBtn.addEventListener('click', logout);
+homeBtn.addEventListener('click', () => showHome());
 
 // ===================== Home page =====================
 function draftKey(id) {
@@ -208,6 +211,7 @@ async function showHome(notice) {
   currentUser = { name: r.name, email: r.email };
   store(EMAIL_KEY, r.email); // questionnaire pages use it to keep each user's draft separate
   logoutBtn.hidden = false;
+  homeBtn.hidden = false;
 
   const cards = r.questionnaires.map(q => {
     let badge, action = null;

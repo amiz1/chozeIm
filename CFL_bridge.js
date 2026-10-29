@@ -45,20 +45,36 @@
     document.body.append(box);
   }
 
-  // Thin bar at the top of every questionnaire page: back link + who is logged in
+  async function logout() {
+    await api('logout');
+    store(TOKEN_KEY, null);
+    store(EMAIL_KEY, null);
+    goHome();
+  }
+
+  // Thin bar at the top of every questionnaire page: "back to main page", who is logged in, "logout"
   function addBar(name) {
     if (document.getElementById('cflBar')) return;
+    const linkCss = 'color:#5E6A41;font-weight:500;text-decoration:none;background:none;border:0;padding:0;cursor:pointer;font-size:15px';
     const bar = document.createElement('div');
     bar.id = 'cflBar';
     bar.className = 'noprint';
-    bar.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:860px;margin:0 auto;padding:10px 20px;font-size:15px;color:#6E6A5F;direction:rtl';
-    const back = document.createElement('a');
-    back.href = 'index.html';
-    back.textContent = '→ חזרה לשאלונים';
-    back.style.cssText = 'color:#5E6A41;font-weight:700;text-decoration:none';
+    bar.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:860px;margin:0 auto;padding:12px 20px;font-size:15px;color:#6E6A5F;direction:rtl';
+    const home = document.createElement('a');
+    home.href = 'index.html';
+    home.textContent = 'חזרה לעמוד הראשי';
+    home.style.cssText = linkCss;
+    const side = document.createElement('span');
+    side.style.cssText = 'display:flex;gap:18px;align-items:center';
     const who = document.createElement('span');
     who.textContent = name || '';
-    bar.append(back, who);
+    const out = document.createElement('button');
+    out.type = 'button';
+    out.textContent = 'יציאה';
+    out.style.cssText = linkCss;
+    out.addEventListener('click', logout);
+    side.append(who, out);
+    bar.append(home, side);
     document.body.insertBefore(bar, document.body.firstChild);
   }
 
