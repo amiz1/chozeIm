@@ -163,3 +163,7 @@ footer b { color: var(--olive); }
   .q-card { flex-direction: column; align-items: stretch; }
   .q-card .actions { text-align: start; }
 }
+
+
+/* Two choices side by side (לשון פניה) */
+.options.two { grid-template-columns: 1fr 1fr; }

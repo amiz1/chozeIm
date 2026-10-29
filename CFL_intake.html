@@ -315,7 +315,7 @@ function retClientText(d){
 }
 
 /* ---------- לשון פנייה (נועצת/נועץ) מהקישור שנשלח מהתיק ---------- */
-const HASHG=(function(){try{const m=((location.hash||'')+'&'+(location.search||'')).match(/[#&?]g=([fm])/);return m?m[1]:''}catch(e){return ''}})();
+let HASHG=(function(){try{const m=((location.hash||'')+'&'+(location.search||'')).match(/[#&?]g=([fm])/);return m?m[1]:''}catch(e){return ''}})();
 const FIN={'ך':'כ','ם':'מ','ן':'נ','ף':'פ','ץ':'צ'};
 function G(s){if(HASHG&&S.g!==HASHG){S.g=HASHG;save();}const g=S.g;if(g!=='f'&&g!=='m')return s;s=String(s).replace(/את\/ה/g,g==='f'?'את':'אתה');if(g==='m')s=s.replace(/אלייך/g,'אליך');
  return s.replace(/([א-ת]+)\/([היתה]{1})(?![א-ת])/g,(m,b,suf)=>{if(g==='m')return b;if(b.endsWith('ה')&&suf==='י')return b.slice(0,-1)+'י';const l=b.slice(-1);return (FIN[l]?b.slice(0,-1)+FIN[l]:b)+suf;});}
@@ -982,6 +982,8 @@ function cflAfterEnd(){
   };
 }
 CFL.start('intake').then(function(info){
+  /* the לשון פניה chosen at signup: hides this page's own chooser and sets the wording */
+  if(info.gender==='f'||info.gender==='m')HASHG=info.gender;
   if(info.status==='submitted'&&info.saved){
     S=Object.assign({name:'',date:'',a:{},t:{},page:0,done:true},info.saved,{name:CFL.name,done:true});
     LOCKED=true;SENT_AT=info.submittedAt||'';

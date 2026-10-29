@@ -78,7 +78,65 @@
     document.body.insertBefore(bar, document.body.firstChild);
   }
 
+  // ---------- wording by לשון פניה ----------
+  // Turns "את/ה", "חשב/י", "מומחה/ית" etc. into the chosen form. Only the page's own text is changed,
+  // never what the user typed (inputs and text areas are left alone).
+  const FIN = { 'ך': 'כ', 'ם': 'מ', 'ן': 'נ', 'ף': 'פ', 'ץ': 'צ' };
+  function genderText(s, g) {
+    if (g !== 'f' && g !== 'm') return s;
+    s = String(s).replace(/את\/ה/g, g === 'f' ? 'את' : 'אתה');
+    if (g === 'm') s = s.replace(/אלייך/g, 'אליך');
+    return s.replace(/([א-ת]+)\/(ית|ה|י|ת)(?![א-ת])/g, (m, base, suf) => {
+      if (g === 'm') return base;
+      if (base.endsWith('ה') && (suf === 'י' || suf === 'ית')) return base.slice(0, -1) + suf;
+      const last = base.slice(-1);
+      return (FIN[last] ? base.slice(0, -1) + FIN[last] : base) + suf;
+    });
+  }
+  function genderTree(root, g) {
+    if (!root || (g !== 'f' && g !== 'm')) return;
+    if (root.nodeType === 3) { if (root.nodeValue.indexOf('/') > -1) { const v = genderText(root.nodeValue, g); if (v !== root.nodeValue) root.nodeValue = v; } return; }
+    if (root.nodeType !== 1 || root.closest('textarea,script,style')) return;
+    const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode: n => n.parentNode && n.parentNode.closest('textarea,script,style') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT
+    });
+    const nodes = []; while (w.nextNode()) nodes.push(w.currentNode);
+    nodes.forEach(n => { if (n.nodeValue.indexOf('/') > -1) { const v = genderText(n.nodeValue, g); if (v !== n.nodeValue) n.nodeValue = v; } });
+    const withPh = root.matches && root.matches('[placeholder]') ? [root] : [];
+    withPh.concat([...root.querySelectorAll('[placeholder]')]).forEach(e => {
+      const v = genderText(e.getAttribute('placeholder'), g); if (v !== e.getAttribute('placeholder')) e.setAttribute('placeholder', v);
+    });
+  }
+  let genderWatch = null;
+  function applyGender(g) {
+    if (g !== 'f' && g !== 'm') return;
+    genderTree(document.body, g);
+    if (genderWatch) return;
+    genderWatch = new MutationObserver(ms => ms.forEach(m => m.addedNodes.forEach(n => genderTree(n.nodeType === 3 ? n : n, g))));
+    genderWatch.observe(document.body, { childList: true, subtree: true });
+  }
+
+  // ---------- read-only view for the staff site ----------
+  // The staff site shows this same page inside its own page, at  <page>#view , and hands over the client's
+  // saved answers with postMessage. Only a parent page on the same site is accepted; nothing goes to the server.
+  const VIEW = /(^|[#&])view\b/.test(location.hash) && window.parent !== window;
+  function waitForStaffPage() {
+    return new Promise(resolve => {
+      window.addEventListener('message', e => {
+        if (e.source !== window.parent || e.origin !== location.origin) return;
+        const d = e.data || {};
+        if (d.type !== 'cfl-view') return;
+        resolve({ ok: true, status: 'submitted', view: true, saved: d.state, submittedAt: d.submittedAt || '',
+          name: d.name || '', gender: d.gender || '' });
+      });
+      window.parent.postMessage({ type: 'cfl-view-ready' }, location.origin);
+    });
+  }
+
   const CFL = {
+    view: VIEW,
+    gender: '',
+    genderText: s => genderText(s, CFL.gender),
     name: '',
     email: load(EMAIL_KEY) || '',
 
@@ -87,14 +145,23 @@
 
     /** Call once when the page opens. Resolves with { status: 'open' | 'submitted', saved, submittedAt, name }. */
     async start(id) {
+      if (VIEW) {
+        const info = await waitForStaffPage();
+        CFL.name = info.name; CFL.gender = info.gender;
+        document.documentElement.classList.add('cfl-view');
+        applyGender(CFL.gender);
+        return info;
+      }
       if (CFL_API_URL.indexOf('PASTE_') === 0) { fatal('האתר עדיין לא חובר לשרת (CFL_config.js).'); return NEVER; }
       if (!load(TOKEN_KEY)) { goHome(); return NEVER; }
       const r = await api('getTool', { id: id });
       if (r.auth === false) { store(TOKEN_KEY, null); goHome(); return NEVER; }
       if (!r.ok) { fatal(r.message); return NEVER; }
       CFL.name = r.name || '';
+      CFL.gender = r.gender || '';
       if (r.email && r.email !== CFL.email) { CFL.email = r.email; store(EMAIL_KEY, r.email); }
       addBar(CFL.name);
+      applyGender(CFL.gender);
       return r;
     },
 
@@ -110,6 +177,7 @@
     /** Grey box shown at the top of the results once the questionnaire was sent. */
     sentNote(submittedAt) {
       const n = document.createElement('div');
+      if (VIEW) { n.className = 'cfl-sent'; n.hidden = true; return n; } // the staff page shows its own heading
       n.className = 'cfl-sent noprint';
       n.style.cssText = 'background:#F4F5EF;border-right:4px solid #5E6A41;padding:12px 16px;margin:18px 0;font-size:16px;direction:rtl';
       const b = document.createElement('b');

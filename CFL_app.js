@@ -136,10 +136,19 @@ function showLogin(opts) {
   render(form);
 }
 
+// Two radio buttons: בלשון נקבה / בלשון זכר
+function genderPicker() {
+  const opt = (value, label) => el('label', { class: 'option' },
+    el('input', { type: 'radio', name: 'gender', value: value }), el('span', {}, label));
+  const box = el('div', { class: 'options two', role: 'radiogroup' }, opt('f', 'בלשון נקבה'), opt('m', 'בלשון זכר'));
+  return { box, value: () => { const c = box.querySelector('input:checked'); return c ? c.value : ''; } };
+}
+
 function showSignup() {
   const msg = el('div');
   const name = el('input', { type: 'text', autocomplete: 'name', required: true, maxlength: '60' });
   const email = el('input', { type: 'email', autocomplete: 'email', required: true, dir: 'ltr' });
+  const gender = genderPicker();
   const btn = el('button', { type: 'submit', class: 'btn primary full' }, 'שלחו לי קוד כניסה');
 
   render(el('form', {
@@ -147,8 +156,9 @@ function showSignup() {
     onsubmit: async (e) => {
       e.preventDefault();
       msg.replaceChildren();
+      if (!gender.value()) { msg.append(msgBox('יש לבחור איך נוח לך שנפנה אלייך')); return; }
       await withBusy(btn, async () => {
-        const r = await api('signup', { name: name.value, email: email.value });
+        const r = await api('signup', { name: name.value, email: email.value, gender: gender.value() });
         if (!r.ok) { if (!r.handled) msg.append(msgBox(r.message)); return; }
         showLogin({ email: email.value.trim(), info: 'קוד הכניסה נשלח למייל שלך. בדקו גם בתיבת הספאם.' });
       });
@@ -159,6 +169,7 @@ function showSignup() {
     msg,
     field('שם מלא', name),
     field('אימייל', email),
+    el('div', { class: 'field' }, el('span', {}, 'איך נוח לך שנפנה אלייך?'), gender.box),
     btn,
     el('div', { class: 'links' }, linkBtn('כבר יש לי קוד', () => showLogin()))
   ));
@@ -213,6 +224,9 @@ async function showHome(notice) {
   logoutBtn.hidden = false;
   homeBtn.hidden = false;
 
+  // Signed up before 'לשון פניה' existed: ask once, then every questionnaire uses it
+  if (!r.gender) { showGenderQuestion(r.name); return; }
+
   const cards = r.questionnaires.map(q => {
     let badge, action = null;
     const isTool = q.type === 'tool';
@@ -245,6 +259,31 @@ async function showHome(notice) {
 // A questionnaire with its own page (like עוגני קריירה)
 function openPage(page) {
   location.href = page;
+}
+
+function showGenderQuestion(name) {
+  const msg = el('div');
+  const gender = genderPicker();
+  const btn = el('button', { type: 'submit', class: 'btn primary' }, 'המשך');
+  render(
+    el('h1', {}, 'שלום, ' + name),
+    el('form', {
+      class: 'card',
+      onsubmit: async (e) => {
+        e.preventDefault();
+        msg.replaceChildren();
+        if (!gender.value()) { msg.append(msgBox('יש לבחור אחת מהאפשרויות')); return; }
+        await withBusy(btn, async () => {
+          const r = await api('setGender', { gender: gender.value() });
+          if (!r.ok) { if (!r.handled) msg.append(msgBox(r.message)); return; }
+          showHome();
+        });
+      }
+    },
+      el('h2', {}, 'לפני שמתחילים: איך נוח לך שנפנה אלייך?'),
+      el('p', { class: 'sub' }, 'כל השאלונים ינוסחו בהתאם.'),
+      msg, gender.box, el('div', { style: 'margin-top:16px' }, btn))
+  );
 }
 
 // ===================== Filling a questionnaire =====================
