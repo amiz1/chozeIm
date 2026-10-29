@@ -35,7 +35,7 @@ button, input, textarea { font-family: inherit; }
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
   padding: 30px 0 22px; border-bottom: 1px solid var(--rule); margin-bottom: 30px;
 }
-.logo { display: block; width: 225px; max-width: 60%; height: auto; }
+.logo { display: block; width: 180px; max-width: 50%; height: auto; }
 
 h1 { font-weight: 900; font-size: clamp(28px, 5vw, 38px); line-height: 1.15; margin: 0 0 10px; }
 h2 { font-weight: 700; font-size: 21px; margin: 0 0 4px; }
