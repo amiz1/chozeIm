@@ -102,6 +102,7 @@
     return s.replace(/([א-ת]+)\/(ית|ה|י|ת)(?![א-ת])/g, (m, base, suf) => {
       if (g === 'm') return base;
       if (base.endsWith('ה') && (suf === 'י' || suf === 'ית')) return base.slice(0, -1) + suf;
+      if (suf === 'ה' && base.length > 1 && base.endsWith('ו')) return base.slice(0, -1) + 'ה'; // לו/ה -> לה, עצמו/ה -> עצמה
       const last = base.slice(-1);
       return (FIN[last] ? base.slice(0, -1) + FIN[last] : base) + suf;
     });
