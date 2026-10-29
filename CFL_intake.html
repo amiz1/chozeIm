@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" data-theme="light"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>שאלון הכניסה · חוזה עם החיים</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<script src="CFL_config.js"></script>
+<script src="CFL_bridge.js"></script>
+<style>
+:root{--ink:#2B2B2B;--olive:#5E6A41;--olive-l:#7E8C5A;--clay:#9C6B4F;--gold:#B08A3E;--paper:#FAF9F5;--card:#FFFFFF;--rule:#DCD7CA;--mute:#6E6A5F;--tint:#F4F5EF;--tint2:#FAFAF6;--claybg:#FBF6F2;
+--display:'Frank Ruhl Libre','David Libre',Georgia,serif;--body:'Assistant','Segoe UI',system-ui,sans-serif;}
+:root[data-theme="dark"]{--ink:#ECE9E1;--paper:#1E1F1A;--card:#282A23;--rule:#44463C;--mute:#B3AE9F;--tint:#2F3327;--tint2:#24261F;--claybg:#33291F;--olive:#A9B77F;--olive-l:#8E9C63;--clay:#D09A77;}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.6}
+.wrap{max-width:760px;margin:0 auto;padding:28px 20px 80px}
+header.brand{text-align:center;padding:26px 0 10px}
+.wordmark{font-family:var(--display);color:var(--clay);font-size:20px;letter-spacing:.5px}
+h1{font-family:var(--display);color:var(--olive);font-size:40px;margin:6px 0 4px;font-weight:700;line-height:1.2}
+.sub{color:var(--mute);font-size:17px;padding-bottom:14px;border-bottom:2px solid var(--gold);display:inline-block}
+h2{font-family:var(--display);color:var(--olive);font-size:28px;margin:0 0 6px;padding-bottom:6px;border-bottom:1.5px solid var(--gold)}
+h3{font-family:var(--display);color:var(--clay);font-size:21px;margin:26px 0 10px}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:22px 24px;margin:18px 0}
+.tintbox{background:var(--tint);border-right:4px solid var(--olive);border-radius:6px;padding:16px 20px;margin:18px 0}
+.claybox{background:var(--claybg);border-right:4px solid var(--clay);border-radius:6px;padding:14px 18px;margin:12px 0}
+.muted{color:var(--mute)} .small{font-size:15px}
+label.f{display:block;font-weight:600;color:var(--olive);margin:12px 0 4px}
+input[type=text],input[type=number],textarea{width:100%;font:inherit;font-size:17px;padding:10px 12px;border:1px solid var(--rule);border-radius:6px;background:var(--tint2);color:var(--ink)}
+textarea{min-height:90px;resize:vertical}
+input:focus,textarea:focus{outline:2px solid var(--olive-l);border-color:var(--olive-l)}
+.q{margin:26px 0 8px}
+.q.unsure{border-right:3px solid var(--clay);padding-right:12px}
+.q.unsure .qt::after{content:'  · כדאי לבדוק מול הטופס';color:var(--clay);font-weight:600;font-size:14px}
+.qt{font-weight:700;font-size:19px;margin-bottom:4px}
+.qt .n{color:var(--olive);margin-left:6px}
+.qn{color:var(--mute);font-style:italic;font-size:15.5px;margin-bottom:8px}
+.opt{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;border:1px solid var(--rule);border-radius:8px;margin:7px 0;background:var(--card);cursor:pointer;transition:background .15s,border-color .15s}
+.opt:hover{border-color:var(--olive-l)}
+.opt.on{background:var(--tint);border-color:var(--olive)}
+.opt.dis{opacity:.45;cursor:not-allowed}
+.mk{flex:0 0 22px;height:22px;border:2px solid var(--olive);margin-top:3px;display:flex;align-items:center;justify-content:center;background:var(--card)}
+.mk.r{border-radius:50%} .mk.c{border-radius:4px}
+.opt.on .mk.r::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--olive)}
+.opt.on .mk.c{background:var(--olive)} .opt.on .mk.c::after{content:"✓";color:#fff;font-size:14px;line-height:1}
+.scale{display:flex;gap:8px;margin-top:8px}
+.scale button{flex:1;font:inherit;font-weight:700;font-size:19px;padding:12px 0;border:1px solid var(--rule);border-radius:8px;background:var(--card);color:var(--olive);cursor:pointer}
+.scale button.on{background:var(--olive);color:#fff;border-color:var(--olive)}
+.ends{display:flex;justify-content:space-between;font-size:14.5px;color:var(--mute);margin-top:4px}
+.follow{margin:8px 26px 0 0;padding:10px 14px;border-right:3px solid var(--clay);background:var(--claybg);border-radius:4px}
+.follow label{font-weight:600;color:var(--clay);font-size:15.5px;display:block;margin:6px 0 3px}
+.follow input{max-width:180px}
+.othertxt{margin:4px 36px 6px 0}
+.limit{color:var(--clay);font-size:15px;min-height:1.2em}
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:34px}
+.btn{font:inherit;font-weight:700;font-size:17px;padding:12px 26px;border-radius:8px;border:none;background:var(--olive);color:#fff;cursor:pointer}
+.btn:hover{background:#4f5936}
+.btn.ghost{background:transparent;color:var(--olive);border:1.5px solid var(--olive)}
+.btn.clay{background:var(--clay)}
+.prog{height:6px;background:var(--rule);border-radius:3px;overflow:hidden;margin:6px 0 4px}
+.prog i{display:block;height:100%;background:var(--gold);transition:width .3s}
+.progl{font-size:14px;color:var(--mute);text-align:left}
+.codebox{font-family:ui-monospace,Consolas,monospace;font-size:12.5px;direction:ltr;text-align:left;word-break:break-all;background:var(--tint2);border:1px dashed var(--olive-l);padding:12px;border-radius:6px;max-height:120px;overflow:auto}
+.reflect p{margin:0 0 14px}
+.reflect h3{margin-top:22px}
+.saved{font-size:13.5px;color:var(--mute);text-align:center;margin-top:18px}
+/* consultant */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:700px){.grid3{grid-template-columns:1fr}.follow{margin-right:0}}
+.col{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:14px}
+.col h4{margin:0 0 10px;font-family:var(--display);color:var(--olive);font-size:18px;border-bottom:1px solid var(--rule);padding-bottom:6px}
+.tool{margin:0 0 12px}
+.tool b{display:block}
+.why{display:inline-block;font-size:13px;background:var(--tint);color:var(--olive);border-radius:10px;padding:1px 8px;margin:3px 0 0 4px}
+.why.x{background:var(--claybg);color:var(--clay)}
+table.kv{width:100%;border-collapse:collapse;font-size:16px}
+table.kv td{padding:7px 8px;border-bottom:1px solid var(--rule);vertical-align:top}
+table.kv td:first-child{color:var(--mute);width:38%}
+.sig{border-right:4px solid var(--gold);background:#fff;border:1px solid var(--rule);border-right-width:4px;border-radius:6px;padding:10px 14px;margin:8px 0}
+.sig.t{border-right-color:var(--clay)}
+.sig b{color:var(--olive)} .sig.t b{color:var(--clay)}
+.tabs{display:flex;gap:6px;margin:18px 0 0;border-bottom:1.5px solid var(--rule)}
+.tabs button{font:inherit;font-weight:600;border:none;background:none;padding:8px 14px;color:var(--mute);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1.5px}
+.tabs button.on{color:var(--olive);border-bottom-color:var(--gold)}
+.hide{display:none}
+.sel{font:inherit;font-size:15px;padding:4px 8px;border:1px solid var(--rule);border-radius:6px;background:var(--tint2);color:var(--ink)}
+@media print{.nav,.tabs,.noprint{display:none!important}.hide{display:block!important}body{background:#fff}.card{break-inside:avoid}}
+.grow{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--rule)}.grow .gl{flex:1 1 220px;font-weight:600}.grow input{flex:1 1 220px}.gseg{display:flex;gap:6px;flex:1 1 280px}.gseg button{flex:1;font:inherit;font-size:15px;padding:9px 6px;border:1px solid var(--rule);background:var(--card,#fff);color:inherit;border-radius:6px;cursor:pointer}.gseg button.on{background:var(--olive);color:#fff;border-color:var(--olive)}
+.q.tb{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;margin:10px 0}.q.tb .qt{font-size:17px}.q.tb .opt{display:inline-flex;margin:4px 0 4px 6px;padding:7px 12px}.q.tb+.q.tb{margin-top:-11px;border-top:1px dashed var(--rule);border-radius:0 0 10px 10px}.q.tb:has(+.q.tb){border-bottom-left-radius:0;border-bottom-right-radius:0}.tbh{font-weight:700;color:var(--olive);font-size:19px;margin:0 0 8px}</style>
+<style>#cwlR{position:fixed;inset:0;background:rgba(20,20,15,.55);display:flex;align-items:flex-start;justify-content:center;z-index:9999;overflow:auto;padding:24px 14px;direction:rtl}
+ #cwlR .bx{background:#fff;color:#2B2B28;max-width:520px;width:100%;border-radius:10px;border-top:5px solid #B8933F;padding:22px 20px;font-family:"Assistant","Heebo","Segoe UI",Arial,sans-serif;font-size:17px;line-height:1.6}
+ #cwlR h3{margin:0 0 6px;font-size:22px;color:#4E5A3A}#cwlR p{margin:0 0 10px}
+ #cwlR input,#cwlR textarea{width:100%;font:inherit;padding:10px 12px;border:1px solid #DAD5C7;border-radius:6px;margin:4px 0 12px;box-sizing:border-box;background:#fff;color:#2B2B28}
+ #cwlR textarea{font-size:13px;height:90px;direction:rtl}
+ #cwlR .b{display:block;text-align:center;text-decoration:none;font:inherit;font-weight:700;border-radius:6px;padding:12px 16px;cursor:pointer;border:1px solid #6B7A4F;width:100%;margin:0 0 8px;box-sizing:border-box}
+ #cwlR .pr{background:#6B7A4F;color:#fff}#cwlR .gh{background:#fff;color:#4E5A3A}#cwlR .x{background:none;border:0;color:#6E6B62;text-decoration:underline;padding:4px;font:inherit;cursor:pointer}
+ #cwlR .m{font-size:15px;color:#4E5A3A;font-weight:600;min-height:1.4em}#cwlR small{color:#6E6B62;font-size:14px}
+ #cwlThanks{position:fixed;inset:0;background:#F6F4EE;z-index:10000;display:flex;align-items:center;justify-content:center;padding:24px 18px;direction:rtl;overflow:auto}
+ #cwlThanks .tx{max-width:520px;text-align:center;font-family:Arial,"Arial Hebrew",sans-serif;color:#2A2A26;font-size:22px;line-height:1.6}
+ #cwlThanks h2{font-size:34px;color:#4E5A3A;margin:14px 0 12px}#cwlThanks p{margin:0 0 6px}
+ #cwlThanks button{margin-top:30px;font:inherit;font-size:16px;background:none;border:0;color:#6C6A61;text-decoration:underline;cursor:pointer}
+ .cwl-send{font:inherit;font-weight:700;background:#B8933F;color:#fff;border:0;border-radius:6px;padding:12px 18px;cursor:pointer;margin:6px 0}
+ @media print{.cwl-send,#cwlR{display:none!important}}</style></head>
+<body>
+<div class="wrap" id="app"><p style="text-align:center;color:#6E6A5F;padding:40px 0">טוען…</p></div>
+<script>
+const MODE='client'; // client | yoetz
+const Q={"meta": {"title": "שאלון הכניסה 02", "wordmark": "חוזה עם החיים", "sub": "למילוי עצמי לפני הפגישה הראשונה", "purposeTitle": "לפני שמתחילים", "purpose": "השאלון הזה הוא הצעד הראשון שלנו יחד. הוא עוזר לנו להכיר את המקום שממנו את/ה יוצא/ת לדרך: באיזה שלב בחיים את/ה נמצא/ת, מה הביא אותך לעצור דווקא עכשיו, איזה מקום תופסת העבודה בחייך, ומה עוד מבקש בירור. אין כאן תשובות נכונות או לא נכונות, ואף תשובה לא תחליט במקומך. כל מה שנדרש הוא לענות בכנות, כפי שהדברים נראים לך היום.", "time": "בשאלות הפתוחות מספיקות כמה מילים, ואם יש לך יותר לומר, נשמח לקרוא."}, "sections": [{"id": "A", "title": "א. שלב החיים והצומת", "qs": [{"id": "q1", "n": 1, "tbl": "איפה אני היום", "type": "single", "text": "השלב שלי במסע המקצועי", "opts": ["בתחילת הדרך המקצועית", "בשלב של התבססות ובנייה מקצועית", "בשלב בשל במסע המקצועי – עם ניסיון, הישגים וזהות מקצועית מגובשת", "בשלב של בחינה מחדש באמצע המסע המקצועי", "לקראת פרישה או צמצום משמעותי של העבודה", "אחרי פרישה, ובונה פרק חדש"]}, {"id": "q1w", "n": "", "key": "1ב", "tbl": 1, "type": "single", "text": "איך נראית העבודה שלי היום", "opts": ["מקום עבודה אחד", "עצמאי/ת", "כמה עבודות במקביל", "כרגע לא עובד/ת"], "follow": {"when": 2, "label": "", "fields": [{"id": "q1w_t", "label": "אילו עבודות? (למשל: עורכת דין, צלמת)", "txt": true}]}}, {"id": "q1r", "n": "", "key": "1ג", "tbl": 1, "type": "single", "text": "האם פרישה בתמונה?", "opts": ["לא בתכנון", "בעוד כמה שנים", "בשנה–שנתיים הקרובות", "כבר פרשתי"]}, {"id": "q2", "n": 2, "type": "multi", "max": 2, "text": "מה מתאר את המצב שלך בצומת הנוכחית?", "note": "בחר/י עד שני משפטים שהכי קרובים למה שקורה לך עכשיו. ואם אף אחד מהם לא מדייק, נשמח לשמוע את זה במילים שלך.", "other": 9, "otherLine": true, "opts": ["אני מרגיש/ה שמשהו צריך להשתנות, ועדיין אין לי כיוון", "יש לי כמה אפשרויות או כיוונים שאני רוצה לבדוק", "עומדות לפניי שתי חלופות ממשיות או יותר, ואני צריך/ה לבחור ביניהן", "יש לי כיוון ברור למדי, וקשה לי לעשות את הצעד הבא", "יש לי הישגים או יציבות מקצועית, והעבודה פחות מתאימה לי היום", "אני יזמתי עזיבה או שינוי מקצועי, ואני לקראת המעבר או כבר בתוכו", "אני מתמודד/ת עם שינוי שנכפה עליי: פיטורים, סגירת תפקיד או שינוי ארגוני", "אני עובר/ת שינוי של שלב חיים, ובוחן/ת איך ייראה הפרק הבא", "כבר עשיתי שינוי, ואני בודק/ת מה מתאים לי כעת", "אחר:"], "orderA": [7, 8, 0, 1, 2, 3, 4, 5, 6, 9], "orderL": [7, 5, 0, 1, 3, 2, 4, 6, 8, 9]}, {"id": "q2p", "n": "", "key": "2ב", "type": "scale", "text": "עד כמה אני מזדהה עם המקצוע שלי?", "note": "מקצוע הוא מה שלמדת או עסקת בו לאורך זמן (למשל עריכת דין, הוראה, הנדסה), ולא דווקא התפקיד הנוכחי.", "lo": "כמעט לא", "hi": "מאוד"}, {"id": "q2c", "n": "", "key": "2ג", "type": "single", "text": "האם יש בחייך עיסוק נוסף, מחוץ לעבודה, שחשוב לך?", "note": "למשל תחביב מפותח, יצירה, אמנות, ספורט, התנדבות קבועה או לימודים.", "opts": ["כן, והוא מרכזי בחיי: אני משקיע/ה בו הרבה זמן ואנרגיה", "יש לי עיסוק כזה, אבל הוא לא מרכזי", "לא ממש. רוב החיים שלי סובבים סביב העבודה"], "follow": {"when": [0, 1], "label": "", "fields": [{"id": "q2c_t", "label": "מה הוא?", "txt": true}]}, "textA": "מה ממלא היום את החיים שלך, מעבר לבית ולמשפחה?", "noteA": "למשל יצירה, התנדבות, לימודים, ספורט, פרויקט או תחום עניין.", "optsA": ["משהו מרכזי, שאני משקיע/ה בו הרבה זמן ואנרגיה", "יש דברים כאלה, אבל הם עוד לא ממלאים אותי", "עדיין לא מצאתי. זה חלק ממה שאני מחפש/ת"]}, {"id": "q3", "n": 3, "type": "single", "text": "מתי התחיל השינוי או ההתלבטות שמביאים אותך לכאן?", "opts": ["פחות מחודש", "חודש עד שלושה חודשים", "שלושה חודשים עד שנה", "יותר משנה"], "showIf": {"path": "main"}}, {"id": "q4", "n": 4, "type": "scale", "text": "עד כמה יש דחיפות לקבל החלטה או לעשות שינוי עכשיו?", "lo": "כמעט אין דחיפות", "hi": "דחוף מאוד", "showIf": {"path": "main"}}, {"id": "q5", "n": 5, "type": "single", "text": "כשאת/ה חושב/ת על שינוי מקצועי, עד כמה יש לך מרחב זמן לבחון אפשרויות לפני שתצטרך/י להגיע להחלטה מעשית?", "opts": ["אני זקוק/ה להחלטה בזמן הקרוב – עד כשלושה חודשים", "יש לי כמה חודשים לבחון אפשרויות", "יש לי מרחב של שנה או יותר לבירור ולניסוי", "אין כרגע מגבלת זמן משמעותית", "קשה לי להעריך בשלב הזה", "מעדיף/ה לא להשיב כעת"], "showIf": {"path": "main"}}, {"id": "q6", "n": 6, "type": "single", "text": "באיזה קצב נכון לך להתחיל את התהליך בתקופה זו?", "opts": ["מתאים לי להתקדם כעת", "מתאים לי להתחיל בהדרגה", "מתאים לי להתחיל בשיחה ולבחור יחד את הקצב"], "showIf": {"path": "main"}}]}, {"id": "B", "title": "ב. למה עכשיו?", "qs": [{"id": "q7", "n": 7, "type": "multi", "text": "מה הביא אותך לעצור דווקא עכשיו?", "note": "לרוב זה יותר מדבר אחד, ולכן אפשר לסמן כמה תשובות.", "other": 6, "opts": ["שחיקה או ירידה באנרגיה", "פער בין הצלחה חיצונית לבין סיפוק, משמעות או חיות", "שינוי בתפקיד, במנהל/ת או בארגון", "הצעה או הזדמנות חדשה", "רצון ללמוד, להתפתח או להתרחב", "שינוי בחיים האישיים או בסדרי העדיפויות", "אחר"]}, {"id": "q8", "n": 8, "type": "open", "lines": 2, "text": "מה השתנה בך מאז שבחרת במסלול המקצועי הנוכחי?", "note": "אין צורך בתשובה מסודרת. מספיקות המילים שעולות ראשונות."}, {"id": "q9", "n": 9, "type": "single", "text": "אם שום דבר לא ישתנה בשנתיים הקרובות, מה תהיה התחושה שלך?", "opts": ["זה יהיה בסדר מבחינתי", "תהיה אי־נוחות, אבל אוכל לחיות איתה", "ארגיש שוויתרתי על משהו חשוב", "קשה לי לדעת"]}], "path": "main"}, {"id": "C", "title": "ג. מקומה של העבודה בתוך החיים", "qs": [{"id": "q10", "n": 10, "type": "multi", "text": "אילו תפקידים ממלאת העבודה כיום בחייך?", "opts": ["בעיקר מקור לפרנסה", "חלק משמעותי מהזהות שלי", "מקור מרכזי להישג, הכרה ומעמד", "מקור מרכזי למשמעות ולתחושת ערך", "מקור מרכזי לשייכות ולקשרים", "מקור מרכזי לעניין, למידה וחיות"], "note": "אפשר לסמן כמה תשובות."}, {"id": "q11", "n": 11, "type": "multi", "text": "אילו עולמות משמעותיים קיימים בחייך מחוץ לעבודה?", "other": 10, "exclusive": 9, "opts": ["משפחה וקשרים קרובים", "חברים וקהילה", "ספורט ותנועה", "יצירה, תרבות או תחביבים", "למידה והתפתחות", "התנדבות או עשייה חברתית", "טיפול או דאגה לאחרים", "רוחניות / עולם פנימי", "עיסוק נוסף / פרויקט צד", "כרגע כמעט אין לי עולם משמעותי מחוץ לעבודה", "אחר"], "note": "אפשר לסמן כמה תשובות. גם עולם קטן נחשב."}, {"id": "q12", "n": 12, "type": "single", "text": "אם העבודה הייתה מצטמצמת מאוד מחר, מה היה חסר לך יותר מכל?", "opts": ["פרנסה וביטחון", "זהות – הידיעה מי אני", "משמעות ותחושת ערך", "הישג, הכרה ומעמד", "שייכות וקשרים", "עניין, למידה ואתגר", "מסגרת וקצב יום", "מעט מאוד – יש לי מקורות חזקים גם מחוץ לעבודה"], "note": "בחר/י דבר אחד: מה שהכי היה חסר לך."}], "path": "main"}, {"id": "D", "title": "ד. לאן אני רוצה להתקרב?", "qs": [{"id": "q13", "n": 13, "type": "multi", "max": 4, "text": "כשאת/ה חושב/ת על השנים הקרובות, מה היית רוצה שיהיה יותר בחיים המקצועיים שלך?", "note": "בחר/י עד ארבעה, אלה שהכי חשובים לך. הבחירה עצמה כבר מספרת משהו.", "other": 10, "opts": ["משמעות והשפעה", "עניין וסקרנות", "למידה והתפתחות", "עצמאות וחופש", "יציבות וביטחון", "הובלה ואחריות", "יצירתיות וחדשנות", "עבודה עם אנשים וקשרים", "איזון וזמן לחיים שמחוץ לעבודה", "הכרה, מעמד או הישגים", "אחר"]}], "path": "main"}, {"id": "E", "title": "ה. צמתים מקצועיים בעבר", "intro": "צמתים בעבר הם אוצר של ידע: מה עזר לך אז, ומה היה קשה. וגם אם עוד לא עברת צומת כזו, זו תשובה חשובה. היא עוזרת לנו לדעת איפה כדאי ללוות מקרוב יותר.", "qs": [{"id": "q14", "n": 14, "type": "single", "text": "האם עברת שינוי משמעותי בתפקיד או בתחום בתוך אותו ארגון?", "opts": ["כן", "לא"], "follow": {"when": 0, "label": "אם כן:", "fields": [{"id": "q14_times", "label": "כמה פעמים?"}, {"id": "q14_age", "label": "באיזה גיל הייתה הצומת המשמעותית הראשונה?"}]}}, {"id": "q15", "n": 15, "type": "single", "text": "האם עברת מארגון אחד לאחר במהלך המסע המקצועי?", "opts": ["כן", "לא"], "follow": {"when": 0, "label": "אם כן:", "fields": [{"id": "q15_times", "label": "כמה פעמים?"}, {"id": "q15_age", "label": "בן/בת כמה היית בצומת הראשונה?"}]}}, {"id": "q15b", "n": "", "type": "multi", "text": "בצומת המשמעותית ביותר, מה השתנה?", "sub": true, "opts": ["ארגון בלבד, בתפקיד דומה", "התפקיד או תחומי האחריות", "התחום המקצועי או העיסוק"], "note": "אפשר לסמן כמה תשובות.", "showIf": {"q": "q15", "v": 0}, "key": "15ב"}, {"id": "q16", "n": 16, "type": "single", "text": "האם חווית שינוי מקצועי עמוק, בתוך ארגון או מחוצה לו?", "opts": ["כן", "לא", "לא בטוח/ה"], "follow": {"when": 0, "label": "אם כן:", "fields": [{"id": "q16_age", "label": "בן/בת כמה היית?"}, {"id": "q16_text", "label": "מה עזר לך בצומת הזו, ומה היה קשה?", "long": true}]}}, {"id": "qtr", "n": "", "type": "single", "text": "המעברים המקצועיים שעברת עד היום: איך הם היו?", "opts": ["רובם היו חלקים וזורמים", "היו גם חלקים, וגם מאתגרים", "רובם היו מאתגרים", "עוד לא עברתי מעבר משמעותי"], "key": "16ב"}, {"id": "qtr_t", "n": "", "sub": true, "type": "open", "lines": 2, "text": "מה היה מאתגר, ומה עזר לך לעבור את זה?", "showIf": {"q": "qtr", "in": [1, 2]}, "key": "16ג"}], "path": "main"}, {"id": "F", "title": "ו. בהירות, תנועה וחסמים", "qs": [{"id": "q17", "n": 17, "type": "scale", "text": "עד כמה ברור לך היום לאיזה כיוון מקצועי את/ה רוצה ללכת? (למשל תחום, סוג תפקיד או אורח עבודה)", "lo": "אין לי עדיין כיוון", "hi": "הכיוון ברור מאוד"}, {"id": "q18", "n": 18, "type": "multi", "max": 3, "text": "מה בעיקר עוצר אותך כרגע?", "note": "בחר/י עד שלושה. לכל אחד ואחת יש משהו שמעכב, ולהכיר אותו זו כבר התחלה של תנועה.", "other": 9, "exclusive": 8, "opts": ["אין עדיין כיוון שמושך אותי מספיק", "יש יותר מדי אפשרויות", "חשש כלכלי", "חשש לאבד מעמד, זהות או הישגים", "חוסר ביטחון ביכולת לבצע מעבר", "מחויבויות משפחתיות או אישיות", "פער בידע, ניסיון או מיומנויות", "קשה לי לוותר על מה שכבר בניתי", "אין כרגע חסם משמעותי", "אחר"]}, {"id": "q19", "n": 19, "type": "multi", "text": "מה כבר עשית בפועל כדי לבדוק אפשרויות חדשות?", "other": 6, "exclusive": 5, "opts": ["שוחחתי עם אנשים בתחומים או בתפקידים אחרים", "בדקתי תפקידים, תחומים או ארגונים", "למדתי או התנסיתי בתחום חדש", "הגשתי מועמדות / קיבלתי הצעה", "התחלתי פרויקט צד, התנדבות או פעילות חדשה", "עדיין לא עשיתי צעד מעשי", "אחר"], "note": "גם צעד קטן נחשב. אפשר לסמן כמה תשובות."}], "path": "main"}, {"id": "G", "path": "main", "showIf": {"q": "q1r", "in": [1]}, "title": "ז. הפרק הבא", "qs": [{"id": "n_next", "n": 20, "type": "multi", "max": 2, "text": "כשאני חושב/ת על העשור הקרוב, איך אני רואה את העשייה שלי?", "note": "עד שתי תשובות", "opts": ["להמשיך כמו היום, כל עוד אפשר", "להמשיך באותו תחום, בהיקף קטן יותר", "עצמאות או ייעוץ", "התנדבות", "משהו חדש לגמרי", "לסיים לגמרי עם עשייה בשכר", "עוד לא יודע/ת"]}, {"id": "n_keep", "n": 21, "type": "open", "lines": 2, "text": "מה מהעבודה של היום הייתי רוצה לקחת איתי לפרק הבא, גם אם זה יהיה במקום אחר?"}, {"id": "n_gave", "n": 22, "type": "multi", "text": "מה העבודה נותנת לי היום, שיהיה לי חסר בלעדיה?", "note": "אפשר לבחור כמה", "other": 7, "opts": ["אנשים וקשרים", "תחושה שאני תורם/ת", "מסגרת וסדר יום", "הכנסה", "אתגר ועניין", "הכרה", "תחושה של התקדמות", "עוד משהו"]}, {"id": "n_dorm", "n": 23, "type": "open", "lines": 3, "text": "משהו שאהבתי פעם והנחתי בצד, ואולי בפרק הבא יהיה לו מקום", "note": "תחביב, תחום עניין, צד בי שלא היה לו מקום. לא חובה"}]}, {"id": "RA", "path": "ret", "title": "ב. איפה אני עכשיו", "qs": [{"id": "p_when", "n": 5, "type": "single", "text": "בעוד כמה זמן אני צפוי/ה לסיים, בערך?", "textA": "לפני כמה זמן סיימתי, בערך?", "key": "פ1", "opts": ["פחות מחצי שנה", "חצי שנה עד שנה", "שנה עד שלוש שנים", "יותר משלוש שנים"]}, {"id": "p_dec", "n": 6, "type": "single", "text": "ההחלטה על הסיום היא:", "opts": ["בחירה שלי", "נקבעה בשבילי", "גם וגם"], "key": "פ2"}, {"id": "p_why", "n": "", "sub": true, "type": "multi", "text": "מה קבע אותה?", "note": "אפשר לבחור כמה", "opts": ["הגיל", "הארגון", "בריאות", "אחר"], "other": 3, "showIf": {"q": "p_dec", "in": [1, 2]}, "key": "פ3"}, {"id": "p_feel", "n": 7, "type": "multi", "text": "כשאני חושב/ת על היום שאחרי, מה עולה בי?", "note": "אפשר לבחור כמה מילים", "opts": ["הקלה", "סקרנות", "התרגשות", "חשש", "ריקנות", "עצב", "חופש"], "showIf": {"mode": "L"}, "key": "פ4"}, {"id": "p_phase", "n": 8, "type": "multi", "text": "איך הייתי מתאר/ת את התקופה הזו?", "note": "אפשר לבחור עד שלוש", "opts": ["כמו חופשה ארוכה", "שגרה מלאה מהרגע הראשון", "משהו התחיל לחסור לי", "אני בודק/ת מחדש מה אני רוצה", "מצאתי קצב שטוב לי", "קשה לי לענות כשאנשים שואלים מה אני עושה היום", "חסר לי מקום שאני שייך/ת אליו", "אני מרגיש/ה שאיבדתי חלק ממי שהייתי"], "showIf": {"mode": "A"}, "key": "פ5", "max": 3}]}, {"id": "RB", "path": "ret", "title": "ג. מה נסגר", "qs": [{"id": "p_gave", "n": 9, "type": "multi", "text": "מה מקום העשייה שלי נותן לי?", "textA": "מה מקום העשייה שלי נתן לי?", "note": "בחר/י עד חמישה, אלה שהכי מייצגים אותך.", "opts": ["אנשים וקשרים", "תחושה שאני תורם/ת", "מסגרת וסדר יום", "הכנסה", "אתגר ועניין", "הכרה", "תחושה של התקדמות", "אחר:", "שמישהו סומך עליי", "לראות שמשהו משתנה בזכותי", "ללמד ולהעביר הלאה את מה שאני יודע/ת", "ליצור משהו משלי", "שייכות: להרגיש חלק ממשהו", "להישאר רלוונטי/ת"], "other": 7, "key": "פ6", "order": [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 7], "max": 5, "noteRed": true}, {"id": "p_where", "n": 10, "type": "grid", "text": "איפה אני מקבל/ת את זה גם מחוץ לתפקיד?", "note": "לכל דבר שסימנתי", "rowsFrom": "p_gave", "cols": ["כבר יש לי", "יש לי רעיון", "עוד אין"], "key": "פ7", "textA": "איפה אני מקבל/ת את זה היום?"}, {"id": "p_whereT", "n": "", "sub": true, "type": "open", "lines": 2, "text": "איפה, או מה הרעיון?", "note": "כמה מילים על כל דבר שסימנתי", "key": "פ8", "dyn": "whereT", "showIf": {"special": "whereT"}}, {"id": "p_leave", "n": 11, "type": "open", "lines": 3, "text": "מה אשמח להשאיר מאחור?", "textA": "מה שמחתי להשאיר מאחור?", "note": "פרידה היא גם הקלה, ויש לה מקום כאן", "key": "פ9"}, {"id": "p_miss", "n": "", "sub": true, "type": "open", "lines": 2, "text": "על מה אצטרך לוותר, ויהיה לי חסר?", "textA": "על מה ויתרתי וחסר לי?", "key": "פ39"}, {"id": "p_keep", "n": "", "sub": true, "type": "open", "lines": 2, "text": "כשהתפקיד ייגמר, מה ממנו הייתי רוצה להמשיך לעשות, גם במקום אחר?", "textA": "כשהתפקיד נגמר, מה ממנו הייתי רוצה להמשיך לעשות, גם במקום אחר?", "key": "פ27"}]}, {"id": "RC", "path": "ret", "title": "ד. מי אני מעבר לתפקיד", "qs": [{"id": "p_def", "n": 12, "type": "single", "text": "עד כמה התפקיד מגדיר אותי היום?", "textA": "עד כמה התפקיד הגדיר אותי?", "opts": ["מעט: התפקיד היה חלק אחד מכמה דברים שאני", "במידה מסוימת: חשוב לי, אבל לא כל מה שאני", "במידה רבה: קשה לי לתאר את עצמי בלעדיו", "כמעט לגמרי: מי שאני והתפקיד כמעט אותו דבר"], "key": "פ10"}, {"id": "p_roles", "n": 13, "type": "multi", "text": "אילו תפקידים נוספים יש לי בחיים?", "note": "אפשר לבחור כמה", "opts": ["בן/בת זוג", "הורה", "סבא/סבתא", "בן/בת להורים", "חבר/ה", "יוצר/ת", "לומד/ת", "מתנדב/ת", "איש/אשת קהילה", "אחר"], "other": 9, "key": "פ11"}, {"id": "p_strong", "n": "", "sub": true, "type": "open", "lines": 0, "text": "איזה מהם הייתי רוצה לחזק בפרק הבא?", "note": "אחד או שניים", "key": "פ12"}, {"id": "p_dorm", "n": 14, "type": "open", "lines": 3, "text": "משהו שאהבתי פעם והנחתי בצד", "note": "תחביב, תחום עניין, צד בי שלא היה לו מקום. לא חובה", "key": "פ13"}, {"id": "p_dream", "n": 15, "type": "single", "text": "האם יש משהו שחלמתי לעשות, בילדות, בנעורים או בהמשך החיים, ומעולם לא עשיתי?", "opts": ["כן", "לא בטוח/ה", "לא"], "key": "פ28"}, {"id": "p_dreamF", "n": "", "sub": true, "type": "multi", "text": "באיזה תחום?", "note": "אפשר לבחור כמה", "opts": ["אמנות ויצירה", "ספורט ותנועה", "הרפתקה וטיולים במקומות מיוחדים", "טיסה, שיט או נהיגה", "לימודים ותחום ידע חדש", "עבודת יד ובנייה", "מוזיקה", "אחר:"], "other": 7, "showIf": {"q": "p_dream", "in": [0, 1]}, "key": "פ29"}, {"id": "p_dreamTal", "n": "", "sub": true, "type": "single", "text": "האם הרגשתי שיש לי כישרון או משיכה מיוחדת לזה?", "opts": ["כן, וגם אחרים אמרו לי", "אני חושב/ת שכן", "לא יודע/ת"], "showIf": {"q": "p_dream", "in": [0, 1]}, "key": "פ30"}, {"id": "p_dreamStop", "n": "", "sub": true, "type": "open", "lines": 2, "text": "מה עצר אותי אז?", "note": "לא חובה", "showIf": {"q": "p_dream", "in": [0, 1]}, "key": "פ31"}, {"id": "p_dreamNow", "n": "", "sub": true, "type": "single", "text": "האם יש לזה מקום בחיים שלי היום?", "opts": ["כן", "מעט", "לא"], "showIf": {"q": "p_dream", "in": [0, 1]}, "key": "פ32"}]}, {"id": "RD", "path": "ret", "title": "ה. מפת השייכות", "intro": "קבוצה היא כל מעגל של אנשים שאני חלק ממנו: צוות, חברים מהשירות, משפחה מורחבת, מקהלה, קהילה מקצועית, שכונה, חוג.", "qs": [{"id": "p_groups", "n": 16, "type": "grid", "text": "הקבוצות שאני שייך/ת אליהן, ומה קורה להן עם הפרישה", "textA": "הקבוצות שאני שייך/ת אליהן, ומה קרה להן מאז הפרישה", "note": "לפחות שלוש. כותבים את שם הקבוצה, ומסמנים", "rowsEdit": 5, "cols": ["תימשך", "עלולה להיחלש", "תסתיים"], "colsA": ["נמשכת", "נחלשה", "הסתיימה"], "key": "פ14"}, {"id": "p_newg", "n": 17, "type": "open", "lines": 0, "text": "קבוצה או קהילה חדשה שהייתי רוצה להשתייך אליה", "note": "לא חובה", "key": "פ15"}]}, {"id": "RE", "path": "ret", "title": "ו. המשאבים שלי", "qs": [{"id": "p_res", "n": 18, "type": "grid", "text": "כמה יש לי מכל אחד מאלה היום?", "rows": ["אנרגיה ובריאות לעשות את מה שחשוב לי", "נינוחות כלכלית", "אנשים שאפשר לסמוך עליהם", "יכולת להתמודד עם שינוי", "סקרנות ורצון ללמוד", "משהו שמושך אותי קדימה"], "cols": ["יש לי די", "חלקית", "חסר לי"], "key": "פ16"}]}, {"id": "RF", "path": "ret", "title": "ז. הבית", "qs": [{"id": "p_who", "n": 19, "type": "multi", "text": "מי עוד מושפע/ת מהפרישה שלי?", "note": "אפשר לבחור כמה", "opts": ["בן/בת הזוג", "ילדים", "נכדים", "הורים", "חברים", "שותפים לעשייה", "אחר"], "other": 6, "key": "פ17"}, {"id": "p_talk", "n": 20, "type": "single", "text": "האם דיברנו בבית על איך ייראה היום־יום?", "opts": ["כן", "קצת", "עוד לא", "אני גר/ה לבד"], "key": "פ18"}]}, {"id": "RG", "path": "ret", "title": "ח. העשייה בפרק הבא", "qs": [{"id": "p_next", "n": 21, "type": "multi", "max": 2, "text": "איך אני רואה את העשייה שלי בפרק הבא?", "note": "עד שתי תשובות", "opts": ["לסיים לגמרי עם עשייה בשכר", "להמשיך באותו תחום, בהיקף קטן יותר", "עצמאות או ייעוץ", "התנדבות", "משהו חדש לגמרי", "עוד לא יודע/ת", "במילים שלי"], "other": 6, "key": "פ19"}, {"id": "p_pull", "n": 22, "type": "multi", "text": "מה ימשוך אותי להמשיך לעשות?", "textA": "מה מושך אותי להמשיך לעשות?", "note": "אפשר לבחור כמה", "opts": ["הנאה ומשמעות", "תרומה לאחרים", "אנשים", "צורך כלכלי", "שגרה ומסגרת", "להישאר רלוונטי/ת"], "key": "פ20", "showIf": {"special": "never"}}, {"id": "p_pullTop", "n": 22, "sub": false, "type": "open", "lines": 2, "text": "ומה מכל מה שסימנתי בשאלה 9 הכי מושך אותי להמשיך?", "key": "פ21", "listFrom": "p_gave"}, {"id": "p_prep", "n": 23, "type": "multi", "text": "מה כבר עשיתי כדי להתכונן?", "note": "אפשר לבחור כמה", "opts": ["בדקתי את המצב הכלכלי שלי, ויודע/ת ממה אחיה", "אני דואג/ת לבריאות שלי באופן קבוע", "מצאתי עיסוק או תחום עניין שממלא אותי", "חיזקתי קשרים עם אנשים מחוץ לעבודה", "עוד לא עשיתי צעד", "הצטרפתי לקבוצה או לקהילה", "למדתי משהו חדש"], "exclusive": 4, "key": "פ22", "textA": "מה עשיתי מאז שפרשתי, כדי לבנות את הפרק הזה?", "order": [0, 1, 2, 3, 5, 6, 4]}, {"id": "p_infl", "n": 24, "type": "multi", "text": "בפרק הבא, איפה, מלבד המשפחה, הייתי רוצה להשפיע?", "note": "אפשר לבחור כמה", "opts": ["אצל אנשים מסוימים שאני מלווה", "בארגון או בעמותה", "בקהילה או בשכונה", "בתחום המקצועי שלי", "בחברה הישראלית", "עוד לא יודע/ת"], "key": "פ33"}, {"id": "p_inflT", "n": "", "sub": true, "type": "open", "lines": 1, "text": "דבר אחד שהייתי רוצה שישתנה בזכותי", "note": "לא חובה", "key": "פ34"}, {"id": "p_pass", "n": 25, "type": "single", "text": "האם יש משהו שלמדתי, בעבודה או בחיים, שחשוב לי להעביר הלאה?", "opts": ["כן, ואני יודע/ת מה", "כן, אבל עוד לא ברור לי מה", "לא כרגע"], "key": "פ35"}, {"id": "p_passT", "n": "", "sub": true, "type": "open", "lines": 2, "text": "מה הדבר הזה?", "showIf": {"q": "p_pass", "in": [0, 1]}, "key": "פ36"}, {"id": "p_passTo", "n": "", "sub": true, "type": "multi", "text": "למי הייתי רוצה להעביר אותו?", "note": "אפשר לבחור כמה", "opts": ["אנשים צעירים בתחום שלי", "אנשים בתחילת הדרך המקצועית", "ילדים ונכדים", "ארגון או עמותה", "עוד לא יודע/ת"], "showIf": {"q": "p_pass", "in": [0, 1]}, "key": "פ37"}, {"id": "p_passNow", "n": "", "sub": true, "type": "single", "text": "האם אני כבר עושה את זה היום?", "opts": ["כן", "קצת", "לא"], "showIf": {"q": "p_pass", "in": [0, 1]}, "key": "פ38"}]}, {"id": "RH", "path": "ret", "title": "ט. מעברים, וסיום", "qs": [{"id": "p_tr", "n": 26, "type": "single", "text": "המעברים שעברתי עד היום, בעבודה ובחיים: איך הם היו?", "opts": ["רובם היו חלקים וזורמים", "היו גם חלקים, וגם מאתגרים", "רובם היו מאתגרים", "עוד לא עברתי מעבר משמעותי"], "key": "פ23"}, {"id": "p_trT", "n": "", "sub": true, "type": "open", "lines": 2, "text": "מה היה מאתגר, ומה עזר לי לעבור את זה?", "showIf": {"q": "p_tr", "in": [1, 2]}, "key": "פ24"}, {"id": "p_worry", "n": 27, "type": "open", "lines": 2, "text": "מה מדאיג אותי?", "note": "לא חובה", "key": "פ25"}, {"id": "p_year", "n": 28, "type": "open", "lines": 3, "text": "מה הייתי רוצה שיהיה נכון לגביי בעוד שנה?", "key": "פ26"}]}]};
+let KEY='', LOCKED=false; /* LOCKED = answers already sent: nothing is saved or changed */
+const PREFIX='CWL-INTAKE02:';
+let S={name:'',date:'',a:{},t:{},page:0,done:false};
+const allQs=Q.sections.flatMap(s=>s.qs);
+const QID=Object.fromEntries(allQs.map(q=>[q.id,q]));
+function load(){if(!KEY)return;try{if(/[#&?]new\b/.test((location.hash||'')+'&'+(location.search||''))){localStorage.removeItem(KEY);try{history.replaceState(null,'',location.href.replace(/([#&])new\b&?/,'$1').replace(/[#&]$/,''))}catch(e){}return;}const x=localStorage.getItem(KEY);if(x)S=Object.assign(S,JSON.parse(x));}catch(e){}}
+function save(){if(LOCKED||!KEY)return;try{localStorage.setItem(KEY,JSON.stringify(S));const el=document.getElementById('saved');if(el)el.textContent='נשמר אוטומטית בדפדפן זה';}catch(e){}}
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const $=id=>document.getElementById(id);
+function today(){const d=new Date();return d.getDate()+'.'+(d.getMonth()+1)+'.'+d.getFullYear();}
+function brand(sub){return `<header class="brand"><div class="wordmark">${esc(Q.meta.wordmark)}</div><h1>${esc(Q.meta.title)}</h1><div class="sub">${esc(sub)}</div></header>`;}
+
+/* ---------- questionnaire ---------- */
+function secs(){const pt=pathOf();return Q.sections.filter(x=>(!x.path||x.path===pt)&&(!x.showIf||condOK(x)))}
+function pathOf(){const q1=S.a.q1,r=S.a.q1r;if(q1===4||q1===5||r===2||r===3)return 'ret';return 'main'}
+function rtAsk(){return false}
+function modeOf(){return (S.a.q1===5||S.a.q1r===3)?'A':'L'}
+function qtx(q){if(q.dyn==='whereT'){const v=Object.values(S.a.p_where||{}),h0=v.includes(0),h1=v.includes(1);return h0&&h1?'איפה אני כבר מקבל/ת את זה, ומה הרעיון?':h1?'מה הרעיון?':'איפה אני מקבל/ת את זה היום?'}return (modeOf()==='A'&&q.textA)||q.text}
+function optsOf(q){return (modeOf()==='A'&&q.optsA)||q.opts}
+function noteOf(q){return (modeOf()==='A'&&q.noteA)||q.note}
+function ordOf(q){if(pathOf()==='ret'){if(modeOf()==='A'&&q.orderA)return q.orderA;if(modeOf()==='L'&&q.orderL)return q.orderL;}return q.order||q.opts.map((_,k)=>k)}
+function render(){
+  const app=$('app');
+  if(MODE==='yoetz'&&S.page===-1&&!S.done){return (S.cid&&DB)?renderClient(S.cid):renderYoetzHome();}
+  if(S.done){return MODE==='yoetz'?renderAnalysis(pack()):renderEnd();}
+  if(S.page===0){
+    app.innerHTML=brand(MODE==='yoetz'?'הזנת טופס שמולא על נייר':Q.meta.sub)+(S.scanned?`<div class="claybox small">הטופס נקרא מן הסריקה. עבור/י על כל עמוד, השווה/י לטופס ותקן/י מה שצריך.${(S.unsure||[]).length?' שאלות שהקריאה שלהן לא הייתה ודאית מסומנות בצבע חרסינה.':''}</div>`:'')+
+    `<div class="tintbox"><b style="color:var(--olive)">${esc(Q.meta.purposeTitle)}</b><p style="margin:6px 0">${esc(Q.meta.purpose)}</p><div class="muted small">${esc(Q.meta.time)}</div></div>
+    <div class="card">${(MODE!=='yoetz'&&!HASHG)?`<label class="f">איך נוח לך שאפנה אלייך?</label><div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px">${[['f','בלשון נקבה'],['m','בלשון זכר']].map(([g,l])=>`<button type="button" class="btn${S.g===g?'':' ghost'} gsel" data-g="${g}" aria-pressed="${S.g===g}">${l}</button>`).join('')}</div>`:''}
+    <div style="display:flex;gap:14px;flex-wrap:wrap"><div style="flex:1;min-width:140px"><label class="f" for="ag">גיל</label><input type="text" inputmode="numeric" id="ag" value="${esc(S.age)}"></div>
+    <div style="flex:2;min-width:220px"><label class="f" for="yr">שנות ניסיון מקצועי</label><div class="qn" style="margin:-2px 0 4px">אפשר לספור את כל התחומים שעבדת בהם.</div><input type="text" inputmode="decimal" id="yr" value="${esc(S.years)}"></div></div>
+    <label class="f" for="rl">תפקיד או עיסוק נוכחי</label><div class="qn" style="margin:-2px 0 4px">למשל: מנהלת מוצר בחברת תוכנה, מורה בתיכון, עצמאי בתחום השיווק. ואם כרגע אין, אפשר לכתוב מה היה העיסוק האחרון.</div><input type="text" id="rl" value="${esc(S.role)}"><label class="f" for="pt">הפרק הכי משמעותי במסע המקצועי שלך</label><div class="qn" style="margin:-2px 0 4px">מה עשית, איפה, כמה זמן, ומה הפך אותו למשמעותי בשבילך. כמה משפטים מספיקים.</div><textarea id="pt" rows="4">${esc(S.path)}</textarea><label class="f" for="dt">תאריך מילוי</label><input type="text" id="dt" value="${esc(S.date||today())}"></div>
+    <p class="muted small">אפשר לעצור ולחזור מתי שנוח לך: התשובות נשמרות אוטומטית במכשיר הזה. בסוף המילוי תשלח/י לי את התשובות בלחיצה, ואחזור אלייך עם כמה מילים אישיות.</p>
+    <div class="nav"><span></span><button class="btn" id="go">מתחילים</button></div><div class="saved" id="saved"></div>`;
+    $('ag').oninput=e=>{S.age=e.target.value;save()};$('yr').oninput=e=>{S.years=e.target.value;save()};$('dt').oninput=e=>{S.date=e.target.value;save()};$('rl').oninput=e=>{S.role=e.target.value;save()};$('pt').oninput=e=>{S.path=e.target.value;save()};
+    if(!S.date){S.date=today();save();}
+    document.querySelectorAll('.gsel').forEach(x=>x.onclick=()=>{S.g=x.dataset.g;save();render()});$('go').onclick=()=>{S.page=1;save();render();scrollTo(0,0)};
+    if(MODE==='yoetz'){const b=document.createElement('button');b.className='btn ghost';b.textContent='חזרה';b.onclick=()=>{S.page=-1;S.done=false;save();render()};app.querySelector('.nav span').replaceWith(b);}
+    return;
+  }
+  const SS=secs(),NP=SS.length;if(S.page>NP)S.page=NP;const sec=SS[S.page-1];
+  let h=`<div class="prog"><i style="width:${Math.round(S.page/NP*100)}%"></i></div><div class="progl">חלק ${S.page} מתוך ${NP}</div><h2>${esc(sec.title)}</h2>`;
+  if(sec.intro)h+=`<p class="qn">${esc(sec.intro)}</p>`;
+  {const un=sec.qs.filter(q=>(S.unsure||[]).includes(q.id)).map(q=>q.n||q.id);if(un.length)h+=`<div class="claybox small">${un.length>1?`בסריקה, הקריאה של שאלות ${un.join(', ')} לא הייתה ודאית. כדאי להשוות אותן לטופס.`:`בסריקה, הקריאה של שאלה ${un[0]} לא הייתה ודאית. כדאי להשוות אותה לטופס.`}</div>`;}
+  sec.qs.forEach(q=>{h+=qHTML(q)});
+  h+=`<div class="nav"><button class="btn ghost" id="back">הקודם</button><button class="btn" id="next">${S.page===NP?'לסיום':'הבא'}</button></div><div class="saved" id="saved"></div>`;
+  app.innerHTML=h;
+  sec.qs.forEach(bindQ);
+  $('back').onclick=()=>{S.page--;save();render();scrollTo(0,0)};
+  $('next').onclick=()=>{if(S.page===NP){S.done=true;}else S.page++;save();render();scrollTo(0,0)};
+}
+function condOK(q){const c=q.showIf;if(!c)return true;const one=c=>{if(c.any)return c.any.some(one);if(c.path)return pathOf()===c.path;if(c.mode)return modeOf()===c.mode;if(c.special==='rtAsk')return rtAsk();if(c.special==='never')return false;if(c.special==='whereT'){const v=Object.values(S.a.p_where||{});return v.includes(0)||v.includes(1);}const v=S.a[c.q];if(c.in)return c.in.includes(v);if(c.notin)return !c.notin.includes(v);return v===c.v;};return one(c);}
+function depIds(c){if(!c)return [];if(c.special==='whereT')return ['p_where'];if(c.special==='never')return [];if(c.any)return c.any.flatMap(depIds);if(c.path)return ['q1','q1r'];if(c.mode||c.special)return ['q1','q1r'];return [c.q];}
+function qHTML(q){
+  if(!condOK(q))return `<div id="w_${q.id}"></div>`;
+  let h=`<div class="q${q.tbl?' tb':''}${(S.unsure||[]).includes(q.id)?' unsure':''}" id="w_${q.id}">${typeof q.tbl==='string'?`<div class="tbh">${esc(q.tbl)}</div>`:''}<div class="qt" style="${q.sub?'color:var(--clay);font-size:17px':''}">${q.n?`<span class="n">${q.n}.</span>`:''}${esc(qtx(q))}</div>`;
+  if(noteOf(q))h+=`<div class="qn"${q.noteRed?' style="color:#C0392B;font-weight:700"':''}>${esc(noteOf(q))}</div>`;
+  if(q.listFrom){const src=QID[q.listFrom],v=S.a[q.listFrom]||[];const L=v.map(i=>i===src.other?((S.t[q.listFrom+'_o']||'').trim()||src.opts[i]):src.opts[i]).map(x=>String(x).replace(/:$/,''));if(L.length)h+=`<div class="qn"><b>מה שסימנתי:</b> ${esc(L.join(' · '))}</div>`;}
+  if(q.type==='single'||q.type==='multi'){
+    const cur=S.a[q.id];
+    ordOf(q).forEach(i=>{const o=optsOf(q)[i];
+      const on=q.type==='single'?cur===i:(cur||[]).includes(i);
+      const lab=o.replace(/:$/,'');
+      h+=`<div class="opt${on?' on':''}" data-q="${q.id}" data-i="${i}" role="${q.type==='single'?'radio':'checkbox'}" aria-checked="${on}" tabindex="0"><span class="mk ${q.type==='single'?'r':'c'}"></span><span>${esc(lab)}</span></div>`;
+      if(q.other===i&&on)h+=`<div class="othertxt"><input type="text" data-t="${q.id}_o" placeholder="פירוט" value="${esc(S.t[q.id+'_o'])}"></div>`;
+    });
+    if(q.max)h+=`<div class="limit" id="lim_${q.id}"></div>`;
+    if(q.follow&&([].concat(q.follow.when)).includes(cur)){
+      h+=`<div class="follow">`+q.follow.fields.map(f=>`<label>${esc(f.label)}</label>`+(f.long?`<textarea data-t="${f.id}">${esc(S.t[f.id])}</textarea>`:`<input type="text"${f.txt?'':' inputmode="numeric"'} data-t="${f.id}" value="${esc(S.t[f.id])}">`)).join('')+`</div>`;
+    }
+  }
+  if(q.type==='scale'){
+    h+=`<div class="scale">`+[1,2,3,4,5].map(v=>`<button type="button" data-q="${q.id}" data-v="${v}" class="${S.a[q.id]===v?'on':''}">${v}</button>`).join('')+`</div><div class="ends"><span>1 – ${esc(q.lo)}</span><span>5 – ${esc(q.hi)}</span></div>`;
+  }
+  if(q.type==='open')h+=`<textarea data-t="${q.id}" rows="${q.lines+1}">${esc(S.t[q.id])}</textarea>`;
+  if(q.type==='grid'){const cols=(modeOf()==='A'&&q.colsA)||q.cols,cur=S.a[q.id]||{};const rows=gridRows(q);
+    if(!rows.length)h+=`<div class="qn">לא סימנת דבר בשאלה הקודמת, אפשר להמשיך.</div>`;
+    h+=rows.map(([k,lab])=>`<div class="grow">${q.rowsEdit?`<input type="text" data-t="${q.id}_r${k}" placeholder="קבוצה ${+k+1}" value="${esc(S.t[q.id+'_r'+k])}">`:`<div class="gl">${esc(lab)}</div>`}<div class="gseg">${cols.map((c,j)=>`<button type="button" data-gq="${q.id}" data-gk="${k}" data-gv="${j}" class="${cur[k]===j?'on':''}">${esc(c)}</button>`).join('')}</div></div>`).join('');}
+  return h+`</div>`;
+}
+function gridRows(q){if(q.rows)return q.rows.map((r,i)=>[String(i),r]);if(q.rowsFrom){const src=QID[q.rowsFrom],v=S.a[q.rowsFrom]||[];return v.map(i=>[String(i),i===src.other?((S.t[q.rowsFrom+'_o']||'').trim()||src.opts[i]):src.opts[i]])}if(q.rowsEdit)return Array.from({length:q.rowsEdit},(_,i)=>[String(i),S.t[q.id+'_r'+i]||'']);return []}
+function bindQ(q){
+  const w=$('w_'+q.id);if(!w.children.length)return;
+  w.querySelectorAll('[data-gq]').forEach(b=>b.onclick=()=>{const o=Object.assign({},S.a[q.id]||{}),k=b.dataset.gk,v=+b.dataset.gv;if(o[k]===v)delete o[k];else o[k]=v;S.a[q.id]=o;save();w.querySelectorAll(`[data-gk="${k}"]`).forEach(x=>x.classList.toggle('on',+x.dataset.gv===o[k]));});
+  w.querySelectorAll('.opt').forEach(el=>{
+    const act=()=>{
+      const i=+el.dataset.i;
+      if(q.type==='single'){S.a[q.id]=S.a[q.id]===i?undefined:i;}
+      else{
+        let cur=(S.a[q.id]||[]).slice();
+        if(cur.includes(i))cur=cur.filter(x=>x!==i);
+        else{
+          if(q.exclusive===i)cur=[i];
+          else{cur=cur.filter(x=>x!==q.exclusive);
+            if(q.max&&cur.length>=q.max){const l=$('lim_'+q.id);if(l)l.textContent=`בחרת כבר ${q.max==2?'שתי':q.max==3?'שלוש':'ארבע'} תשובות, וזה המקסימום כאן. כדי להחליף, בטל/י קודם אחד מהסימונים.`;return;}
+            cur.push(i);}
+        }
+        S.a[q.id]=cur;
+      }
+      save();const y=scrollY;if(allQs.some(x=>depIds(x.showIf).includes(q.id)||x.rowsFrom===q.id)){allQs.filter(x=>x.showIf&&!condOK(x)).forEach(x=>{delete S.a[x.id]});save();render();scrollTo(0,y);return;}const html=qHTML(q);w.outerHTML=html;bindQ(q);scrollTo(0,y);
+    };
+    el.onclick=act;el.onkeydown=e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();act();}};
+  });
+  w.querySelectorAll('.scale button').forEach(b=>b.onclick=()=>{const v=+b.dataset.v;S.a[q.id]=S.a[q.id]===v?undefined:v;save();w.querySelectorAll('.scale button').forEach(x=>x.classList.toggle('on',+x.dataset.v===S.a[q.id]));});
+  w.querySelectorAll('[data-t]').forEach(el=>el.oninput=()=>{S.t[el.dataset.t]=el.value;save();});
+}
+function pack(){const o={v:1,tool:'intake02',name:S.name,date:S.date,age:S.age||'',years:S.years||'',role:S.role||'',path:S.path||'',a:S.a,t:S.t,fbk:S.fbk||null};if(S.ov!=null&&S.ov!=='')o.ov=S.ov;if(S.og)o.og=S.og;return o;}
+function encode(o){return PREFIX+btoa(unescape(encodeURIComponent(JSON.stringify(o))));}
+function decode(s){s=s.trim().replace(/\s+/g,'');if(s.startsWith(PREFIX))s=s.slice(PREFIX.length);return JSON.parse(decodeURIComponent(escape(atob(s))));}
+
+/* ---------- helpers ---------- */
+const has=(a,id,i)=>Array.isArray(a[id])&&a[id].includes(i);
+const optL=(id,i)=>QID[id].opts[i].replace(/:$/,'');
+function listJoin(arr){arr=arr.filter(Boolean);if(arr.length<2)return arr.join('');return arr.slice(0,-1).join(', ')+' ו'+arr[arr.length-1];}
+function picked(d,id,map){const v=d.a[id];if(!Array.isArray(v))return [];return v.slice().sort((x,y)=>x-y).map(i=>i===QID[id].other?(d.t[id+'_o']||'').trim()||null:(map?map[i]:optL(id,i))).filter(Boolean);}
+
+/* ---------- client reflection (no scores) ---------- */
+const STAGE=['בתחילת הדרך המקצועית','בשלב של התבססות ובנייה מקצועית','בשלב בשל, עם ניסיון, הישגים וזהות מקצועית מגובשת','בשלב של בחינה מחדש באמצע הדרך','לקראת פרישה או צמצום משמעותי של העבודה','אחרי פרישה, בבנייה של פרק חדש'];
+const STATE_C=['יש תחושה שמשהו צריך להשתנות, והכיוון עוד לא התבהר. זו נקודת פתיחה לגיטימית: לפני שבוחרים כיוון, כדאי להכיר מחדש את מה שמניע אותך.',
+'יש לפניך כמה כיוונים שמבקשים בדיקה. העבודה בהמשך תעזור להבחין מה מושך אותך באמת, ומה רק נראה טוב מבחוץ.',
+'עומדות לפניך חלופות ממשיות, וצריך לבחור. לפני ההשוואה עצמה, כדאי לדעת לפי מה את/ה רוצה לבחור.',
+'הכיוון די ברור, והצעד הבא קשה. כאן השאלה היא פחות "לאן" ויותר "מה עוצר, ומה יעזור לזוז".',
+'יש מאחוריך הישגים או יציבות, והעבודה פחות מתאימה לך היום. הפער הזה בין מה שהושג לבין מה שמרגיש נכון ראוי להקשבה.',
+'יזמת שינוי, ואת/ה לקראתו או כבר בתוכו. זה זמן טוב לברר מה חשוב לקחת איתך, ומה אפשר להשאיר מאחור.',
+'השינוי הגיע מבחוץ ולא מבחירה. לצד ההתמודדות המעשית, יש כאן גם מקום לבדוק מה נכון לך מכאן והלאה.',
+'את/ה עובר/ת שינוי של שלב חיים, ובוחן/ת איך ייראה הפרק הבא.',
+'כבר עשית שינוי, ועכשיו את/ה בודק/ת מה באמת מתאים לך.'];
+const TRIG=['שחיקה או ירידה באנרגיה','פער בין הצלחה חיצונית לבין סיפוק, משמעות או חיות','שינוי בתפקיד, במנהל/ת או בארגון','הצעה או הזדמנות חדשה','רצון ללמוד, להתפתח או להתרחב','שינוי בחיים האישיים או בסדרי העדיפויות'];
+const Q9C=['אם שום דבר לא ישתנה בשנתיים הקרובות, זה יהיה בסדר מבחינתך. כלומר, השינוי הוא כרגע אפשרות ולא הכרח.','אם שום דבר לא ישתנה, תהיה אי־נוחות שאפשר לחיות איתה.','אם שום דבר לא ישתנה, תהיה תחושה של ויתור על משהו חשוב. זה מה שמזמין את התנועה הזו מבפנים.','עוד קשה לך לדעת מה יהיה אם שום דבר לא ישתנה, וגם זו תשובה.'];
+const ROLE=['מקור לפרנסה','חלק משמעותי מהזהות','מקור להישג, הכרה ומעמד','מקור למשמעות ולתחושת ערך','מקור לשייכות ולקשרים','מקור לעניין, למידה וחיות'];
+const MISS=['פרנסה וביטחון','הזהות, הידיעה מי את/ה','משמעות ותחושת ערך','הישג, הכרה ומעמד','שייכות וקשרים','עניין, למידה ואתגר','מסגרת וקצב יום'];
+const BLOCK=['עדיין אין כיוון שמושך מספיק','יש יותר מדי אפשרויות','חשש כלכלי','חשש לאבד מעמד, זהות או הישגים','חוסר ביטחון ביכולת לבצע מעבר','מחויבויות משפחתיות או אישיות','פער בידע, בניסיון או במיומנויות','הקושי לוותר על מה שכבר נבנה'];
+const STEP=['שיחות עם אנשים בתחומים או בתפקידים אחרים','בדיקה של תפקידים, תחומים או ארגונים','למידה או התנסות בתחום חדש','הגשת מועמדות או הצעה שהתקבלה','פרויקט צד, התנדבות או פעילות חדשה'];
+function clientText(d){
+  const a=d.a,t=d.t,out=[];
+  const nm=(d.name||'').trim().split(/\s+/)[0];
+  out.push(`<p>${nm?esc(nm)+', ':''}תודה שעצרת לרגע כדי להתבונן בעצמך. זה לא מובן מאליו.</p><p>כאן אני מנסה לשקף לך את מה שעולה מהתשובות שלך, כפי שתיארת אותן. זו אינה אבחנה ואינה החלטה. זו נקודת מוצא לשיחה בינינו, ואת/ה יודע/ת הכי טוב אם היא מדייקת.</p>`);
+  let p='';
+  if(a.q1!=null&&a.q1<6)p+=`סימנת שאת/ה נמצא/ת כעת ${STAGE[a.q1]}. `;
+  else if(a.q1===6&&t.q1_o)p+=`תיארת את השלב שלך כך: "${esc(t.q1_o)}". `;
+  const st=(a.q2||[]).filter(i=>i<9);
+  if(st.length)p+=st.map(i=>STATE_C[i]).join(' ');
+  if(has(a,'q2',9)&&t.q2_o)p+=` בלשונך: "${esc(t.q2_o)}".`;
+  if(p)out.push(`<h3>איפה את/ה עומד/ת</h3><p>${p}</p>`);
+  p='';
+  const tr=picked(d,'q7',TRIG);
+  if(tr.length)p+=`מה שהביא אותך לעצור דווקא עכשיו: ${esc(listJoin(tr))}. `;
+  if(a.q9!=null)p+=Q9C[a.q9];
+  if((t.q8||'').trim())p+=`<br>וכשנשאלת מה השתנה בך מאז שבחרת במסלול הנוכחי, כתבת: "${esc(t.q8.trim())}".`;
+  if(p)out.push(`<h3>למה עכשיו</h3><p>${p}</p>`);
+  p='';
+  const ro=picked(d,'q10',ROLE);
+  if(ro.length)p+=ro.length===1?`העבודה משמשת היום בעיקר ${esc(ro[0])}. `:`העבודה ממלאת היום בחייך כמה תפקידים: ${esc(listJoin(ro))}. `;
+  if(has(a,'q11',9))p+='כרגע העבודה תופסת את רוב המקום, ועולמות אחרים פחות נוכחים. כדאי לזכור את זה כשבוחנים שינוי, כי שינוי בעבודה נוגע אז בהרבה מאוד. ';
+  else{const w=picked(d,'q11');if(w.length)p+=`מחוץ לעבודה יש לך עולמות משמעותיים נוספים: ${esc(listJoin(w))}. אלה מקורות כוח גם לתקופה של מעבר. `;}
+  if(a.q12!=null)p+=a.q12===7?'ואם העבודה הייתה מצטמצמת מאוד, לא היה חסר לך הרבה, כי יש לך מקורות חזקים גם מחוצה לה.':`ואם העבודה הייתה מצטמצמת מאוד, מה שהיה חסר יותר מכל הוא ${MISS[a.q12]}. זה רמז למה שחשוב לשמור עליו בכל כיוון שתבחר/י.`;
+  if(p)out.push(`<h3>מקומה של העבודה בחייך</h3><p>${p}</p>`);
+  const wa=picked(d,'q13');
+  p='';
+  if(wa.length)p+=`כשאת/ה מסתכל/ת על השנים הקרובות, היית רוצה שיהיו בחיים המקצועיים שלך יותר ${esc(listJoin(wa))}. `;
+  if(a.q17)p+=a.q17<=2?'הכיוון עצמו עוד לא ברור, וזה בסדר: בהירות נבנית בתהליך, לא לפניו.':a.q17===3?'חלק מהכיוון כבר ברור, וחלק עדיין פתוח.':'הכיוון נראה לך די ברור.';
+  if(p)out.push(`<h3>לאן את/ה רוצה להתקרב</h3><p>${p}</p>`);
+  p='';
+  if(has(a,'q18',8))p+='לא סימנת חסם משמעותי כרגע. ';
+  else{const b=picked(d,'q18',BLOCK);if(b.length)p+=`מה שמאט אותך כרגע: ${esc(listJoin(b))}. לחסמים האלה יש מקום בתהליך: לא כדי להתגבר עליהם בכוח, אלא כדי להבין אותם. `;}
+  if(has(a,'q19',5))p+='עוד לא עשית צעד מעשי כדי לבדוק אפשרויות, וזה בסדר גמור: התהליך מתחיל בדיוק כאן.';
+  else{const s=picked(d,'q19',STEP);if(s.length)p+=`כבר עשית צעדים של ממש: ${esc(listJoin(s))}. יש כאן ידע שכדאי לאסוף ולהביא לשיחה.`;}
+  if(p)out.push(`<h3>מה עוצר, ומה כבר זז</h3><p>${p}</p>`);
+  if((t.q20||'').trim())out.push(`<h3>הפרק הבא</h3><p>על המקום שהיית רוצה לתת בפרק הבא לעבודה, ליצירה, למשפחה, לקהילה, ללמידה ולהתנדבות, כתבת: "${esc(t.q20.trim())}".</p>`);
+  out.push(`<div class="tintbox"><b style="color:var(--olive)">מה הלאה</b><p style="margin:6px 0 0">בפגישתנו הראשונה נראה יחד מה עולה מן השאלון, ונבנה את המטרות ואת הכלים בתהליך, שיובילו לבהירות גבוהה יותר וליכולת לדייק את עצמך.</p></div>`);
+  return out.join('');
+}
+function retClientText(d){
+  const a=d.a,t=d.t,out=[],A=modeOf()==='A';
+  const nm=(d.name||'').trim().split(/\s+/)[0];
+  out.push(`<p>${nm?esc(nm)+', ':''}תודה שעצרת לרגע כדי להתבונן בעצמך, ובפרק שנפתח לפניך. זה לא מובן מאליו.</p><p>כאן אני מנסה לשקף לך את מה שעולה מהתשובות שלך, כפי שתיארת אותן. זו אינה אבחנה, אלא נקודת פתיחה לשיחה שלנו.</p>`);
+  let p='';
+  if(a.q1===4||a.q1===5)p+=`סימנת שאת/ה ${a.q1===5?'אחרי פרישה, ובונה פרק חדש':'לקראת פרישה או צמצום משמעותי של העבודה'}. `;else p+='סימנת שאת/ה חושב/ת גם על פרישה, או על צמצום משמעותי של העבודה. ';
+  if(a.p_dec!=null)p+=['ההחלטה על הסיום היא בחירה שלך. ','ההחלטה על הסיום נקבעה בשבילך, ולא רק בידיים שלך. ','ההחלטה על הסיום היא גם בחירה שלך, וגם משהו שנקבע בשבילך. '][a.p_dec];
+  const fe=picked(d,'p_feel');if(fe.length)p+=`כשאת/ה חושב/ת על היום שאחרי, עולים בך: ${esc(listJoin(fe))}. `;
+  {const ph=Array.isArray(a.p_phase)?picked(d,'p_phase'):(a.p_phase!=null?[optL('p_phase',a.p_phase)]:[]);if(ph.length)p+=`את התקופה הזו תיארת כך: ${esc(listJoin(ph))}. `;}
+  out.push(`<h3>איפה את/ה עומד/ת</h3><p>${p}</p>`);
+  p='';const g=picked(d,'p_gave');
+  if(g.length){p+=`מקום העשייה ${A?'נתן':'נותן'} לך: ${esc(listJoin(g))}. `;
+   const w=a.p_where||{},src=QID.p_gave,miss=(a.p_gave||[]).filter(i=>w[i]===2).map(i=>i===src.other?(t.p_gave_o||'').trim():src.opts[i]).filter(Boolean);
+   const yes=(a.p_gave||[]).filter(i=>w[i]===0).map(i=>i===src.other?(t.p_gave_o||'').trim():src.opts[i]).filter(Boolean);
+   if(yes.length)p+=`חלק מזה כבר יש לך גם מחוץ לתפקיד: ${esc(listJoin(yes))}. `;
+   if(miss.length)p+=`ולחלק עוד אין מקום אחר: ${esc(listJoin(miss))}. כאן כדאי שנחשוב יחד. `;}
+  if((t.p_leave||'').trim())p+=`<br>ומה ${A?'שמחת':'תשמח/י'} להשאיר מאחור: "${esc(t.p_leave.trim())}".`;
+  if(p)out.push(`<h3>מה נסגר</h3><p>${p}</p>`);
+  p='';const ro=picked(d,'p_roles');
+  if(ro.length)p+=`מעבר לתפקיד, יש לך בחיים עוד תפקידים: ${esc(listJoin(ro))}. `;
+  if((t.p_strong||'').trim())p+=`ואת התפקיד הזה היית רוצה לחזק בפרק הבא: ${esc(t.p_strong.trim())}. `;
+  if((t.p_dorm||'').trim())p+=`<br>ומשהו שאהבת פעם והנחת בצד: "${esc(t.p_dorm.trim())}". אולי עכשיו יש לו מקום.`;
+  if(p)out.push(`<h3>מי את/ה מעבר לתפקיד</h3><p>${p}</p>`);
+  p='';const R=QID.p_res.rows,r=a.p_res||{};
+  const ok=R.filter((_,i)=>r[i]===0),lack=R.filter((_,i)=>r[i]===2);
+  if(ok.length)p+=`יש לך די: ${esc(listJoin(ok))}. `;if(lack.length)p+=`וחסר לך: ${esc(listJoin(lack))}. על זה כדאי לעבוד, צעד אחרי צעד.`;
+  if(p)out.push(`<h3>המשאבים שלך</h3><p>${p}</p>`);
+  p='';const nx=picked(d,'p_next'),pl=picked(d,'p_pull');
+  if(nx.length)p+=`כך את/ה רואה את העשייה בפרק הבא: ${esc(listJoin(nx))}. `;if(pl.length)p+=`מה שימשוך אותך להמשיך לעשות: ${esc(listJoin(pl))}. `;
+  if(p)out.push(`<h3>העשייה בפרק הבא</h3><p>${p}</p>`);
+  if((t.p_year||'').trim())out.push(`<h3>בעוד שנה</h3><p>כך כתבת על מה שהיית רוצה שיהיה נכון לגבייך בעוד שנה: "${esc(t.p_year.trim())}".</p>`);
+  const ct=clientText(d),k=ct.lastIndexOf('<div class="tintbox">');if(k>=0)out.push(ct.slice(k));
+  return out.join('');
+}
+
+/* ---------- לשון פנייה (נועצת/נועץ) מהקישור שנשלח מהתיק ---------- */
+const HASHG=(function(){try{const m=((location.hash||'')+'&'+(location.search||'')).match(/[#&?]g=([fm])/);return m?m[1]:''}catch(e){return ''}})();
+const FIN={'ך':'כ','ם':'מ','ן':'נ','ף':'פ','ץ':'צ'};
+function G(s){if(HASHG&&S.g!==HASHG){S.g=HASHG;save();}const g=S.g;if(g!=='f'&&g!=='m')return s;s=String(s).replace(/את\/ה/g,g==='f'?'את':'אתה');if(g==='m')s=s.replace(/אלייך/g,'אליך');
+ return s.replace(/([א-ת]+)\/([היתה]{1})(?![א-ת])/g,(m,b,suf)=>{if(g==='m')return b;if(b.endsWith('ה')&&suf==='י')return b.slice(0,-1)+'י';const l=b.slice(-1);return (FIN[l]?b.slice(0,-1)+FIN[l]:b)+suf;});}
+/* ---------- שיקוף אוטומטי מחבר (כבוי עד אישור נורית) ---------- */
+const AUTO_REFL=true;
+const WORLDS=['משפחה וקשרים קרובים','חברים וקהילה','ספורט ותנועה','יצירה, תרבות או תחביבים','למידה והתפתחות','התנדבות או עשייה חברתית','טיפול או דאגה לאחרים','רוחניות ועולם פנימי','עיסוק נוסף או פרויקט צד'];
+function autoRefl(d){const a=d.a||{},t=d.t||{},R=[];const q=(s)=>{let x=String(s).trim().replace(/\s+/g,' ');if(x.length>150){x=x.slice(0,150);const k=Math.max(x.lastIndexOf('. '),x.lastIndexOf(', '));x=(k>60?x.slice(0,k):x.slice(0,x.lastIndexOf(' ')))+'…';}return '"'+esc(x)+'"';};
+ const add=(c,p)=>R.push({c,p});const H=(id,i)=>has(a,id,i);const steps=(a.q19||[]).filter(i=>i<5).length;const words=s=>String(s||'').trim().split(/\s+/).filter(Boolean).length;
+ if(pathOf()==='ret'){
+  const A=modeOf()==='A';
+  if(H('p_next',4)&&words(t.p_keep)>=2)add(`כתבת שבפרק הבא את/ה רוצה משהו חדש לגמרי. כתבת גם שהיית רוצה להמשיך: ${q(t.p_keep)}. אולי שני הדברים יכולים להתחבר: לעשות את מה שאת/ה אוהב/ת, אבל בדרך חדשה.`,'האם הדבר החדש יכול להיות קשור למה שאת/ה כבר אוהב/ת לעשות?');
+  const src=QID.p_gave,w=a.p_where||{};const none=(a.p_gave||[]).filter(i=>w[i]===2).map(i=>i===src.other?(t.p_gave_o||'').trim():src.opts[i]).filter(Boolean);
+  if(none.length){const L=esc(listJoin(none));add(A?`העבודה נתנה לך ${L}. כתבת שעוד לא מצאת את זה במקום אחר. ייתכן שזה החסר המרכזי של הפרק הזה.`:`העבודה נותנת לך היום ${L}. כתבת שמחוץ לעבודה עוד אין לך את זה. ייתכן שזה מה שהכי כדאי להתחיל לבנות, עוד לפני הפרישה.`,`האם יש מקום אחר בחיים שבו תוכל/י לקבל ${L}?`);}
+  if(a.p_def===2||a.p_def===3){const st=(t.p_strong||'').trim();add((A?'כתבת שהתפקיד היה חלק גדול ממי שאת/ה.':'כתבת שהתפקיד הוא חלק גדול ממי שאת/ה.')+(st?` כתבת גם איזה תפקיד אחר בחייך היית רוצה לחזק: ${q(st)}.`:'')+(words(t.p_keep)>=2&&!H('p_next',4)?` ומהעבודה היית רוצה לקחת איתך: ${q(t.p_keep)}.`:'')+(A?' ייתכן שהפרידה ממנו קשה יותר ממה שנראה מבחוץ. וייתכן שהיא גם פינתה מקום למשהו שחיכה לו.':' ייתכן שהפרידה מהתפקיד תהיה קשה יותר ממה שנראה היום. וייתכן שהיא גם תפנה מקום למשהו שחיכה לו.'),A?(st?'מה יכול לעזור לך לחזק אותו עכשיו?':'האם יש חלק בך שמבקש עכשיו לקבל יותר מקום?'):(st?'האם אפשר להתחיל לחזק את זה כבר עכשיו, עוד לפני שהתפקיד נגמר?':'האם יש חלק בך שמחכה לקבל יותר מקום, כשהתפקיד ייגמר?'));}
+  {const fp=(a.p_feel||[]).filter(i=>[0,1,2,6].includes(i)),fn=(a.p_feel||[]).filter(i=>[3,4,5].includes(i)),O=QID.p_feel.opts;if(fp.length&&fn.length){const P=esc(listJoin(fp.map(i=>O[i]))),N=esc(listJoin(fn.map(i=>O[i])));add(`כשחשבת על היום שאחרי, עלו בך ${P}, וגם ${N}. התחושות האלה יכולות לחיות יחד. ייתכן שהתחושה של ${N} מסמנת את מה שעוד לא מצא מקום חדש.`,`האם את/ה יודע/ת מה בדיוק מעורר בך ${N}?`);}}
+  if(words(t.p_leave)>=1&&words(t.p_worry)>=2)add(`כתבת שתשמח/י להשאיר מאחור: ${q(t.p_leave)}. וכתבת שמדאיג אותך: ${q(t.p_worry)}. ייתכן שיש קשר בין השניים, ושכדאי לבדוק אותו.`,'האם יש מסגרת קטנה שהיית בוחר/ת בעצמך, כזו שלא תרגיש כמו חובה?');
+  else if(words(t.p_worry)>=2)add(`כתבת מה מדאיג אותך: ${q(t.p_worry)}. טוב שהדאגה הזו כתובה, כי עכשיו אפשר להסתכל עליה.`,'האם יש צעד קטן אחד שיכול להקטין את הדאגה הזו?');
+  {const r=a.p_res||{},RW=QID.p_res.rows,wk=[3,5].filter(i=>r[i]===1||r[i]===2);if(wk.length){add(`במשאבים שלך סימנת שחלק מהדברים יש לך רק חלקית, או שהם חסרים: ${esc(listJoin(wk.map(i=>'"'+RW[i]+'"')))}. ייתכן שזה המקום שבו ליווי יעזור הכי הרבה.`,wk.includes(5)?'האם יש משהו, אפילו קטן, שכבר עכשיו מושך אותך קדימה?':'האם היה מעבר קודם שבו התמודדת עם שינוי טוב יותר ממה שציפית?');}}
+  if(H('p_next',0)&&(H('p_pull',0)||H('p_pull',1)))add('כתבת שאת/ה רוצה להפסיק לעבוד בשכר. אבל כתבת גם שמשמעות ותרומה עדיין חשובות לך. ייתכן שמה שתחפש/י הוא לא עבודה, אלא מקום שבו תמשיך/י לתרום.','האם יש עשייה שתיתן לך משמעות, גם בלי שכר?');
+  if(a.p_dec===1)add('כתבת שההחלטה לסיים לא הייתה רק שלך. זה יכול להיות קשה. אבל את מה שיבוא עכשיו, את/ה יכול/ה לבחור.','האם יש דבר אחד שתרצה/י לבחור בעצמך, כבר עכשיו?');
+  if(words(t.p_dorm)>=2)add(`כתבת על משהו שאהבת פעם ועזבת: ${q(t.p_dorm)}. אולי עכשיו יש לזה זמן.`,'האם תרצה/י לחזור עכשיו למשהו שאהבת פעם?');
+  if(a.p_talk===2&&H('p_who',0))add('כתבת שהפרישה תשפיע גם על בן/בת הזוג, ועוד לא דיברתם על איך ייראה היום־יום. ייתכן שהשיחה הזו תעזור לשניכם, עוד לפני שהשינוי מתחיל.','האם כדאי לשבת יחד ולדבר על איך ייראה יום רגיל?');
+  if(a.p_tr===0)add('כתבת שרוב המעברים בחייך עברו בשלום. זה כוח. אבל ייתכן שהמעבר הזה שונה מהקודמים, כי הפעם לא עוברים ממסגרת אחת לאחרת. המסגרת עצמה משתנה.','האם במעברים הקודמים היה משהו שהחזיק אותך, ושצריך למצוא לו תחליף עכשיו?');
+  else if(a.p_tr===2)add('כתבת שרוב המעברים בחייך היו קשים. ייתכן שכדאי לעבור את המעבר הזה לאט, ועם ליווי.','האם היה משהו שעזר לך במעברים הקודמים?');
+ } else {
+  if(a.q1r===1&&words(t.n_keep)>=2)add(`כתבת שהפרישה בתמונה בעוד כמה שנים. כתבת גם מה היית רוצה לקחת איתך מהעבודה של היום: ${q(t.n_keep)}. זה כבר סימן ראשון לפרק הבא.`,'האם אפשר להתחיל לבנות את זה כבר עכשיו, עוד לפני הפרישה?');
+  if(a.q16===0)add('כבר עברת פעם שינוי מקצועי עמוק'+((t.q16_age||'').trim()?`, בגיל ${esc(t.q16_age.trim())}`:'')+'. זה ניסיון שלא כולם מביאים איתם לצומת.'+(words(t.q16_text)>=5?` וכתבת על מה שעזר ומה שהיה קשה: ${q(t.q16_text)}.`:''),'האם משהו ממה שעזר לך אז זמין לך גם היום?');
+  if(H('q13',0)&&H('q10',2))add('בחרת ב"משמעות והשפעה" כמשהו שתרצה/י יותר ממנו, ובאותו זמן סימנת שהעבודה היום נותנת לך בעיקר הישג ומעמד. אולי ההצלחה שבנית כבר לא עונה לך על השאלה "בשביל מה".','האם ייתכן שמה שחסר היום הוא פחות הצלחה, ויותר "בשביל מה"?');
+  if(a.q17>=4&&(H('q18',3)||H('q18',7)))add('הכיוון די ברור, ומה שעוצר קשור למה שכבר נבנה. ייתכן שהשאלה כרגע היא פחות "לאן", ויותר "מה זה יעלה לי".','האם ייתכן שמה שקשה לוותר עליו הוא לא המעמד עצמו, אלא החלק בזהות שנשען עליו?');
+  else if(a.q17>=4&&H('q19',5))add('הכיוון נראה לך די ברור, ועדיין לא היה צעד מעשי לקראתו. לפעמים המרחק בין "לדעת" ל"לזוז" הוא בדיוק המקום שכדאי להסתכל עליו.','האם יש צעד קטן אחד שאפשר לעשות בשבוע הבא, בלי לסכן שום דבר?');
+  if(a.q17!=null&&a.q17<=2&&steps>=2)add('הכיוון עוד לא ברור לך, ובכל זאת כבר עשית צעדים של ממש כדי לבדוק. בצעדים האלה אולי כבר מסתתר ידע על מה שמושך אותך, ומה פחות.','האם באחד הצעדים שעשית היה רגע שהרגיש קצת יותר "שלך"?');
+  if(H('q2',2)&&a.q17!=null&&a.q17<=2)add('יש לפניך חלופות ממשיות, ובכל זאת הכיוון עוד לא ברור. אולי לפני שבוחרים בין האפשרויות, כדאי לדעת לפי מה בוחרים.','האם כדאי קודם להגדיר מה חייב להיות בכל אפשרות, ורק אחר כך לבחור?');
+  if(H('q2',6))add('השינוי הגיע מבחוץ, ולא מבחירה. לצד ההתמודדות המעשית, יש בזה גם פרידה, ולפרידה מגיע מקום.','האם יש משהו שנשאר שלך, גם אחרי מה שנלקח?');
+  if(a.q9===2&&a.q4!=null&&a.q4<=2)add('אם שום דבר לא ישתנה, תרגיש/י שוויתרת על משהו חשוב. ובכל זאת, אין תחושה של דחיפות. לפעמים דווקא מה שחשוב לנו באמת הוא מה שאנחנו דוחים.','האם יש משהו שגורם לך לדחות דווקא את מה שחשוב לך?');
+  if(a.q9===0&&a.q4>=4)add('את/ה מרגיש/ה דחיפות, ובאותו זמן כתבת שאם שום דבר לא ישתנה, זה יהיה בסדר. ייתכן שהלחץ מגיע יותר מבחוץ מאשר מבפנים.','האם הדחיפות הזו באמת שלך, או של מישהו אחר?');
+  if(a.q2p>=4&&(H('q2',4)||H('q7',1)))add('את/ה מזדהה מאוד עם המקצוע שלך, ובכל זאת משהו בעבודה היום פחות מתאים. אולי המקצוע עדיין שלך, ומה שמבקש שינוי הוא המקום, התפקיד או האופן.','האם יש חלק מהמקצוע שתרצה/י לקחת איתך לכל מקום?');
+  if(a.q2p!=null&&a.q2p<=2&&in_(a.q1,[2,3]))add('יש מאחוריך שנים של ניסיון, ובכל זאת המקצוע מרגיש פחות "שלך". זו תחושה שראוי להקשיב לה.','האם את/ה זוכר/ת מתי המקצוע התחיל להרגיש פחות שלך?');
+  if(H('q7',0)&&H('q13',8)&&!H('q13',1)&&!H('q13',2))add('סימנת שחיקה, וגם רצון ביותר איזון. לפעמים קשה להבחין בין "אני צריך/ה כיוון אחר" לבין "אני צריך/ה קודם לנשום".','האם ייתכן שקודם צריך מנוחה, ורק אחר כך כיוון?');
+  if(a.q12===1||H('q11',9))add('נראה שהעבודה מחזיקה אצלך חלק גדול ממי שאת/ה. ייתכן ששינוי בעבודה יכול להרגיש גדול ממה שהוא נראה מבחוץ, ושכדאי לתת לו זמן.','האם יש חלק בך שמחכה לקבל יותר מקום, גם מחוץ לעבודה?');
+  else{const ws=(a.q11||[]).filter(i=>i<9);if(ws.length>=3||a.q12===7){const L=esc(listJoin(ws.slice(0,2).map(i=>WORLDS[i])));add(`יש בחייך עולמות משמעותיים מחוץ לעבודה${L?', כמו '+L:''}. הם לא רק נחמה בתקופה של מעבר. הם גם מרחב שמאפשר לנסות דברים חדשים.`,'האם יש משהו בעולמות האלה שהיית רוצה שיהיה גם בעבודה?');}}
+  if(a.q2c===0&&words(t.q2c_t)>=1){const x=esc(t.q2c_t.trim());add(`כתבת שיש לך עיסוק מרכזי מחוץ לעבודה: ${x}. מעניין לבדוק את מקומו בצומת הזו.`,`האם ${x} אמור להישאר מחוץ לעבודה, או שאולי הוא מבקש מקום גדול יותר?`);}
+  if(a.q16!==0){if(a.qtr===2)add('כתבת שרוב המעברים שלך היו מאתגרים. זה חשוב לדעת, כי זה אומר שכדאי ללכת הפעם בצעדים קטנים, ולא לבד.','האם יש משהו שהיה עוזר לך במעברים הקודמים, ויכול לעזור עכשיו?');
+   else if(a.q14===1&&a.q15===1&&a.q16===1)add('ייתכן שזו הצומת המקצועית הגדולה הראשונה שלך. זה מסביר אם יש בה קצת יותר אי־ודאות. זו טריטוריה חדשה.','האם יש דרך שבה את/ה ניגש/ת לדברים חדשים בחיים, שיכולה לעזור גם כאן?');}
+  if(words(t.q8)>=6)add(`כתבת שהשתנה בך: ${q(t.q8)}.`,'האם השינוי הזה בך צריך לקבל מקום גם בעבודה הבאה?');
+ }
+ if(R.length<3&&pathOf()==='ret'&&words(t.p_year)>=3)add(`ובעוד שנה, היית רוצה שיהיה נכון לגבייך: ${q(t.p_year)}.`,'האם יש צעד ראשון לשם שאפשר לעשות כבר החודש?');
+ if(R.length<2&&words(d.path)>=5)add(`כתבת על הפרק הכי משמעותי בדרך שלך: ${q(d.path)}.`,'האם משהו מהפרק ההוא מבקש לחזור, בצורה חדשה, גם עכשיו?');
+ return R.slice(0,4);}
+function autoReflHTML(d){const R=autoRefl(d).map(r=>({c:G(r.c),p:G(r.p)}));if(!R.length)return '';
+ return `<p>קראתי את התשובות שלך <b>יחד</b>, וכמה דברים בלטו לי:</p>${R.map(r=>`<p>${r.c}</p>`).join('')}<p style="margin-top:16px"><b>כמה נקודות למחשבה:</b></p><ul style="margin:4px 0 12px;padding-inline-start:22px">${R.map(r=>`<li style="margin:6px 0">${r.p}</li>`).join('')}</ul><p>בפגישה נבדוק יחד מה מזה מדויק לך, ומה לא.</p>`;}
+function autoReflText(d){const R=autoRefl(d).map(r=>({c:G(r.c),p:G(r.p)}));if(!R.length)return '';const s=x=>String(x).replace(/<[^>]+>/g,'').replace(/&quot;/g,'"').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+ return '\nהשיקוף שקיבלתי בסוף השאלון\n'+R.map(r=>'– '+s(r.c)).join('\n')+'\nנקודות למחשבה:\n'+R.map(r=>'– '+s(r.p)).join('\n');}
+function renderEnd(){
+  const d=pack(),code=encode(d);
+  const miss=secs().flatMap(x=>x.qs).filter(q=>condOK(q)&&q.type!=='grid'&&q.n).filter(q=>q.type!=='open'&&!q.sub&&q.id!=='q15b'&&(S.a[q.id]==null||(Array.isArray(S.a[q.id])&&!S.a[q.id].length))).map(q=>q.n);
+  if(S.fbk){S.fbk=null;save();}
+  const nm=(S.name||'').trim().split(/\s+/)[0];
+  $('app').innerHTML=G(brand('סיימת את השאלון')+
+  (miss.length?`<div class="claybox small">כמה שאלות נשארו בלי תשובה (${miss.join(', ')}). אם תרצה/י, אפשר לחזור ולהשלים. ואם לא, גם זה בסדר.</div>`:'')+
+  `<div class="card reflect"><p style="font-size:20px"><b>${nm?esc(nm)+', ':''}תודה שהקדשת מזמנך ומעצמך.</b></p>
+  <p>לעצור ולהתבונן בעצמך זה לא מובן מאליו. זה הצעד הראשון שלנו יחד.</p>
+  ${AUTO_REFL?autoReflHTML(d):''}<p>${AUTO_REFL&&autoRefl(d).length?'אחרי שתשלח/י לי את התשובות, אקרא אותן בעיון לפני הפגישה שלנו.':'אחרי שתשלח/י לי את התשובות, אקרא אותן בעיון, ואחזור אלייך עם כמה מילים אישיות לפני הפגישה שלנו.'}</p>
+  <p class="muted small">כל מה שכתבת נשמר בדיסקרטיות מלאה.</p></div>
+  <div class="card noprint"><h3 style="margin-top:0">שליחה אליי</h3><p class="small">כשתרגיש/י מוכן/ה, לחצ/י על הכפתור כדי לשלוח לי את התשובות. הן יגיעו רק אליי.</p><button type="button" class="btn" id="cflSend">שליחה</button> <span id="cflMsg" style="font-size:15px;color:var(--clay)"></span>
+
+  <div class="nav" style="margin-top:14px"><button class="btn ghost" id="edit">חזרה לתשובות</button><span></span></div>
+  <div class="limit" id="cpm"></div></div>`);
+
+  $('edit').onclick=()=>{S.done=false;S.page=1;save();render();scrollTo(0,0)};
+  cflAfterEnd();
+}
+function copy(txt,msgId){
+  const ok=()=>{$(msgId).textContent='הקוד הועתק.'};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(ok,()=>fallback());else fallback();
+  function fallback(){const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');ok();}catch(e){$(msgId).textContent='לא הצלחתי להעתיק אוטומטית. סמן/י את הקוד והעתק/י ידנית.';}ta.remove();}
+}
+
+/* ---------- consultant analysis ---------- */
+const TOOLS={wow:'רגעי הוואו',anchors:'עוגני קריירה',riasec:'RIASEC',curious:'מדד הסקרנות המקצועית',tours:'סיורים מקצועיים',skills:'היכולות שלי',apt:'מה לוקחים לדירה החדשה',la:'Learning Agility',success:'הצלחה',auth:'נאמנות לעצמי (אותנטיות)',courage:'מדד האומץ המקצועי',grit:'דבקות במטרה'};
+const STATE_S=['משהו צריך להשתנות, אין כיוון','כמה כיוונים לבדוק','שתי חלופות ממשיות או יותר','כיוון ברור, קשה לצעוד','הישגים, אבל העבודה פחות מתאימה','יזמתי עזיבה או מעבר','שינוי כפוי','שינוי של שלב חיים, הפרק הבא','כבר עשיתי שינוי ובודק/ת','אחר'];
+const in_=(v,arr)=>v!=null&&arr.includes(v);
+const anyOf=(a,id,arr)=>arr.some(i=>has(a,id,i));
+/* שמונת מצבי היציאה לדרך – פועלים בקבוצה ב (יותר מ־5 שנות ניסיון). השמות נשארים מאחורי הקלעים */
+const STATES=[
+{name:'המחפש/ת',q2:0,desc:'משהו צריך להשתנות, אבל עדיין אין כיוון.',
+ sup:[['בהירות כיוון נמוכה (17: 1–2)',(a)=>a.q17!=null&&a.q17<=2],['אין כיוון שמושך מספיק (18)',(a)=>has(a,'q18',0)],['עוד לא נעשה צעד מעשי (19)',(a)=>has(a,'q19',5)],['שחיקה או ירידה באנרגיה (7)',(a)=>has(a,'q7',0)]],
+ con:[['בהירות כיוון גבוהה (17: 4–5)',(a)=>a.q17>=4,'אם הכיוון ברור יחסית, מה מונע לומר אותו בקול? ייתכן שיש כיוון שעוד לא קיבל רשות.'],
+      ['סומנו גם חלופות ממשיות (2)',(a)=>has(a,'q2',2),'לברר אילו חלופות עומדות על השולחן, ומה חסר כדי שאחת מהן תהפוך לכיוון.'],
+      ['הוגשה מועמדות או התקבלה הצעה (19)',(a)=>has(a,'q19',3),'לשאול על המועמדות או ההצעה: מה משך אליה, ומה לא. שם אולי מסתתר כיוון.']],
+ question:'מה מניע אותי, ומה נכבה בדרך?',
+ check:'האם באמת אין כיוון, או שיש כיוון שעוד לא קיבל רשות. להבחין בין שחיקה לבין היעדר כיוון.',
+ open:['wow','anchors'],follow:['riasec','curious','tours'],sum:['מטריצת ההחלטה – כמצפן לחיפוש','What If']},
+{name:'הבוחן/ת',q2:1,desc:'יש כמה אפשרויות או כיוונים שרוצים לבדוק.',
+ sup:[['יותר מדי אפשרויות (18)',(a)=>has(a,'q18',1)],['בהירות בינונית (17: 2–3)',(a)=>in_(a.q17,[2,3])],['כבר שוחח/ה או בדק/ה תפקידים (19)',(a)=>anyOf(a,'q19',[0,1])]],
+ con:[['בהירות נמוכה מאוד ואין צעד מעשי (17 + 19)',(a)=>a.q17===1&&has(a,'q19',5),'לבקש לפרט את הכיוונים: אילו מהם נבדקו בפועל, ואילו הם עדיין רעיון. אם אין ביסוס, ייתכן שזה מצב המחפש/ת.'],
+      ['סומנו גם חלופות ממשיות (2)',(a)=>has(a,'q2',2),'לברר מה ההבדל בעיני הנועץ/ת בין "כיוונים לבדוק" לבין "חלופות ממשיות".']],
+ question:'לפי מה אני מבחין/ה בין מה שמושך אותי באמת לבין מה שנראה טוב מבחוץ?',
+ check:'האם הכיוונים נבדקו בפועל או שהם עדיין רעיונות. אם אין ביסוס, ייתכן שזה בעצם מצב המחפש/ת.',
+ open:['anchors','tours'],follow:['curious','skills'],sum:['מטריצת ההחלטה – תחילה כמצפן, אחר כך להשוואה','What If']},
+{name:'המכריע/ה',q2:2,desc:'יש חלופות ממשיות וצריך לבחור.',
+ sup:[['הוגשה מועמדות או התקבלה הצעה (19)',(a)=>has(a,'q19',3)],['הצעה או הזדמנות חדשה (7)',(a)=>has(a,'q7',3)],['דחיפות או מסגרת זמן קצרה (4–5)',(a)=>a.q4>=4||a.q5===0],['בהירות בינונית ומעלה (17: 3–5)',(a)=>a.q17>=3]],
+ con:[['בהירות נמוכה (17: 1–2)',(a)=>a.q17!=null&&a.q17<=2,'לשאול לפי מה יבחר/תבחר כשהכיוון עוד לא ברור. אולי החלופות מוכתבות מבחוץ, ולא נבחרו.'],
+      ['אין כיוון שמושך מספיק (18)',(a)=>has(a,'q18',0),'לברר אם אחת החלופות מושכת באמת, או שהבחירה היא בין אפשרויות שאף אחת מהן לא מלהיבה.']],
+ question:'לפי אילו אמות מידה אני בוחר/ת, ומה המחיר של כל חלופה?',
+ check:'האם החלופות ממשיות. של מי אמות המידה. אם יש לחץ זמן – לשקול החלטת ביניים.',
+ open:['anchors'],follow:['tours'],note:{tours:'לבדיקת התפקיד, המנהל/ת והתרבות'},sum:['מטריצת ההחלטה – להשוואת החלופות','What If'],urgentSum:'החלטת ביניים (יש דחיפות)'},
+{name:'יודע/ת אבל לא זז/ה',q2:3,desc:'הכיוון די ברור, אבל משהו עוצר.',
+ sup:[['בהירות גבוהה (17: 4–5)',(a)=>a.q17>=4],['חסם של מחיר: כלכלי, מעמד, ביטחון או ויתור (18)',(a)=>anyOf(a,'q18',[2,3,4,7])],['ההתלבטות נמשכת יותר משנה (3)',(a)=>a.q3===3],['עוד לא נעשה צעד מעשי (19)',(a)=>has(a,'q19',5)],['תחושת ויתור אם לא ישתנה דבר (9)',(a)=>a.q9===2]],
+ con:[['בהירות נמוכה (17: 1–2)',(a)=>a.q17!=null&&a.q17<=2,'לבדוק אם הכיוון ברור באמת, או שמה שברור הוא בעיקר הרצון לצאת.'],
+      ['אין כרגע חסם משמעותי (18)',(a)=>has(a,'q18',8),'אם אין חסם, מה בכל זאת עוצר? לשאול מהו הצעד הקטן ביותר, ומה קורה כשחושבים עליו.']],
+ question:'מה המחיר שאני חושש/ת לשלם, ומה המחיר של להישאר?',
+ check:'האם מדובר בחסם או בחוכמה של המתנה. לוודא קודם שהכיוון באמת שלו/ה (אותנטיות), ורק אחר כך לחזק את מנועי הפעולה.',
+ open:['auth','courage'],follow:['grit'],sum:['עבודה מן האופק לאחור – אבני דרך וניסויי דרך']},
+{name:'המצליח/ה שכבר לא',q2:4,desc:'יש הישגים או יציבות, אבל המסלול כבר פחות מתאים.',
+ sup:[['פער בין הצלחה לסיפוק (7)',(a)=>has(a,'q7',1)],['שלב בשל או בחינה מחדש (1)',(a)=>in_(a.q1,[2,3])],['העבודה כמקור להישג ומעמד (10)',(a)=>has(a,'q10',2)],['שחיקה (7)',(a)=>has(a,'q7',0)],['חשש לאבד מעמד או קושי לוותר (18)',(a)=>anyOf(a,'q18',[3,7])]],
+ con:[['אי־שינוי "יהיה בסדר" (9)',(a)=>a.q9===0,'אם אי־שינוי "יהיה בסדר", לשאול מה בכל זאת הביא לתהליך דווקא עכשיו.']],
+ question:'מה ההצלחה נתנה לי, ומה היא כבר לא נותנת?',
+ check:'להבחין בין שחיקה לבין אי־התאמה. כמה מהזהות קשורה להצלחה הנוכחית.',
+ open:['success','wow'],follow:['auth','skills'],sum:['What If','מטריצת ההחלטה – כמצפן']},
+{name:'הנפלט/ת',q2:6,desc:'השינוי נכפה: פיטורים, סגירת תפקיד, שינוי ארגוני.',
+ sup:[['שינוי בתפקיד, במנהל/ת או בארגון (7)',(a)=>has(a,'q7',2)],['צורך בהחלטה בתוך כשלושה חודשים (5)',(a)=>a.q5===0],['חשש כלכלי (18)',(a)=>has(a,'q18',2)]],
+ con:[['אין דחיפות ואין מגבלת זמן (4–5)',(a)=>a.q4!=null&&a.q4<=2&&in_(a.q5,[2,3]),'לשאול איך נחווה השינוי שנכפה. ייתכן שיש כבר מרחב מעשי, וההתמודדות היא בעיקר רגשית.']],
+ question:'מה נלקח ממני, ומה נשאר שלי?',
+ check:'יציבות מעשית ורגשית לפני מבט קדימה. לתת מקום לפרידה.',
+ open:['apt','skills'],follow:['anchors'],sum:['מטריצת ההחלטה'],urgentSum:'החלטת ביניים (יש לחץ זמן)'},
+{name:'בונה הפרק הבא',q2:7,desc:'שינוי של שלב חיים והגדרת הפרק הבא (כשמדובר בפרישה – קבוצה ג).',
+ sup:[['שינוי בחיים האישיים או בסדרי העדיפויות (7)',(a)=>has(a,'q7',5)],['רצון באיזון וזמן לחיים (13)',(a)=>has(a,'q13',8)]],
+ con:[['תחילת הדרך או התבססות (1)',(a)=>in_(a.q1,[0,1]),'לברר מה פירוש "הפרק הבא" בשלב הזה של החיים.']],
+ question:'איזה מקום אני רוצה לתת לעבודה בתוך הפרק הבא?',
+ check:'מה העבודה סיפקה עד היום (10, 12), ומה יחליף את זה.',
+ open:['wow','apt'],follow:['anchors','success'],sum:['What If על הפרק הבא']},
+{name:'אחרי המעבר',q2:8,desc:'השינוי כבר נעשה, ועכשיו בודקים אם הוא אכן מתאים.',
+ sup:[['חווה/תה שינוי מקצועי עמוק (16)',(a)=>a.q16===0],['שינוי בתפקיד, במנהל/ת או בארגון (7)',(a)=>has(a,'q7',2)]],
+ con:[['לא דווחו צמתים בעבר (14–16)',(a)=>a.q14===1&&a.q15===1&&a.q16===1,'לברר על איזה שינוי מדובר ומתי קרה. בשאלות על צמתים בעבר לא דווח על שינוי.']],
+ question:'האם המקום החדש מתאים לי, או שרק החלפתי נוף?',
+ check:'להבחין בין אכזבה של התחלה לבין אי־התאמה. להשוות לממצאים קודמים, אם יש.',
+ open:['wow','anchors'],follow:['la'],sum:['השוואה לממצאים קודמים – חזרה בספירלה']}
+];
+/* שלוש קבוצות הכניסה – הארכיטקטורה הגבוהה */
+const GROUPS={
+ A:{letter:'א',name:'לפני היציאה לדרך',desc:'סיום לימודים ומעט ניסיון מקצועי מובנה, או 3–5 שנות ניסיון. הזהות המקצועית עדיין בגיבוש.'},
+ B:{letter:'ב',name:'בתוך המסע המקצועי',desc:'5 שנות ניסיון ומעלה. כאן פועלים שמונת מצבי היציאה לדרך.'},
+ C:{letter:'ג',name:'היציאה מן המסע המקצועי המובנה',desc:'לקראת פרישה או אחריה. מסלול הייעוץ שונה.'}
+};
+const TRACKS={
+ A1:{name:'סיום לימודים ומעט ניסיון (עד 3 שנים)',question:'מה מדליק אותי, ואיפה אני רוצה להתחיל לבדוק?',
+  check:'להבחין בין בחירה שלו/ה לבין ציפיות של הסביבה. ניסיון שאינו מובנה (צבא, התנדבות, עבודות בזמן הלימודים) הוא מקור מידע של ממש.',
+  open:['riasec','wow'],follow:['skills','tours','curious'],sum:['What If','מטריצת ההחלטה – כמצפן']},
+ A2:{name:'3–5 שנות ניסיון',question:'מה למדתי על עצמי בשנים הראשונות, ומה אני רוצה לקחת הלאה?',
+  check:'האם זה צומת של אי־התאמה, או של "עוד לא ניסיתי מספיק". בשנים האלה עוגני הקריירה מתחילים להתגבש.',
+  open:['wow','anchors'],follow:['skills','la','tours'],sum:['מטריצת ההחלטה – כמצפן','What If']},
+ C:{name:'לקראת פרישה או אחריה',question:'איזה מקום אני רוצה לתת לעבודה בתוך הפרק הבא?',
+  check:'מה העבודה סיפקה עד היום (10, 12), ומה יחליף את זה. לקרוא את התשובה לשאלה 20. ייתכן שיידרש המודול הנפרד לפרישה.',
+  open:['wow','apt'],follow:['anchors','success'],sum:['What If על הפרק הבא, בהמשך לשאלה 20']}
+};
+function num(x){const n=parseFloat(String(x==null?'':x).replace(',','.').replace(/[^0-9.]/g,''));return isNaN(n)?null:n;}
+function groupOf(d){
+  const a=d.a,t=d.t,why=[];
+  const retire=a.q1===4||a.q1===5||a.q1r===2||a.q1r===3;
+  if(retire){
+    if(a.q1===4)why.push('שלב החיים (1): לקראת פרישה');
+    if(a.q1===5)why.push('שלב החיים (1): אחרי פרישה');if(a.q1r===2)why.push('פרישה (1ג): בשנה–שנתיים הקרובות');if(a.q1r===3)why.push('פרישה (1ג): כבר פרשתי');
+    return {g:'C',track:'C',why};
+  }
+  const y=num(d.years);
+  if(y!=null&&y<3)return {g:'A',track:'A1',why:['שנות ניסיון: '+y+' (פחות מ־3)']};
+  if(y!=null&&y<5)return {g:'A',track:'A2',why:['שנות ניסיון: '+y+' (3–5)']};
+  if(y!=null)return {g:'B',why:['שנות ניסיון: '+y+' (5 ומעלה)']};
+  if(a.q1===0)return {g:'A',track:'A1',why:['שלב החיים (1): תחילת הדרך. שנות הניסיון לא סומנו']};
+  return {g:'B',why:['שנות הניסיון לא סומנו; הקבוצה נקבעה לפי שלב החיים']};
+}
+const LEVEL={high:'גבוהה',mid:'בינונית',low:'נמוכה'};
+function hypothesize(d){
+  const a=d.a,t=d.t;
+  const res=STATES.map((s,i)=>{
+    const self=has(a,'q2',s.q2);
+    const sup=s.sup.filter(x=>x[1](a,t)).map(x=>x[0]);
+    const con=s.con.filter(x=>x[1](a,t)).map(x=>x[0]);
+    let score=(self?3:0)+sup.length-con.length;
+    if(has(a,'q2',5)&&(i===2||i===7))score+=1; // מעבר ביוזמה
+    return {i,self,sup,con,score,conT:s.con.filter(x=>x[1](a,t)).map(x=>x[2])};
+  });
+  const ranked=res.slice().sort((x,y)=>y.score-x.score||(y.self-x.self));
+  const top=ranked[0],second=ranked[1];
+  let level='mid';
+  if(top.score<=0)level='low';
+  else if(top.self&&top.score-second.score>=3&&!top.con.length&&top.sup.length>=2)level='high';
+  else if(!top.self||top.con.length>=2||top.score-second.score<=1)level='low';
+  const alt=(second.score>0&&second.score>=top.score-2)?second:null;
+  return {res,top:top.score>0?top:null,alt,level};
+}
+function analyze(d){
+  const a=d.a,t=d.t;
+  const GA=groupOf(d);
+  const g=(d.og&&GROUPS[d.og])?d.og:GA.g;
+  const H=hypothesize(d);
+  let pi=null,P=null,track=null;
+  if(g==='B'){pi=(d.ov!=null&&d.ov!=='')?+d.ov:(H.top?H.top.i:null);P=pi!=null?STATES[pi]:null;}
+  else{track=g==='C'?'C':(g===GA.g&&GA.track?GA.track:((num(d.years)||0)>=3?'A2':'A1'));P=TRACKS[track];}
+  const urgent=(a.q4>=4)||a.q5===0;
+  const R={open:{},follow:{},sum:[]};
+  const add=(stage,k,why,x)=>{
+    if(stage==='follow'&&R.open[k]){R.open[k].why.push({w:why,x});return;}
+    if(stage==='open'&&R.follow[k]){R.open[k]=R.follow[k];delete R.follow[k];}
+    (R[stage][k]=R[stage][k]||{why:[],note:''}).why.push({w:why,x});
+  };
+  const addSum=x=>{const root=x.split(' – ')[0];if(!R.sum.some(y=>y.split(' – ')[0]===root))R.sum.push(x)};
+  if(P){const lab=(g==='B'?'מצב: ':'מסלול: ')+P.name;
+    P.open.forEach(k=>add('open',k,lab));
+    P.follow.forEach(k=>{add('follow',k,lab);if(P.note&&P.note[k]){(R.follow[k]||R.open[k]).note=P.note[k];}});
+    P.sum.forEach(addSum);
+    if(P.urgentSum&&urgent)addSum(P.urgentSum);
+  }
+  if(has(a,'q2',5)){['apt','skills','la'].forEach(k=>add('follow',k,'ש׳2: מעבר ביוזמה',1));if(has(a,'q19',3))addSum('מטריצת ההחלטה – להשוואת הצעות');}
+  if(has(a,'q7',1)){add('open','success','ש׳7: פער בין הצלחה לסיפוק',1);add('open','auth','ש׳7: פער בין הצלחה לסיפוק',1);}
+  if(has(a,'q13',0)){['auth','courage','grit'].forEach(k=>add('follow',k,'ש׳13: משמעות והשפעה – שלישיית האימפקט',1));}
+  if(has(a,'q10',2)||a.q12===3)add('follow','success',has(a,'q10',2)?'ש׳10: הישג, הכרה ומעמד':'ש׳12: הישג, הכרה ומעמד',1);
+  if(has(a,'q18',3)){add('follow','success','ש׳18: חשש לאבד מעמד/זהות',1);add('follow','courage','ש׳18: חשש לאבד מעמד/זהות',1);}
+  if(has(a,'q18',4))add('follow','courage','ש׳18: חוסר ביטחון ביכולת למעבר',1);
+  if(has(a,'q18',7)){add('follow','apt','ש׳18: קשה לוותר על מה שנבנה',1);add('follow','success','ש׳18: קשה לוותר על מה שנבנה',1);}
+  const retire=g!=='C'&&has(a,'q2',7);
+  const S2=[],T=[];
+  if(a.q4>=4&&a.q5===0)S2.push(['לחץ זמן ממשי','דחיפות גבוהה וצורך בהחלטה בתוך כשלושה חודשים. כדאי לשקול החלטת ביניים שתוריד לחץ ותאפשר בירור מעמיק במקביל.']);
+  else if(urgent)S2.push(['דחיפות',a.q5===0?'צורך בהחלטה בתוך כשלושה חודשים.':'דחיפות מדורגת גבוה ('+a.q4+' מתוך 5).']);
+  if(a.q4>=4&&a.q6===1)T.push(['דחיפות מול קצב','דחיפות גבוהה לצד בקשה להתחיל בהדרגה. לברר מה מקור הדחיפות ומה מבקש האטה.']);
+  if(a.q4!=null&&a.q4<=2&&a.q5===0)T.push(['מסגרת זמן','נדרשת החלטה בתוך כשלושה חודשים, אך הדחיפות מדורגת נמוך. לברר מאיפה מגיעה מסגרת הזמן.']);
+  if(a.q17>=4&&has(a,'q2',0))T.push(['בהירות מול מצב','סומן "אין לי כיוון" בשאלה 2, ובהירות הכיוון דורגה '+a.q17+' מתוך 5. אולי יש כיוון שעוד לא מקבל רשות.']);
+  if(a.q17!=null&&a.q17<=2&&(has(a,'q2',2)||has(a,'q2',3)))T.push(['בהירות מול מצב','סומנו חלופות ממשיות או כיוון ברור, ובהירות הכיוון דורגה '+a.q17+' מתוך 5. ייתכן שיש אפשרויות, אך לא ברור לפי מה לבחור.']);
+  if(a.q9===0&&a.q4>=4)T.push(['מקור הלחץ','אי־שינוי "יהיה בסדר", אך הדחיפות גבוהה. ייתכן שהלחץ מגיע מבחוץ ולא מבפנים.']);
+  if(a.q9===2&&a.q4!=null&&a.q4<=2)T.push(['מחיר ודחייה','תחושת ויתור אם לא ישתנה דבר, לצד דחיפות נמוכה. ייתכן שהשינוי נדחה שוב ושוב.']);
+  if(has(a,'q19',5)&&a.q3===3)S2.push(['התלבטות בלי תנועה','ההתלבטות נמשכת יותר משנה, ועוד לא נעשה צעד מעשי. מקום לבדוק מה מעכב, ולהציע ניסויי דרך קטנים.']);
+  const steps=(a.q19||[]).filter(i=>i<5).length;
+  if(steps>=3)S2.push(['חקירה פעילה','כבר נעשו '+steps+' סוגי צעדים. כדאי לאסוף את מה שנלמד מהם לפני שפותחים כלים חדשים.']);
+  if(has(a,'q11',9)||a.q12===1||(has(a,'q10',1)&&(a.q10||[]).length>=4))S2.push(['העבודה נושאת את הזהות',(has(a,'q11',9)?'כמעט אין עולם משמעותי מחוץ לעבודה. ':'')+(a.q12===1?'מה שהיה חסר יותר מכל הוא הזהות. ':'')+'שינוי עלול להיחוות כאובדן ולא רק כהזדמנות. קצב זהיר, ותשומת לב למקורות כוח מחוץ לעבודה.']);
+  if(a.q12===7)S2.push(['מקורות מחוץ לעבודה','יש מקורות חזקים מחוץ לעבודה. זה משאב לתהליך, ומאפשר מרחב לניסוי.']);
+  if(has(a,'q18',2))S2.push(['חשש כלכלי','לברר את המרחב הכלכלי בפועל לפני בחירת קצב והיקף ניסויים.']);
+  if([a.q14,a.q15,a.q16].every(x=>x===1))S2.push(['צומת ראשונה','לא דווחו צמתים מקצועיים בעבר. ייתכן שנדרש ליווי צמוד יותר, והכרה בכך שזו טריטוריה חדשה.']);
+  if(a.q16===0)S2.push(['צומת עמוקה בעבר','בעבר הייתה צומת של שינוי מקצועי עמוק'+(t.q16_age?' (בגיל '+esc(t.q16_age)+', זה הגיל בצומת ההיא ולא הגיל היום)':'')+'. כדאי לשאול מה עזר אז, ומה מזה זמין גם היום.']);
+  if(g==='B'&&has(a,'q2',5))S2.push(['מעבר ביוזמה','התשובה "יזמתי עזיבה או שינוי" אינה אחד משמונת המצבים. היא מחזקת את השערות המכריע/ה ואחרי המעבר, והכלים שלה נוספו לשלב ההמשך.']);
+  if(g==='B'&&!(a.q2||[]).some(i=>i<9))S2.push(['אין מצב מן הרשימה','לא סומן מצב בשאלה 2'+(t.q2_o?' (תיאור חופשי: "'+esc(t.q2_o)+'")':'')+'. ההשערה נשענת רק על שאר התשובות.']);
+  if(retire)S2.push(['שינוי של שלב חיים','סומן מעבר בין שלבי חיים. כדאי לשאול אם הוא קשור גם לפרישה או לצמצום היקף העבודה. אם כן, אפשר להעביר ידנית לקבוצה ג.']);
+  const Y=num(d.years),AG=num(d.age);
+  if(Y!=null&&Y>=5&&a.q1===0)T.push(['שלב מול ניסיון','סומן "תחילת הדרך" בשאלה 1, אך יש '+Y+' שנות ניסיון. ייתכן שמדובר בהתחלה מחדש בתחום חדש.']);
+  if(Y!=null&&Y<5&&in_(a.q1,[2,3]))T.push(['שלב מול ניסיון','סומן שלב בשל או בחינה מחדש, אך יש '+Y+' שנות ניסיון בלבד. לברר אם יש ניסיון קודם שלא נספר.']);
+  if(AG!=null&&Y!=null&&Y<5&&AG>=35)S2.push(['גיל מול ניסיון','בגיל '+AG+' יש '+Y+' שנות ניסיון מקצועי. ייתכן שמדובר בחזרה לעבודה, בלימודים מאוחרים או בתחום חדש. כדאי לברר מה קדם לשנים האלה, כי גם זה ניסיון.']);
+  if(AG!=null&&Y!=null&&Y>AG-14)S2.push(['לבדיקת הנתונים','שנות הניסיון ('+Y+') נראות גבוהות ביחס לגיל ('+AG+'). כדאי לוודא את הנתונים.']);
+  if(AG!=null&&AG>=60&&g!=='C')S2.push(['גיל ופרק הבא','הנועץ/ת בן/בת '+AG+' ולא שויך/ה לקבוצת הפרישה. כדאי לשאול איך הוא/היא רואה את השנים הבאות, ואם צריך – להעביר לקבוצה ג.']);
+  const MQ=[];
+  if(P)MQ.push(P.question);
+  MQ.push('מה הפתיע אותך כשקראת את תמונת הפתיחה שלך?');
+  if((t.q8||'').trim())MQ.push('כתבת שהשתנה בך: "'+esc(t.q8.trim().slice(0,90))+(t.q8.trim().length>90?'…':'')+'". איך זה נראה ביום־יום?');
+  if(a.q12!=null&&a.q12<7)MQ.push('אמרת שאם העבודה תצטמצם יחסר יותר מכל '+MISS[a.q12]+'. איפה עוד בחיים זה יכול לגור?');
+  T.slice(0,1).forEach(x=>MQ.push(x[0]==='בהירות מול מצב'?'מה היה קורה אם היית מרשה לעצמך לומר בקול לאן את/ה רוצה?':x[0]==='דחיפות מול קצב'?'מה דוחק בך, ומה מבקש להאט?':x[0]==='מקור הלחץ'?'של מי הדחיפות הזו?':'מה עוצר את ההחלטה, אם הוויתור מרגיש כל כך יקר?'));
+  return {H,GA,g,track,pi,P,R,retire,S:S2,T,MQ:[...new Set(MQ)].slice(0,5)};
+}
+function answerRows(d){
+  return allQs.map(q=>{
+    let v='';const a=d.a[q.id];
+    if(q.type==='single'&&a!=null)v=esc(optL(q.id,a))+(q.other===a&&d.t[q.id+'_o']?': '+esc(d.t[q.id+'_o']):'');
+    if(q.type==='multi'&&Array.isArray(a))v=a.map(i=>esc(optL(q.id,i))+(q.other===i&&d.t[q.id+'_o']?': '+esc(d.t[q.id+'_o']):'')).join(' · ');
+    if(q.type==='scale'&&a)v=a+' מתוך 5';
+    if(q.type==='open')v=esc(d.t[q.id]||'');
+    if(q.follow&&([].concat(q.follow.when)).includes(a))v+='<br><span class="muted small">'+q.follow.fields.map(f=>esc(f.label)+' '+esc(d.t[f.id]||'—')).join(' | ')+'</span>';
+    return `<tr><td>${q.n?q.n+'. ':''}${esc(q.text)}</td><td>${v||'<span class="muted">—</span>'}</td></tr>`;
+  }).join('');
+}
+function interpCard(d,A){
+  const H=A.H,a=d.a,G=GROUPS[A.g],ovG=!!(d.og&&GROUPS[d.og]);
+  const gSel=`<label class="small muted" for="og">קבוצת כניסה: </label><select id="og" class="sel"><option value="">לפי השאלון (${GROUPS[A.GA.g].letter})</option>${Object.entries(GROUPS).map(([k,x])=>`<option value="${k}" ${ovG&&d.og===k?'selected':''}>${x.letter} · ${esc(x.name)}</option>`).join('')}</select>`;
+  let h=`<div class="card" style="border-right:4px solid var(--gold)">
+   <div class="small muted">קבוצת כניסה${ovG?' · נקבעה על ידי היועץ/ת':''}</div>
+   <div style="font-family:var(--display);font-size:24px;color:var(--olive);margin:2px 0">${G.letter}. ${esc(G.name)}</div>
+   <div class="small">${esc(G.desc)}</div>
+   <div class="small muted" style="margin-top:4px">${ovG?'לפי השאלון: '+GROUPS[A.GA.g].letter+' · ':''}${A.GA.why.map(esc).join(' · ')}</div>`;
+  const talk=[];
+  if(A.g!=='B'){
+    const P=A.P;
+    let txt='';
+    if(A.track==='A1')txt='הנועץ/ת בתחילת הדרך, עם מעט ניסיון מקצועי מובנה. שמונת מצבי היציאה לדרך אינם חלים כאן, כי עוד אין מסלול מובנה לצאת ממנו. העבודה היא בעיקר גילוי: מה מדליק, מה מושך, ואיזה ניסיון – גם לא מובנה – כבר מלמד משהו.';
+    if(A.track==='A2')txt='הנועץ/ת עם כ־3–5 שנות ניסיון. יש כבר ניסיון ממשי להישען עליו, אבל הזהות המקצועית עדיין בגיבוש. ההבחנה החשובה היא בין אי־התאמה אמיתית לבין שלב טבעי של טלטלה אחרי השנים הראשונות.';
+    if(A.track==='C')txt='הנועץ/ת בשלב היציאה מן המסע המקצועי המובנה. מסלול הייעוץ כאן שונה: השאלה אינה איזה תפקיד הבא, אלא איזה מקום תתפוס העבודה – אם בכלל – בתוך הפרק הבא, ומה יחליף את מה שהעבודה סיפקה.';
+    const st=(a.q2||[]).filter(i=>i<9).map(i=>STATE_S[i]);
+    if(st.length&&A.g==='A')txt+=` בשאלה 2 סומן: "${esc(st.join('", "'))}". בשלב הזה כדאי לקרוא זאת כתיאור של תחושה, ולא כמצב יציאה.`;
+    h+=`<h3 style="font-size:18px;margin:16px 0 6px">מסלול: ${esc(P.name)}</h3><p style="margin:0 0 8px">${txt}</p>
+    <table class="kv"><tr><td>שאלת הבירור המרכזית</td><td><b>${esc(P.question)}</b></td></tr><tr><td>מה לבדוק</td><td>${esc(P.check)}</td></tr></table>
+    <p class="small muted" style="margin:8px 0 0">חבילות הפתיחה לקבוצות א ו־ג הן טיוטה לאישורך.</p>`;
+    talk.push(P.question);
+    if(A.track==='C'&&(d.t.q20||'').trim())talk.push('לחזור לתשובה לשאלה 20 ולשאול: מה מזה כבר קורה היום, ומה עדיין רק משאלה?');
+    if(A.track==='C'&&a.q12!=null&&a.q12<7)talk.push('מה שיחסר יותר מכל הוא '+MISS[a.q12]+'. איפה עוד זה יכול להתקיים בפרק הבא?');
+    if(A.track==='A1')talk.push('מה עשית עד היום, גם מחוץ לעבודה, שבו הזמן עף?');
+    if(A.track==='A2')talk.push('מה הפתיע אותך בשנים הראשונות – לטובה ולרעה?');
+  } else {
+    const cur=A.pi!=null?H.res[A.pi]:null,ovS=d.ov!=null&&d.ov!=='';
+    const sSel=`<label class="small muted" for="ov">השערת היועץ/ת: </label><select id="ov" class="sel"><option value="">לפי המנוע${H.top?' ('+esc(STATES[H.top.i].name)+')':''}</option>${STATES.map((s,i)=>`<option value="${i}" ${ovS&&+d.ov===i?'selected':''}>${esc(s.name)}</option>`).join('')}</select>`;
+    h+=`<div style="border-top:1px solid var(--rule);margin-top:14px;padding-top:12px"><div class="small muted">השערה לגבי מצב היציאה לדרך${ovS?' · נקבעה על ידי היועץ/ת':''}</div>
+    <div style="font-family:var(--display);font-size:26px;color:var(--olive);margin:2px 0 4px">${A.P?esc(A.P.name):'אין השערה מספיק מבוססת'}</div>`;
+    if(cur){
+      const second=H.res.filter(r=>r.i!==cur.i).sort((x,y)=>y.score-x.score)[0];
+      h+=`<div class="small">${esc(A.P.desc)}${ovS?'':` · רמת ביטחון: <b style="color:${H.level==='high'?'var(--olive)':H.level==='low'?'var(--clay)':'var(--gold)'}">${LEVEL[H.level]}</b>`}</div>
+      <div class="small muted" style="margin-top:6px">משקל ההשערה: <b>${cur.score}</b>. סימון בשאלה 2 – ${cur.self?3:0}, אותות מחזקים – ${cur.sup.length}, אותות מחלישים – ${cur.con.length}.${second?` ההשערה הבאה: ${esc(STATES[second.i].name)}, משקל ${second.score}.`:''}</div>`;
+      // verbal interpretation
+      let p='';
+      const supL=cur.sup.map(esc).join('; ');
+      if(cur.self&&!cur.con.length&&cur.sup.length>=2)p=`הנועץ/ת בחר/ה בעצמו/ה את התיאור הזה, ושאר התשובות תומכות בו: ${supL}. התמונה עקבית, ולכן אפשר להיכנס בשיחה די מהר לשאלת הבירור המרכזית.`;
+      else if(cur.self&&!cur.con.length)p=`הנועץ/ת בחר/ה בעצמו/ה את התיאור הזה, אבל שאר השאלון מוסיף לו מעט תמיכה${supL?' ('+supL+')':''}. אין כאן סתירה. ייתכן שהמצב חדש, או שעוד לא התבטא בפעולה. כדאי לבקש דוגמה מן החודשים האחרונים.`;
+      else if(cur.self)p=`הנועץ/ת בחר/ה בעצמו/ה את התיאור הזה${supL?', ויש לו תמיכה: '+supL:''}. עם זאת, יש תשובות שמושכות לכיוון אחר: ${cur.con.map(esc).join('; ')}. אין צורך להכריע מיד. הסתירה עצמה היא חומר טוב לשיחה.`;
+      else p=`הנועץ/ת לא בחר/ה בתיאור הזה בשאלה 2${(a.q2||[]).length?' (סומן: '+esc((a.q2||[]).filter(i=>i<9).map(i=>STATE_S[i]).join(', ')||'אחר')+')':''}. ההשערה עולה משאר התשובות: ${supL||'—'}. כדאי להציג אותה לנועץ/ת כשאלה ולא כקביעה, ולשמוע איך הוא/היא מתאר/ת את עצמו/ה.`;
+      if(!ovS&&H.alt&&H.alt.i!==cur.i)p+=` ההשערה החלופית, <b>${esc(STATES[H.alt.i].name)}</b>, קרובה. ההבדל ביניהן יתברר בשיחה, ובעיקר מתוך השאלה "${esc(STATES[H.alt.i].question)}"`;
+      if(ovS&&H.top&&H.top.i!==cur.i)p+=` המנוע הציע את <b>${esc(STATES[H.top.i].name)}</b> (משקל ${H.top.score}, רמת ביטחון ${LEVEL[H.level]}).`;
+      h+=`<p style="margin:10px 0">%%P%%</p><table class="kv"><tr><td>שאלת הבירור המרכזית</td><td><b>${esc(A.P.question)}</b></td></tr><tr><td>מה לבדוק</td><td>${esc(A.P.check)}</td></tr></table>`;
+      talk.push(A.P.question,...cur.conT);
+      H.res.filter(r=>r.self&&r.i!==cur.i).forEach(r=>{p+=` הנועץ/ת סימן/ה גם את התיאור של <b>${esc(STATES[r.i].name)}</b> (משקל ${r.score}).`;talk.push('סימנת שני תיאורים למצב שלך. איזה מהם מרכזי יותר עכשיו, ואיך הם קשורים זה לזה?');});
+      h=h.replace('%%P%%',p);
+      if(!ovS&&H.alt&&H.alt.i!==cur.i)talk.push(STATES[H.alt.i].question);
+    } else if(A.P){
+      h+=`<div class="small">${esc(A.P.desc)}</div><table class="kv" style="margin-top:8px"><tr><td>שאלת הבירור המרכזית</td><td><b>${esc(A.P.question)}</b></td></tr><tr><td>מה לבדוק</td><td>${esc(A.P.check)}</td></tr></table>`;talk.push(A.P.question);
+    } else h+=`<p class="small">לא נמצאו מספיק אותות. את המצב מבררים בשיחה, ואפשר לבחור השערה ידנית.</p>`;
+    h+=`<div class="noprint" style="margin-top:10px">${sSel}</div></div>`;
+  }
+  if(talk.length)h+=`<h3 style="font-size:18px;margin:16px 0 6px">על מה לשוחח עם הנועץ/ת</h3>${[...new Set(talk)].map(x=>`<p style="margin:4px 0">• ${esc(x)}</p>`).join('')}`;
+  h+=`<div class="noprint" style="margin-top:12px">${gSel}</div></div>`;
+  return h;
+}
+function engineTable(){
+  const nm=k=>TOOLS[k];
+  const row=(P,extra)=>`<table class="kv">${extra||''}<tr><td>שאלת הבירור המרכזית</td><td>${esc(P.question)}</td></tr>
+  <tr><td>שאלוני פתיחה</td><td>${P.open.map(nm).join(', ')}</td></tr><tr><td>בהמשך, לפי הצורך</td><td>${P.follow.map(nm).join(', ')}</td></tr>
+  <tr><td>שלב הסיכום</td><td>${P.sum.map(esc).join(', ')}${P.urgentSum?'; '+esc(P.urgentSum):''}</td></tr><tr><td>מה היועץ/ת בודק/ת</td><td>${esc(P.check)}</td></tr></table>`;
+  return `<h3>שלוש קבוצות הכניסה</h3><div class="card"><table class="kv">
+   <tr><td>א. ${GROUPS.A.name}</td><td>${GROUPS.A.desc} נקבע לפי שנות הניסיון המקצועי: פחות מ־3 שנים, או 3–5 שנים.</td></tr>
+   <tr><td>ב. ${GROUPS.B.name}</td><td>${GROUPS.B.desc} נקבע לפי שנות הניסיון המקצועי: 5 שנים ומעלה.</td></tr>
+   <tr><td>ג. ${GROUPS.C.name}</td><td>${GROUPS.C.desc} נקבע לפי שאלה 1 בלבד ("לקראת פרישה" או "אחרי פרישה"), וקודם לשנות הניסיון.</td></tr></table></div>
+  <h3>קבוצה א – מסלולים (טיוטה)</h3>${['A1','A2'].map(k=>`<div class="card"><b style="color:var(--clay)">${esc(TRACKS[k].name)}</b>${row(TRACKS[k])}</div>`).join('')}
+  <h3>קבוצה ב – שמונת מצבי היציאה לדרך</h3>`+
+  STATES.map(s=>`<div class="card"><h3 style="margin-top:0">${esc(s.name)}</h3><p class="small muted" style="margin:0 0 8px">${esc(s.desc)} · שאלה 2: "${esc(optL('q2',s.q2))}"</p>
+  ${row(s,`<tr><td>מחזק את ההשערה</td><td>${s.sup.map(x=>esc(x[0])).join('<br>')}</td></tr><tr><td>מחליש, ומה לשאול</td><td>${s.con.map(x=>esc(x[0])+'<br><span class="small muted">'+esc(x[2])+'</span>').join('<br>')}</td></tr>`)}</div>`).join('')+
+  `<div class="card small"><b style="color:var(--olive)">כך נקבעים המשקל ורמת הביטחון.</b> סימון המצב בשאלה 2 שווה 3 נקודות, כל אות מחזק מוסיף נקודה וכל אות מחליש מוריד נקודה. רמה גבוהה: המצב סומן, יש לפחות שני אותות מחזקים, אין אות מחליש, והפער מן ההשערה הבאה הוא 3 נקודות ומעלה. רמה נמוכה: המצב לא סומן, או שיש שני אותות מחלישים ומעלה, או שההשערה הבאה במרחק נקודה אחת. בכל מקרה אחר הרמה בינונית.</div>
+  <h3>קבוצה ג – מסלול הפרישה (טיוטה)</h3><div class="card">${row(TRACKS.C)}</div>`;
+}
+function renderAnalysis(d){
+  const A=analyze(d),a=d.a;
+  const toolHTML=(k,o)=>`<div class="tool"><b>${TOOLS[k]}</b>${o.note?`<span class="small muted">${esc(o.note)}</span><br>`:''}${o.why.map(w=>`<span class="why${w.x?' x':''}">${esc(w.w)}</span>`).join('')}</div>`;
+  const nOpen=Object.keys(A.R.open).length;
+  const sig=(arr,c)=>arr.map(x=>`<div class="sig${c}"><b>${esc(x[0])}.</b> ${x[1]}</div>`).join('')||'<p class="muted small">אין.</p>';
+  $('app').innerHTML=brand('מפת שיחה ליועץ/ת')+
+  `<div class="card"><table class="kv">
+   <tr><td>נועץ/ת</td><td><b>${esc(d.name)||'—'}</b> · ${esc(d.date)||''}</td></tr>
+   <tr><td>שלב חיים (1)</td><td>${a.q1!=null?esc(optL('q1',a.q1))+(a.q1===6&&d.t.q1_o?': '+esc(d.t.q1_o):''):'—'}</td></tr>
+   <tr><td>העבודה היום (1ב)</td><td>${a.q1w!=null?esc(optL('q1w',a.q1w))+(a.q1w===2&&(d.t.q1w_t||'').trim()?': '+esc(d.t.q1w_t):''):'—'}${a.q1w===2?'<br><span class="small">שאלה לפגישה: את/ה עובד/ת בכמה עבודות בעיקר בגלל פרנסה, או כי זה מעניין אותך? ומה החוט שמחבר ביניהן?</span>':''}</td></tr>
+   <tr><td>פרישה (1ג)</td><td>${a.q1r!=null?esc(optL('q1r',a.q1r)):'—'}</td></tr>
+   <tr><td>הזדהות עם המקצוע (2ב)</td><td>${a.q2p!=null?a.q2p+' מתוך 5'+(a.q2p>=4?'<br><span class="small">הזדהות גבוהה: שינוי מקצוע עלול להרגיש כמו ויתור על חלק מהזהות. כדאי לשאול מה מהמקצוע הוא רוצה לקחת איתו.</span>':a.q2p<=2?'<br><span class="small">הזדהות נמוכה: ייתכן שהמקצוע כבר לא "שלו". כדאי לשאול ממתי.</span>':''):'—'}</td></tr>
+   <tr><td>עיסוק נוסף מחוץ לעבודה (2ג)</td><td>${a.q2c!=null?['יש עיסוק נוסף מרכזי','יש עיסוק נוסף, לא מרכזי','המסע המקצועי הוא העיסוק המרכזי'][a.q2c]+((d.t.q2c_t||'').trim()?': '+esc(d.t.q2c_t):'')+'<br><span class="small">'+['משאב חשוב למעבר. לבדוק: האם הוא נשאר תחביב, או שהוא אמור להפוך לעיסוק המרכזי? אלה שני מעברים שונים.','יש בסיס. לבדוק: מה יידרש כדי שיקבל יותר מקום?','סיכון גבוה יותר לריקנות במעבר, בעיקר בפרישה. כדאי להקדיש זמן לחיפוש של עיסוק נוסף.'][a.q2c]+'</span>':'—'}</td></tr>
+   ${((a.q1===4&&a.q1r===3)||(a.q1===5&&[0,1,2].includes(a.q1r)))?'<tr><td>סתירה בשלב (1, 1ג)</td><td>'+(a.q1===4?'סומן "לקראת פרישה" וגם "כבר פרשתי".':'סומן "אחרי פרישה", אבל בשאלה 1ג לא סומן "כבר פרשתי".')+'<br><span class="small">כדאי לשאול: האם המילה "פרישה" מתארת אותך? ואם לא, איזו מילה כן?</span></td></tr>':''}<tr><td>גיל · שנות ניסיון מקצועי</td><td>${esc(d.age)||'—'} · ${esc(d.years)||'—'}</td></tr>
+   <tr><td>מצב בצומת (2)</td><td>${(a.q2||[]).map(i=>esc(STATE_S[i])).join(' · ')||'—'}</td></tr>
+   <tr><td>משך ההתלבטות (3)</td><td>${a.q3!=null?esc(optL('q3',a.q3)):'—'}</td></tr>
+   <tr><td>דחיפות (4) · מרחב זמן (5)</td><td>${a.q4?a.q4+' מתוך 5':'—'} · ${a.q5!=null?esc(optL('q5',a.q5)):'—'}</td></tr>
+   <tr><td>קצב מבוקש (6)</td><td>${a.q6!=null?esc(optL('q6',a.q6)):'—'}</td></tr>
+   <tr><td>בהירות כיוון (17)</td><td>${a.q17?a.q17+' מתוך 5':'—'}</td></tr>
+  </table></div>`+interpCard(d,A)+
+  `<div class="tabs noprint"><button data-tab="t1" class="on">ניתוב וסימנים</button><button data-tab="t2">מה קיבל/ה הנועץ/ת</button><button data-tab="t3">כל התשובות</button><button data-tab="t4">מנוע הניתוח</button></div>
+  <div id="t1">
+   <h3>חבילת פתיחה מוצעת</h3>
+   <p class="small muted">הצעה בלבד: היועץ/ת בוחר/ת, משנה או דוחה. הקצב המוצע: 1–2 שאלונים בין פגישות.${nOpen>2?` בשלב הפתיחה יש ${nOpen} כלים, ולכן כדאי לבחור מתוכם 1–2 לפני הפגישה הבאה.`:''} תגיות בצבע חרסינה מסמנות כלי שנוסף בגלל סימון מסוים, ולא בגלל המצב או המסלול.</p>
+   <div class="grid3">
+    <div class="col"><h4>שאלוני פתיחה</h4>${Object.entries(A.R.open).map(([k,o])=>toolHTML(k,o)).join('')||'<p class="muted small">לבחור בשיחה.</p>'}</div>
+    <div class="col"><h4>בהמשך, לפי הצורך</h4>${Object.entries(A.R.follow).map(([k,o])=>toolHTML(k,o)).join('')||'<p class="muted small">—</p>'}</div>
+    <div class="col"><h4>שלב הסיכום</h4>${A.R.sum.map(x=>`<div class="tool"><b>${esc(x)}</b></div>`).join('')||'<p class="muted small">—</p>'}</div>
+   </div>
+   <h3>סימנים לשיחה</h3><p class="small muted">השערות לבדיקה, לא אבחנות.</p>${sig(A.S,'')}
+   <h3>מתחים בין תשובות</h3>${sig(A.T,' t')}
+   <h3>שאלות נוספות לפגישה הראשונה</h3><div class="card">${A.MQ.map(x=>`<p style="margin:6px 0">• ${x}</p>`).join('')}</div>
+   <h3>בלשונו/ה</h3><div class="card">${[['8','מה השתנה בך',d.t.q8],['16','מה עזר בצומת בעבר ומה היה קשה',d.t.q16_text],['20','הפרק הבא',d.t.q20]].filter(x=>(x[2]||'').trim()).map(x=>`<p style="margin:6px 0"><b style="color:var(--olive)">${x[1]} (${x[0]}):</b> ${esc(x[2])}</p>`).join('')||'<p class="muted small">לא נכתבו תשובות פתוחות.</p>'}</div>
+  </div>
+  <div id="t2" class="hide"><div class="card reflect">${clientText(d)}</div></div>
+  <div id="t3" class="hide"><div class="card"><table class="kv">${answerRows(d)}</table></div></div>
+  <div id="t4" class="hide noprint"><p class="small muted">קבוצות הכניסה ומצבי היציאה לדרך הם מצבים זמניים, ולא טיפוסים של אנשים. השמות משמשים את היועץ/ת בלבד, והנועץ/ת רואה רק תיאור של מצבו/ה. ההשערה אינה מקבעת: אחרי שאלוני המראה והפגישה אפשר לשנות אותה.</p>${engineTable()}</div>
+  <div id="saveBar"></div><div class="nav"><button class="btn ghost" id="home">${S.cid&&DB?'לרשימת התיקים':'לנועץ/ת אחר/ת'}</button><span><button class="btn ghost" id="cc">העתקת קוד</button> <button class="btn" id="pr">הדפסה</button></span></div><div class="limit" id="cpm"></div>`;
+  document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));['t1','t2','t3','t4'].forEach(id=>$(id).classList.toggle('hide',id!==b.dataset.tab));});
+  const ov=$('ov');if(ov)ov.onchange=e=>{S.ov=e.target.value;save();renderAnalysis(pack());};
+  $('og').onchange=e=>{S.og=e.target.value;save();renderAnalysis(pack());};
+  SVM='';drawSaveBar();
+  
+  $('cc').onclick=()=>copy(encode(d),'cpm');
+  $('home').onclick=()=>{S={name:'',date:'',a:{},t:{},page:-1,done:false};save();render();scrollTo(0,0)};
+}
+
+/* ---------- scan of a paper form (published page only, via Claude) ---------- */
+let SAMPLE=null,LIM=null,scanCtl=null;
+async function initSample(){
+  try{if(!window.claude||!window.claude.use)return;const s=await window.claude.use('sample');if(!s)return;
+    const l=await s.limits().catch(()=>null);if(!l||!l.images)return;SAMPLE=s;LIM=l;const c=$('scanCard');if(c)c.hidden=false;}catch(e){}
+}
+function formSpec(){
+  const L=[];
+  Q.sections.forEach(s=>{L.push('## '+s.title);s.qs.forEach(q=>{
+    let head=`${q.id} [${q.type}${q.max?', up to '+q.max:''}${q.showIf?', only if '+JSON.stringify(q.showIf):''}] ${q.n?q.n+'. ':''}${q.text}`;
+    L.push(head);
+    if(q.opts)q.opts.forEach((o,i)=>L.push(`   ${i} = ${o}`));
+    if(q.type==='scale')L.push(`   value 1..5 (1 = ${q.lo}, 5 = ${q.hi})`);
+    if(q.other!=null)L.push(`   free text for option ${q.other} goes in t.${q.id}_o`);
+    if(q.type==='open')L.push(`   handwritten text goes in t.${q.id}`);
+    if(q.follow)q.follow.fields.forEach(f=>L.push(`   if ${q.id} in [${[].concat(q.follow.when)}]: t.${f.id} = "${f.label}"`));
+  });});
+  return L.join('\n');
+}
+function scanPrompt(k,n){
+  return `You are reading ${n>1?`part ${k+1} of ${n} of `:''}photos or scans of a filled-in Hebrew paper questionnaire ("${Q.meta.title}"). The pages are right-to-left. Each answer option has a checkbox (☐) at the right side of its row; a marked option has an X, a check mark, a circle, or a filled box. Scale questions (q4, q17) show rows "1" to "5". The cover page has handwritten fields: שם (name), גיל (age), שנות ניסיון מקצועי (years of professional experience), תאריך מילוי (date).
+
+Read ONLY what is on these pages. Do not guess missing answers: leave a question out if it is not on these pages or not marked. Transcribe handwriting in Hebrew exactly as written. If a mark or handwriting is ambiguous, still give your best reading AND add the question id to "unsure".
+
+The questionnaire (question id [type] text, then option index = option text):
+${formSpec()}
+
+Reply with only this JSON (omit keys you did not find):
+{"name":"","age":"","years":"","date":"","a":{"q1":3,"q2":[0,4],"q4":4},"t":{"q8":"..."},"unsure":["q7"]}
+single = one option index; multi = array of option indices; scale = number 1-5.`;
+}
+function cleanScan(r){
+  const out={name:'',age:'',years:'',date:'',a:{},t:{},unsure:[]};if(!r||typeof r!=='object')return out;
+  ['name','age','years','date'].forEach(k=>{if(r[k]!=null)out[k]=String(r[k]).slice(0,80)});
+  const a=r.a||{},tt=r.t||{};
+  allQs.forEach(q=>{const v=a[q.id];if(v==null)return;
+    if(q.type==='single'){const i=parseInt(v);if(i>=0&&i<q.opts.length)out.a[q.id]=i;}
+    if(q.type==='scale'){const i=parseInt(v);if(i>=1&&i<=5)out.a[q.id]=i;}
+    if(q.type==='multi'&&Array.isArray(v)){let arr=[...new Set(v.map(x=>parseInt(x)).filter(i=>i>=0&&i<q.opts.length))].sort((x,y)=>x-y);if(q.max&&arr.length>q.max){arr=arr.slice(0,q.max);out.unsure.push(q.id);}out.a[q.id]=arr;}
+  });
+  const ok=new Set(allQs.flatMap(q=>[q.id,q.id+'_o',...(q.follow?q.follow.fields.map(f=>f.id):[])]));
+  Object.keys(tt).forEach(k=>{if(ok.has(k)&&tt[k]!=null&&String(tt[k]).trim())out.t[k]=String(tt[k]).slice(0,2000)});
+  if(Array.isArray(r.unsure))r.unsure.forEach(x=>{if(QID[x]&&!out.unsure.includes(x))out.unsure.push(x)});
+  return out;
+}
+async function pdfToImages(f){
+  if(!window.pdfjsLib)throw {code:'pdf'};
+  pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const doc=await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise,out=[];
+  for(let p=1;p<=doc.numPages;p++){const pg=await doc.getPage(p),vp=pg.getViewport({scale:1.6}),c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;
+    await pg.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;out.push(await new Promise(r=>c.toBlob(r,'image/jpeg',0.88)));}
+  return out;
+}
+async function runScan(cid){
+  const files=[...($('scanf').files||[])],msg=$('scanmsg');
+  if(!files.length){msg.textContent='בחר/י קודם את קובצי הסריקה או התמונות.';return;}
+  $('scango').disabled=true;$('scanstop').hidden=false;
+  try{
+    msg.textContent='מכין את העמודים…';
+    let imgs=[];for(const f of files){if(f.type==='application/pdf'||/\.pdf$/i.test(f.name))imgs.push(...await pdfToImages(f));else imgs.push(f);}
+    const per=Math.max(1,LIM.images.maxCount),batches=[];for(let i=0;i<imgs.length;i+=per)batches.push(imgs.slice(i,i+per));
+    const merged={name:'',age:'',years:'',date:'',a:{},t:{},unsure:[]};
+    for(let k=0;k<batches.length;k++){
+      msg.textContent=`Claude קורא את הטופס${batches.length>1?` (חלק ${k+1} מתוך ${batches.length})`:''}… זה יכול לקחת כדקה.`;
+      scanCtl=new AbortController();
+      const r=cleanScan(await SAMPLE.json(scanPrompt(k,batches.length),{images:batches[k],modelTier:'complex',signal:scanCtl.signal,cache:false}));
+      ['name','age','years','date'].forEach(x=>{if(!merged[x]&&r[x])merged[x]=r[x]});
+      Object.assign(merged.a,Object.fromEntries(Object.entries(r.a).filter(([q])=>merged.a[q]==null)));
+      Object.assign(merged.t,Object.fromEntries(Object.entries(r.t).filter(([q])=>!merged.t[q])));
+      r.unsure.forEach(x=>{if(!merged.unsure.includes(x))merged.unsure.push(x)});
+    }
+    S={name:merged.name,age:merged.age,years:merged.years,date:merged.date||today(),a:merged.a,t:merged.t,unsure:merged.unsure,scanned:true,page:0,done:false,cid:cid||null};
+    save();render();scrollTo(0,0);
+  }catch(e){
+    const c=e&&e.code;
+    msg.textContent=c==='cancelled'?'הקריאה נעצרה.':c==='pdf'?'לא הצלחתי לפתוח את קובץ ה־PDF. אפשר לשמור את העמודים כתמונות (JPG) ולנסות שוב.':c==='not_granted'?'לא ניתן אישור לשימוש ב־Claude מהדף הזה.':c==='rate_limited'?'הגעת למגבלת שימוש זמנית. אפשר לנסות שוב מאוחר יותר.':c==='image_rejected'?'אחד הקבצים לא התקבל (סוג או גודל). נסה/י תמונה אחרת.':c==='invalid_json'?'לא הצלחתי לפענח את התשובה. אפשר לנסות שוב.':'משהו השתבש בקריאה. אפשר לנסות שוב, או להזין את הטופס ידנית.';
+  }finally{const g=$('scango'),s=$('scanstop');if(g)g.disabled=false;if(s)s.hidden=true;}
+}
+/* ---------- client registry (published page only: db + user + downloads) ---------- */
+let SVM='',DB=null,USER=null,UID=null,DL=null,CLIENTS=[],CLIENTS_READY=false,unsubClients=null,unsubEvents=null,EVENTS=[],NAMES={};
+const fmtD=ms=>{try{return new Date(ms).toLocaleDateString('he-IL')}catch(e){return ''}};
+const GL={A:'א',B:'ב',C:'ג'};
+async function initDB(){
+  try{
+    if(!window.claude||!window.claude.use)return;
+    const db=await window.claude.use('db');if(!db)return;DB=db;
+    USER=await window.claude.use('user');if(USER){try{UID=await USER.id()}catch(e){}}
+    DL=await window.claude.use('downloads');
+    unsubClients=DB.collection('clients').orderBy('updatedAt','desc').limit(1000).onSnapshot(qs=>{
+      CLIENTS=qs.docs.map(x=>Object.assign({id:x.id},x.data()));CLIENTS_READY=true;
+      if($('clist'))drawClientList();if($('saveSel'))drawSaveBar();
+    },()=>{});
+    if(MODE==='yoetz'&&S.page===-1&&!S.done)render();
+    else if(S.done&&$('saveBar'))drawSaveBar();
+  }catch(e){DB=null}
+}
+async function nameOf(ids){
+  ids=[...new Set(ids.filter(Boolean))].filter(i=>!(i in NAMES));
+  if(USER&&ids.length){try{const ps=await USER.profiles(ids);ids.forEach(i=>{NAMES[i]=(ps[i]&&ps[i].name)||'יועץ/ת'})}catch(e){}}
+}
+function registryHTML(){
+  return `<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+   <h3 style="margin:0">תיק נועצים</h3><span><button class="btn ghost" id="exp" ${DL?'':'hidden'} style="padding:8px 14px;font-size:15px">ייצוא כל התיקים</button> <button class="btn" id="newc" style="padding:8px 16px;font-size:15px">תיק חדש</button></span></div>
+   <input type="text" id="csearch" placeholder="חיפוש לפי שם, מייל או טלפון" style="margin-top:12px">
+   <div id="newbox" hidden style="margin-top:10px"><label class="f" for="newname">שם הנועץ/ת</label><input type="text" id="newname"><div class="nav" style="margin-top:8px"><button class="btn ghost" id="newcancel">ביטול</button><button class="btn" id="newok">פתיחת התיק</button></div></div>
+   <div id="clist" style="margin-top:10px"></div><div class="limit" id="regmsg"></div></div>`;
+}
+function drawClientList(){
+  const el=$('clist');if(!el)return;
+  if(!CLIENTS_READY){el.innerHTML='<p class="muted small">טוען…</p>';return;}
+  const q=(($('csearch')||{}).value||'').trim().toLowerCase();
+  const list=CLIENTS.filter(c=>!q||[c.name,c.email,c.phone].some(x=>String(x||'').toLowerCase().includes(q)));
+  el.innerHTML=list.length?`<table class="kv">${list.map(c=>`<tr class="crow" data-id="${esc(c.id)}" style="cursor:pointer"><td><b style="color:var(--olive)">${esc(c.name)||'ללא שם'}</b>${c.email?`<br><span class="small muted">${esc(c.email)}</span>`:''}</td><td class="small">${c.lastIntake?`${esc(c.lastIntake.date||'')} · קבוצה ${GL[c.lastIntake.group]||'—'}${c.lastIntake.hypo?' · '+esc(c.lastIntake.hypo):''}`:'<span class="muted">עוד אין שאלון כניסה</span>'}<br><span class="muted">עודכן ${fmtD(c.updatedAt)}</span></td></tr>`).join('')}</table>`
+   :`<p class="muted small">${CLIENTS.length?'לא נמצאו תיקים מתאימים.':'עוד אין תיקים. פתח/י תיק חדש, או שמור/י ניתוח בתיק.'}</p>`;
+  el.querySelectorAll('.crow').forEach(r=>r.onclick=()=>openClient(r.dataset.id));
+}
+function bindRegistry(){
+  $('csearch').oninput=drawClientList;
+  $('newc').onclick=()=>{$('newbox').hidden=false;$('newname').focus();};
+  $('newcancel').onclick=()=>{$('newbox').hidden=true;};
+  $('newok').onclick=async()=>{const n=$('newname').value.trim();if(!n){$('regmsg').textContent='כדאי לכתוב שם.';return;}
+    try{const id=await createClient(n,{});openClient(id);}catch(e){$('regmsg').textContent=dbMsg(e);}};
+  $('exp').onclick=exportAll;
+  drawClientList();
+}
+function dbMsg(e){const c=e&&e.code;return c==='invalid_argument'?'אין לך הרשאה לשמור בתיקים. אפשר לבקש מבעלת הכלי הרשאת Contributor.':c==='quota_exceeded'?'מאגר התיקים מלא. כדאי לייצא ולפנות מקום.':c==='resource_exhausted'?'יותר מדי פעולות ברצף. נסה/י שוב בעוד רגע.':'השמירה לא הצליחה. נסה/י שוב.';}
+async function createClient(name,extra){
+  const ref=DB.collection('clients').doc(),now=Date.now();
+  await ref.set(Object.assign({name,email:'',phone:'',note:'',consent:false,consentDate:'',age:'',years:'',createdAt:now,updatedAt:now,createdBy:UID||''},extra||{}));
+  return ref.id;
+}
+function openClient(cid){S={name:'',date:'',a:{},t:{},page:-1,done:false,cid};save();render();scrollTo(0,0);}
+function entryCards(){
+  return `<div class="card"><h3 style="margin-top:0">קוד שהתקבל מנועץ/ת</h3><p class="small muted">הדבק/י כאן את הקוד שהנועץ/ת שלח/ה בסיום המילוי הדיגיטלי.</p>
+  <textarea id="inp" style="direction:ltr;text-align:left;font-family:ui-monospace,Consolas,monospace;font-size:13px" placeholder="CWL-INTAKE02:..."></textarea>
+  <div class="limit" id="err"></div><div class="nav" style="margin-top:10px"><span></span><button class="btn" id="dec">ניתוח</button></div></div>
+  <div class="card" id="scanCard" ${SAMPLE?'':'hidden'}><h3 style="margin-top:0">סריקת טופס נייר</h3><p class="small muted">צלם/י או סרוק/י את עמודי הטופס (תמונות או PDF). Claude יקרא את הסימונים ואת הכתב, ואחר כך תעבור/י על התשובות, תתקן/י אם צריך, ותאשר/י לפני הניתוח. שאלות שהקריאה שלהן לא הייתה ודאית יסומנו.</p>
+  <input type="file" id="scanf" multiple accept="image/jpeg,image/png,image/webp,application/pdf" style="font:inherit;font-size:15px">
+  <div class="limit" id="scanmsg"></div><div class="nav" style="margin-top:8px"><button class="btn ghost" id="scanstop" hidden>עצירה</button><button class="btn" id="scango">קריאת הטופס</button></div></div>
+  <div class="card"><h3 style="margin-top:0">הזנה ידנית של טופס נייר</h3><p class="small muted">הקלדה של התשובות מן הטופס המודפס, ואחריה אותו ניתוח.</p>
+  <div class="nav" style="margin-top:6px"><span></span><button class="btn clay" id="paper">הזנת טופס</button></div></div>`;
+}
+function bindEntryCards(cid){
+  $('dec').onclick=()=>{try{const d=decode($('inp').value);if(d.tool!=='intake02')throw 0;S={name:d.name,date:d.date,age:d.age||'',years:d.years||'',a:d.a,t:d.t,ov:d.ov,og:d.og,page:1,done:true,cid};save();renderAnalysis(pack());scrollTo(0,0);}catch(e){$('err').textContent='הקוד אינו תקין או שאינו שייך לשאלון הכניסה 02. כדאי לבדוק שהועתק במלואו.';}};
+  $('paper').onclick=()=>{S={name:'',date:'',a:{},t:{},page:0,done:false,cid};if(cid){const c=CLIENTS.find(x=>x.id===cid);if(c){S.name=c.name||'';S.age=c.age||'';S.years=c.years||'';}}save();render();};
+  $('scango').onclick=()=>runScan(cid);$('scanstop').onclick=()=>scanCtl&&scanCtl.abort();
+}
+function renderClient(cid){
+  const c=CLIENTS.find(x=>x.id===cid);
+  if(!c){$('app').innerHTML=brand('תיק נועץ/ת')+`<div class="card"><p class="muted">${CLIENTS_READY?'התיק לא נמצא.':'טוען…'}</p><div class="nav"><button class="btn ghost" id="back">לרשימת התיקים</button></div></div>`;$('back').onclick=()=>{S.cid=null;S.page=-1;save();render();};return;}
+  $('app').innerHTML=brand('תיק נועץ/ת')+
+  `<div class="card"><div style="font-family:var(--display);font-size:28px;color:var(--olive)">${esc(c.name)||'ללא שם'}</div>
+   <div class="small muted">נפתח ב־${fmtD(c.createdAt)} · עודכן ${fmtD(c.updatedAt)}</div>
+   <div style="display:flex;gap:12px;flex-wrap:wrap"><div style="flex:2;min-width:200px"><label class="f" for="c_name">שם</label><input type="text" id="c_name" value="${esc(c.name)}"></div>
+   <div style="flex:1;min-width:90px"><label class="f" for="c_age">גיל</label><input type="text" id="c_age" value="${esc(c.age)}"></div>
+   <div style="flex:1;min-width:120px"><label class="f" for="c_years">שנות ניסיון</label><input type="text" id="c_years" value="${esc(c.years)}"></div></div>
+   <div style="display:flex;gap:12px;flex-wrap:wrap"><div style="flex:1;min-width:200px"><label class="f" for="c_email">מייל</label><input type="text" id="c_email" value="${esc(c.email)}" style="direction:ltr;text-align:left"></div>
+   <div style="flex:1;min-width:160px"><label class="f" for="c_phone">טלפון</label><input type="text" id="c_phone" value="${esc(c.phone)}" style="direction:ltr;text-align:left"></div></div>
+   <label class="f" for="c_note">הערות כלליות</label><textarea id="c_note">${esc(c.note)}</textarea>
+   <label style="display:flex;gap:8px;align-items:center;margin-top:12px;font-size:16px"><input type="checkbox" id="c_consent" ${c.consent?'checked':''}> הנועץ/ת הסכים/ה שהמידע יישמר בתיק${c.consentDate?` <span class="muted small">(${esc(c.consentDate)})</span>`:''}</label>
+   <div class="nav" style="margin-top:14px"><button class="btn ghost" id="back">לרשימת התיקים</button><button class="btn" id="csave">שמירת הפרטים</button></div><div class="limit" id="cmsg"></div></div>
+   <h3>מה נעשה עד עכשיו</h3><div id="tl"><p class="muted small">טוען…</p></div>
+   <div class="card"><h3 style="margin-top:0">הוספה לתיק</h3>
+    <label class="f" for="note">הערה או סיכום פגישה</label><textarea id="note" placeholder="מה עלה בפגישה, מה סוכם, מה הלאה"></textarea>
+    <div class="nav" style="margin-top:8px"><span></span><button class="btn" id="addnote">הוספת הערה</button></div>
+    <label class="f" for="otool" style="margin-top:18px">קוד משאלון מראה אחר</label>
+    <input type="text" id="otool" placeholder="שם השאלון, למשל: עוגני קריירה">
+    <textarea id="ocode" style="direction:ltr;text-align:left;font-family:ui-monospace,Consolas,monospace;font-size:13px;margin-top:6px" placeholder="הקוד שהתקבל"></textarea>
+    <div class="nav" style="margin-top:8px"><span></span><button class="btn" id="addcode">שמירת הקוד</button></div><div class="limit" id="amsg"></div></div>
+   <h3>שאלון כניסה חדש לתיק</h3>${entryCards()}
+   ${USER&&USER.canEdit&&USER.canEdit()?`<div class="card small"><b style="color:var(--clay)">מחיקת התיק</b><p style="margin:4px 0 8px">מוחק את התיק וכל מה שבו, לצמיתות. לשימוש כשנועץ/ת מבקש/ת למחוק את המידע.</p><button class="btn ghost" id="cdel">מחיקת התיק</button></div>`:''}`;
+  bindEntryCards(cid);
+  $('back').onclick=()=>{if(unsubEvents){unsubEvents();unsubEvents=null;}S={name:'',date:'',a:{},t:{},page:-1,done:false};save();render();scrollTo(0,0);};
+  $('c_consent').onchange=e=>{};
+  $('csave').onclick=async()=>{
+    const cons=$('c_consent').checked;
+    const patch={name:$('c_name').value.trim(),age:$('c_age').value.trim(),years:$('c_years').value.trim(),email:$('c_email').value.trim(),phone:$('c_phone').value.trim(),note:$('c_note').value,consent:cons,updatedAt:Date.now()};
+    if(cons&&!c.consent)patch.consentDate=today();if(!cons)patch.consentDate='';
+    try{await DB.doc('clients/'+cid).update(patch);$('cmsg').textContent='הפרטים נשמרו.';}catch(e){$('cmsg').textContent=dbMsg(e);}
+  };
+  $('addnote').onclick=async()=>{const x=$('note').value.trim();if(!x)return;try{await addEvent(cid,{type:'note',text:x});$('note').value='';$('amsg').textContent='';}catch(e){$('amsg').textContent=dbMsg(e);}};
+  $('addcode').onclick=async()=>{const tl=$('otool').value.trim(),cd=$('ocode').value.trim();if(!cd){$('amsg').textContent='הדבק/י קוד.';return;}
+    try{await addEvent(cid,{type:'code',tool:tl||'שאלון',code:cd.slice(0,200000)});$('ocode').value='';$('otool').value='';$('amsg').textContent='הקוד נשמר בתיק.';}catch(e){$('amsg').textContent=dbMsg(e);}};
+  const del=$('cdel');if(del)del.onclick=async()=>{if(del.dataset.arm!=='1'){del.dataset.arm='1';del.textContent='לחיצה נוספת תמחק את התיק לצמיתות';return;}
+    try{for(const ev of EVENTS)await DB.doc(`clients/${cid}/events/${ev.id}`).delete();await DB.doc('clients/'+cid).delete();if(unsubEvents){unsubEvents();unsubEvents=null;}S={name:'',date:'',a:{},t:{},page:-1,done:false};save();render();}catch(e){$('cmsg').textContent=dbMsg(e);}};
+  if(unsubEvents)unsubEvents();
+  unsubEvents=DB.collection(`clients/${cid}/events`).orderBy('at','desc').limit(500).onSnapshot(async qs=>{EVENTS=qs.docs.map(x=>Object.assign({id:x.id},x.data()));await nameOf(EVENTS.map(e=>e.by));drawTimeline(cid);},()=>{});
+}
+async function addEvent(cid,ev){
+  const ref=DB.collection(`clients/${cid}/events`).doc();
+  await ref.set(Object.assign({at:Date.now(),by:UID||''},ev));
+  await DB.doc('clients/'+cid).update({updatedAt:Date.now()});
+  return ref.id;
+}
+function drawTimeline(cid){
+  const el=$('tl');if(!el)return;
+  if(!EVENTS.length){el.innerHTML='<p class="muted small">עוד אין רשומות בתיק.</p>';return;}
+  el.innerHTML=EVENTS.map(ev=>{
+    const who=`<span class="muted small">${fmtD(ev.at)} · ${esc(NAMES[ev.by]||'יועץ/ת')}</span>`;
+    const delB=`<button class="btn ghost evdel" data-id="${esc(ev.id)}" style="padding:4px 10px;font-size:13px">מחיקה</button>`;
+    if(ev.type==='intake')return `<div class="sig"><b>שאלון הכניסה 02</b> ${who}<br>תאריך מילוי: ${esc(ev.date)||'—'} · קבוצה ${GL[ev.group]||'—'}${ev.hypo?' · '+esc(ev.hypo):''}${ev.open&&ev.open.length?`<br><span class="small">שאלוני פתיחה: ${ev.open.map(esc).join(', ')}</span>`:''}
+      <div class="nav" style="margin-top:8px"><span>${delB}</span><button class="btn evopen" data-id="${esc(ev.id)}" style="padding:6px 14px;font-size:14px">פתיחת מפת השיחה</button></div></div>`;
+    if(ev.type==='code')return `<div class="sig"><b>${esc(ev.tool)}</b> ${who}<div class="codebox" style="margin-top:6px;max-height:70px">${esc(ev.code)}</div><div class="nav" style="margin-top:8px"><span>${delB}</span><button class="btn ghost evcopy" data-id="${esc(ev.id)}" style="padding:6px 14px;font-size:14px">העתקת הקוד</button></div></div>`;
+    return `<div class="sig t"><b>הערה</b> ${who}<p style="margin:6px 0;white-space:pre-wrap">${esc(ev.text)}</p><div class="nav" style="margin-top:4px"><span>${delB}</span><span></span></div></div>`;
+  }).join('')+'<div class="limit" id="tlmsg"></div>';
+  el.querySelectorAll('.evopen').forEach(b=>b.onclick=()=>{const ev=EVENTS.find(x=>x.id===b.dataset.id);try{const d=decode(ev.code);S={name:d.name,date:d.date,age:d.age||'',years:d.years||'',a:d.a,t:d.t,ov:ev.ov!==''&&ev.ov!=null?ev.ov:d.ov,og:ev.og||d.og,page:1,done:true,cid,eid:ev.id};save();renderAnalysis(pack());scrollTo(0,0);}catch(e){}});
+  el.querySelectorAll('.evcopy').forEach(b=>b.onclick=()=>{const ev=EVENTS.find(x=>x.id===b.dataset.id);copy(ev.code,'tlmsg');});
+  el.querySelectorAll('.evdel').forEach(b=>b.onclick=async()=>{if(b.dataset.arm!=='1'){b.dataset.arm='1';b.textContent='לחיצה נוספת תמחק';return;}try{await DB.doc(`clients/${cid}/events/${b.dataset.id}`).delete();}catch(e){$('tlmsg').textContent=dbMsg(e);}});
+}
+function drawSaveBar(){
+  const el=$('saveBar');if(!el)return;
+  if(!DB){el.innerHTML='';return;}
+  const c=S.cid&&CLIENTS.find(x=>x.id===S.cid);
+  if(c){el.innerHTML=`<div class="tintbox noprint"><b style="color:var(--olive)">תיק: ${esc(c.name)}</b><div class="nav" style="margin-top:8px"><button class="btn ghost" id="toClient">חזרה לתיק</button><button class="btn" id="svc">${S.eid?'עדכון בתיק':'שמירה בתיק'}</button></div><div class="limit" id="svmsg"></div></div>`;
+    $('toClient').onclick=()=>{S={name:'',date:'',a:{},t:{},page:-1,done:false,cid:S.cid};save();render();scrollTo(0,0);};
+    $('svc').onclick=()=>doSave(S.cid);$('svmsg').textContent=SVM;return;}
+  el.innerHTML=`<div class="tintbox noprint"><b style="color:var(--olive)">שמירה בתיק נועצים</b><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px">
+   <select id="saveSel" class="sel" style="flex:1;min-width:200px"><option value="__new">תיק חדש${S.name?' בשם '+esc(S.name):''}</option>${CLIENTS.map(x=>`<option value="${esc(x.id)}">${esc(x.name)}${x.email?' · '+esc(x.email):''}</option>`).join('')}</select>
+   <button class="btn" id="svc">שמירה</button></div><div class="limit" id="svmsg"></div></div>`;
+  $('svc').onclick=async()=>{const v=$('saveSel').value;try{const cid=v==='__new'?await createClient(S.name||'ללא שם',{age:S.age||'',years:S.years||''}):v;S.cid=cid;await doSave(cid);}catch(e){$('svmsg').textContent=dbMsg(e);}};
+}
+async function doSave(cid){
+  const msg=$('svmsg');
+  try{
+    const d=pack(),A=analyze(d),ovOn=d.ov!=null&&d.ov!=='';
+    const ev={type:'intake',tool:'intake02',at:Date.now(),by:UID||'',date:d.date||'',code:encode(d),group:A.g,hypo:A.P?A.P.name:'',level:A.g==='B'&&!ovOn&&A.H.top?A.H.level:'',open:Object.keys(A.R.open).map(k=>TOOLS[k]),ov:ovOn?String(d.ov):'',og:d.og||''};
+    if(S.eid){await DB.doc(`clients/${cid}/events/${S.eid}`).set(ev);}
+    else{const ref=DB.collection(`clients/${cid}/events`).doc();await ref.set(ev);S.eid=ref.id;}
+    const cs=await DB.doc('clients/'+cid).get(),cd=cs.exists?cs.data():{};
+    const patch={updatedAt:Date.now(),lastIntake:{date:ev.date,group:ev.group,hypo:ev.hypo}};
+    if(!cd.age&&S.age)patch.age=String(S.age);if(!cd.years&&S.years)patch.years=String(S.years);
+    await DB.doc('clients/'+cid).update(patch);
+    SVM='נשמר בתיק.';save();drawSaveBar();
+  }catch(e){if(msg)msg.textContent=dbMsg(e);}
+}
+async function exportAll(){
+  const m=$('regmsg');m.textContent='אוסף את כל התיקים…';
+  try{const out=[];for(const c of CLIENTS){const ev=await DB.collection(`clients/${c.id}/events`).orderBy('at','asc').limit(1000).get();out.push(Object.assign({},c,{events:ev.docs.map(x=>Object.assign({id:x.id},x.data()))}));}
+    await DL.save({filename:'תיקי_נועצים_'+today().replace(/\./g,'-')+'.json',data:JSON.stringify({exported:Date.now(),clients:out},null,1)});m.textContent='';}
+  catch(e){m.textContent=(e&&e.code)==='cancelled'||(e&&e.code)==='declined'?'':'הייצוא לא הצליח.';}
+}
+function renderYoetzHome(){
+  $('app').innerHTML=brand('מסך יועץ/ת – ניתוח הפרופיל')+(DB?registryHTML()+'<h3>ניתוח מהיר, בלי תיק</h3>':'')+entryCards();
+  if(DB)bindRegistry();
+  bindEntryCards(null);
+}
+/* ---------- sending to the site ---------- */
+let SENT_AT='';
+function cflState(){return {date:S.date||'',g:S.g||'',age:S.age||'',years:S.years||'',role:S.role||'',path:S.path||'',a:S.a,t:S.t,fbk:S.fbk||null};}
+function cflAfterEnd(){
+  const send=$('cflSend'), card=send&&send.closest('.card');
+  if(LOCKED){
+    if(card)card.style.display='none';
+    const e=$('edit');if(e)e.style.display='none';
+    $('app').querySelectorAll('.claybox').forEach(x=>x.remove()); /* "you can go back and complete" no longer applies */
+    const app=$('app');if(!app.querySelector('.cfl-sent'))app.insertBefore(CFL.sentNote(SENT_AT),app.children[1]||null);
+    return;
+  }
+  send.onclick=async()=>{
+    if(!confirm('לאחר השליחה לא ניתן יהיה לשנות את התשובות. לשלוח?'))return;
+    send.disabled=true;send.textContent='שולח…';$('cflMsg').textContent='';
+    const r=await CFL.submit('intake',cflState(),cwlReadable(pack()),{path:pathOf()});
+    send.disabled=false;send.textContent='שליחה';
+    if(!r.ok){$('cflMsg').textContent=r.message||'השליחה לא הצליחה. נסו שוב.';return;}
+    LOCKED=true;renderEnd();scrollTo(0,0);
+  };
+}
+CFL.start('intake').then(function(info){
+  if(info.status==='submitted'&&info.saved){
+    S=Object.assign({name:'',date:'',a:{},t:{},page:0,done:true},info.saved,{name:CFL.name,done:true});
+    LOCKED=true;SENT_AT=info.submittedAt||'';
+    render();
+    return;
+  }
+  KEY=CFL.draftKey('intake');
+  load();
+  S.name=CFL.name;
+  render();
+});
+</script>
+<form hidden="" method="POST" name="cwl-answers"><input type="hidden" name="form-name" value="cwl-answers"><input type="hidden" name="subject"><input type="text" name="questionnaire"><input type="text" name="name"><textarea name="note"></textarea><textarea name="answers"></textarea><textarea name="code"></textarea><input type="text" name="bot-field"></form>
+
+<script>
+/* שאלון הכניסה: תשובות בטקסט קריא (לשליחה ליועצת) */
+function cwlReadable(d){const a=d.a||{},t=d.t||{},L=[];
+ if(d.age||d.years)L.push(`גיל: ${d.age||'-'} · שנות ניסיון: ${d.years||'-'}`);
+ if((d.role||'').trim())L.push('מה אני עושה היום: '+d.role.trim());
+ if((d.path||'').trim())L.push('הפרק הכי משמעותי במסע המקצועי: '+d.path.trim().replace(/\n+/g,' '));
+ let lastN='';(typeof secs==='function'?secs():Q.sections).forEach(s=>{const rows=[];s.qs.forEach(q=>{if(q.showIf&&typeof condOK==='function'&&!condOK(q))return;let v='';const x=a[q.id];const num=q.key||(q.n?(lastN=String(q.n)):lastN+'ב');if(q.n&&!q.key)lastN=String(q.n);
+  if(q.type==='grid'){const cols=(modeOf()==='A'&&q.colsA)||q.cols;const gl=gridRows(q).filter(([k])=>x&&x[k]!=null).map(([k,lab])=>`   • ${lab||'-'}: ${cols[x[k]]}`);if(gl.length)rows.push(`${num}. ${qtx(q)}\n`+gl.join('\n'));return;}
+  const opt=i=>{const o=optsOf(q)[i]||'';return o+(q.other===i&&t[q.id+'_o']?(o.trim().endsWith(':')?' ':': ')+t[q.id+'_o']:'')};
+  if(q.type==='single'&&x!=null)v=opt(x);
+  else if(q.type==='multi'&&Array.isArray(x)&&x.length)v=x.map(opt).join(' | ');
+  else if(q.type==='scale'&&x)v=`${x} מתוך 5 (1 = ${q.lo}, 5 = ${q.hi})`;
+  else if(q.type==='open'&&(t[q.id]||'').trim())v=t[q.id].trim().replace(/\n+/g,' ');
+  const fol=(q.follow&&q.follow.fields||[]).filter(f=>(t[f.id]||'').trim()).map(f=>`   • ${f.label} ${t[f.id].trim()}`);
+  if(v||fol.length)rows.push(`${num}. ${qtx(q).split(/\s+/).slice(0,5).join(' ')}${qtx(q).split(/\s+/).length>5?'…':''}\n   ← ${v||'-'}${fol.length?'\n'+fol.join('\n'):''}`)});
+  if(rows.length)L.push('\n'+s.title+'\n'+rows.join('\n'))});
+ if(AUTO_REFL){const x=autoReflText(d);if(x)L.push(x);}
+ const F={yes:'אני מסכים/ה עם התיאור',partly:'התיאור נכון בחלקו, אבל אינו חד דיו',no:'אני לא מסכים/ה עם התיאור'};
+ if(d.fbk&&(d.fbk.agree||(d.fbk.note||'').trim())){L.push('\nהתגובה שלי לתמונת הפתיחה');if(d.fbk.agree)L.push('איך התיאור מרגיש לי: '+F[d.fbk.agree]);if((d.fbk.note||'').trim())L.push('מה רציתי להוסיף: '+d.fbk.note.trim().replace(/\n+/g,' '));}
+ return L.join('\n');}
+</script>
+
+<style id="cwl-font">body,body *{font-family:"Heebo",Arial,"Arial Hebrew",sans-serif!important}</style>
+
+
+</body></html>
