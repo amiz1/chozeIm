@@ -284,7 +284,7 @@ function drawHome(r, notice, keepScroll) {
     } else if (q.status === 'submitted') {
       badge = el('span', { class: 'badge submitted' }, 'נשלח');
       action = el('button', { type: 'button', class: 'btn secondary small',
-        onclick: () => isTool ? openPage(q.page) : showAnswers(q.id) }, isTool ? 'צפייה בתוצאות' : 'צפייה בתשובות');
+        onclick: () => isTool ? openPage(q.page) : showAnswers(q.id) }, 'צפייה בתשובות');
     } else if (q.status === 'open') {
       badge = el('span', { class: 'badge open' }, 'פתוח למילוי');
       const hasDraft = !!load(draftKey(q.id));
