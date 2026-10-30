@@ -92,6 +92,7 @@ function clearCaches() {
   clearToolCaches();
 }
 async function prefetchTools(r) {
+  if (r.privacyNeeded) return; // nothing opens before the approval
   const ids = r.questionnaires.filter(q => q.type === 'tool').map(q => q.id);
   if (!ids.length) return;
   const x = await api('tools', { ids: ids });
