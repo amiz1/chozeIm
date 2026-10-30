@@ -202,3 +202,8 @@ footer b { color: var(--olive); }
 .fb-open { color: var(--olive, #5E6A41); font-weight: 500; white-space: nowrap; }
 .fb-body h3 { color: var(--olive, #5E6A41); font-size: 18px; margin: 18px 0 6px; }
 .fb-body p { margin: 0 0 12px; line-height: 1.75; }
+
+/* sign-in with Google */
+.gbtn { display: flex; justify-content: center; min-height: 44px; margin: 18px 0 8px; }
+.auth-card .hint { color: var(--mute); margin: 14px 0 0; text-align: center; }
+.auth-card .hint a { color: var(--olive); }

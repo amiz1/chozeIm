@@ -127,47 +127,56 @@ async function withBusy(btn, fn) {
   try { return await fn(); } finally { btn.disabled = false; btn.textContent = label; }
 }
 
-// ===================== Login / signup / forgot code =====================
+// ===================== Login: with Google only =====================
+// Only an email a יועץ opened a תיק for can sign in (there is no self sign-up).
+let gsiReady = false;
+function onGsiLoad() { gsiReady = true; const box = document.getElementById('gbtn'); if (box && !box.querySelector('iframe, div[role=button]')) drawGoogleButton(box); }
+window.onGsiLoad = onGsiLoad;
+
 function showLogin(opts) {
   opts = opts || {};
   currentUser = null;
   logoutBtn.hidden = true;
   homeBtn.hidden = true;
-  const msg = el('div');
+  const msg = el('div', { id: 'loginMsg' });
   if (opts.message) msg.append(msgBox(opts.message));
-  if (opts.info) msg.append(msgBox(opts.info, 'info'));
-
-  const email = el('input', { type: 'email', autocomplete: 'email', required: true, dir: 'ltr', value: opts.email || '' });
-  const code = el('input', { type: 'text', inputmode: 'numeric', autocomplete: 'one-time-code', maxlength: '6', required: true, dir: 'ltr' });
-  const btn = el('button', { type: 'submit', class: 'btn primary full' }, 'כניסה');
-
-  const form = el('form', {
-    class: 'card auth-card',
-    onsubmit: async (e) => {
-      e.preventDefault();
-      msg.replaceChildren();
-      await withBusy(btn, async () => {
-        const r = await api('login', { email: email.value, code: code.value });
-        if (!r.ok) { if (!r.handled) msg.append(msgBox(r.message)); return; }
-        store(TOKEN_KEY, r.token);
-        showHome();
-      });
-    }
-  },
+  const box = el('div', { id: 'gbtn', class: 'gbtn' });
+  render(el('div', { class: 'card auth-card' },
     el('h1', {}, 'כניסה'),
-    el('p', { class: 'sub' }, 'הזינו את האימייל ואת הקוד שקיבלתם במייל.'),
-    msg,
-    field('אימייל', email),
-    field('קוד כניסה (6 ספרות)', code),
-    btn,
-    el('div', { class: 'links' },
-      linkBtn('הרשמה ראשונה', () => showSignup()),
-      linkBtn('שכחתי את הקוד', () => showForgot(email.value)))
-  );
-  render(form);
+    el('p', { class: 'sub' }, 'הכניסה לאתר היא עם חשבון Google, עם אותה כתובת מייל שמסרת ליועץ/ת.'),
+    msg, box,
+    el('p', { class: 'hint small' }, 'אין לך עדיין חשבון באתר? החשבון נפתח על ידי היועץ/ת שלך. לשאלות: ',
+      el('a', { href: 'mailto:chozeimhachyim@gmail.com', dir: 'ltr' }, 'chozeimhachyim@gmail.com'))));
+  drawGoogleButton(box);
 }
 
-// Two radio buttons: בלשון נקבה / בלשון זכר
+function drawGoogleButton(box) {
+  if (!gsiReady || !window.google || !google.accounts || !google.accounts.id) {
+    box.replaceChildren(el('p', { class: 'muted' }, 'טוען את הכניסה של Google…'));
+    return; // onGsiLoad draws it once Google's script has loaded
+  }
+  box.replaceChildren();
+  google.accounts.id.initialize({ client_id: CFL_GOOGLE_CLIENT_ID, callback: onCredential, ux_mode: 'popup', auto_select: false, cancel_on_tap_outside: true });
+  google.accounts.id.renderButton(box, { theme: 'outline', size: 'large', text: 'signin_with', shape: 'rectangular', locale: 'he', width: 280 });
+}
+
+async function onCredential(resp) {
+  const box = document.getElementById('gbtn');
+  const msg = document.getElementById('loginMsg');
+  if (msg) msg.replaceChildren();
+  if (box) box.replaceChildren(el('p', { class: 'muted' }, 'בודקים את הכניסה…'));
+  const r = await api('googleLogin', { idToken: resp && resp.credential });
+  if (!r.ok) {
+    if (!r.handled) { if (msg) msg.append(msgBox(r.message)); if (box) drawGoogleButton(box); }
+    try { google.accounts.id.disableAutoSelect(); } catch (e) { }
+    return;
+  }
+  store(TOKEN_KEY, r.token);
+  store(EMAIL_KEY, r.email);
+  showHome();
+}
+
+// Two radio buttons: בלשון נקבה / בלשון זכר (asked once, if the יועץ did not set it)
 function genderPicker() {
   const opt = (value, label) => el('label', { class: 'option' },
     el('input', { type: 'radio', name: 'gender', value: value }), el('span', {}, label));
@@ -175,68 +184,12 @@ function genderPicker() {
   return { box, value: () => { const c = box.querySelector('input:checked'); return c ? c.value : ''; } };
 }
 
-function showSignup() {
-  const msg = el('div');
-  const name = el('input', { type: 'text', autocomplete: 'name', required: true, maxlength: '60' });
-  const email = el('input', { type: 'email', autocomplete: 'email', required: true, dir: 'ltr' });
-  const gender = genderPicker();
-  const btn = el('button', { type: 'submit', class: 'btn primary full' }, 'שלחו לי קוד כניסה');
-
-  render(el('form', {
-    class: 'card auth-card',
-    onsubmit: async (e) => {
-      e.preventDefault();
-      msg.replaceChildren();
-      if (!gender.value()) { msg.append(msgBox('יש לבחור איך נוח לך שנפנה אלייך')); return; }
-      await withBusy(btn, async () => {
-        const r = await api('signup', { name: name.value, email: email.value, gender: gender.value() });
-        if (!r.ok) { if (!r.handled) msg.append(msgBox(r.message)); return; }
-        showLogin({ email: email.value.trim(), info: 'קוד הכניסה נשלח למייל שלך. בדקו גם בתיבת הספאם.' });
-      });
-    }
-  },
-    el('h1', {}, 'הרשמה'),
-    el('p', { class: 'sub' }, 'נשלח אליך קוד כניסה במייל.'),
-    msg,
-    field('שם מלא', name),
-    field('אימייל', email),
-    el('div', { class: 'field' }, el('span', {}, 'איך נוח לך שנפנה אלייך?'), gender.box),
-    btn,
-    el('div', { class: 'links' }, linkBtn('כבר יש לי קוד', () => showLogin()))
-  ));
-}
-
-function showForgot(prefill) {
-  const msg = el('div');
-  const email = el('input', { type: 'email', autocomplete: 'email', required: true, dir: 'ltr', value: prefill || '' });
-  const btn = el('button', { type: 'submit', class: 'btn primary full' }, 'שלחו לי קוד חדש');
-
-  render(el('form', {
-    class: 'card auth-card',
-    onsubmit: async (e) => {
-      e.preventDefault();
-      msg.replaceChildren();
-      await withBusy(btn, async () => {
-        const r = await api('resendCode', { email: email.value });
-        if (!r.ok) { if (!r.handled) msg.append(msgBox(r.message)); return; }
-        showLogin({ email: email.value.trim(), info: r.message });
-      });
-    }
-  },
-    el('h1', {}, 'קוד חדש'),
-    el('p', { class: 'sub' }, 'נשלח קוד חדש לכתובת הרשומה. הקוד הקודם יפסיק לעבוד.'),
-    msg,
-    field('אימייל', email),
-    btn,
-    el('div', { class: 'links' }, linkBtn('חזרה לכניסה', () => showLogin()))
-  ));
-}
-
 async function logout() {
   clearCaches();
   await api('logout');
   store(TOKEN_KEY, null);
   store(EMAIL_KEY, null);
+  try { google.accounts.id.disableAutoSelect(); } catch (e) { }
   showLogin();
 }
 logoutBtn.addEventListener('click', logout);
@@ -620,6 +573,6 @@ if (CFL_API_URL.indexOf('PASTE_') === 0) {
   showHome();
 } else {
   showLogin();
-  // wake the server up while the person types, so the first answer comes faster
+  // wake the server up while the person signs in, so the first answer comes faster
   try { fetch(CFL_API_URL, { mode: 'no-cors' }).catch(() => { }); } catch (e) { }
 }
