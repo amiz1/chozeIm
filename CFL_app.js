@@ -256,6 +256,7 @@ function drawHome(r, notice, keepScroll) {
   render(
     notice ? msgBox(notice, 'success') : null,
     el('h1', {}, 'שלום, ' + r.name),
+    tasksSection(r.tasks),
     cvCard(r.cv),
     feedbackCard(r.feedback),
     el('h2', { class: 'section-title' }, 'השאלונים שלך'),
@@ -357,6 +358,56 @@ function cvCard(cv) {
       el('div', { class: 'q-text' }, el('h3', {}, 'קורות חיים'), status),
       el('div', { class: 'actions' }, btn)),
     msg, input);
+}
+
+// ===================== Tasks from the יועץ =====================
+// What to do until the next meeting; a task with "תיבת מענה" takes a Word file (a new upload replaces it).
+const TASK_EXT = ['docx', 'doc'];
+function tasksSection(t) {
+  if (!t || (!t.open.length && !t.past.length)) return null;
+  const row = k => {
+    const msg = el('div');
+    const status = el('p', { class: 'task-status small' });
+    const paint = a => status.replaceChildren(a ? el('span', {}, 'הקובץ שהועלה: ', el('bdi', {}, el('b', {}, a.name)), ' · ' + fmtDay(a.at))
+      : 'קובץ Word, עד 5MB. נשמר באופן פרטי, ורק היועצים יכולים לצפות בו.');
+    let btn = null;
+    if (k.box) {
+      const input = el('input', { type: 'file', class: 'cv-input', 'aria-label': 'בחירת קובץ Word לתשובה',
+        accept: '.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+      btn = el('button', { type: 'button', class: 'btn ' + (k.answer ? 'secondary' : 'primary') + ' small task-upload', onclick: () => input.click() },
+        k.answer ? 'החלפת הקובץ' : 'העלאת תשובה');
+      input.addEventListener('change', async () => {
+        const f = input.files && input.files[0];
+        input.value = '';
+        if (!f) return;
+        msg.replaceChildren();
+        const ext = (f.name.split('.').pop() || '').toLowerCase();
+        if (TASK_EXT.indexOf(ext) === -1) { msg.append(msgBox('אפשר להעלות קובץ Word בלבד (docx או doc).')); return; }
+        if (f.size > CV_MAX) { msg.append(msgBox('הקובץ גדול מ-5MB.')); return; }
+        let r;
+        await withBusy(btn, async () => {
+          btn.textContent = 'מעלה…';
+          let data;
+          try { data = await readBase64(f); } catch (e) { r = { ok: false, message: 'לא הצלחנו לקרוא את הקובץ.' }; return; }
+          r = await api('taskUpload', { id: k.id, name: f.name, data: data });
+        });
+        if (!r || !r.ok) { if (r && !r.handled) msg.append(msgBox(r.message)); btn.textContent = k.answer ? 'החלפת הקובץ' : 'העלאת תשובה'; return; }
+        const nk = r.tasks.open.concat(r.tasks.past).filter(x => x.id === k.id)[0];
+        k.answer = nk && nk.answer; paint(k.answer);
+        btn.textContent = 'החלפת הקובץ'; btn.className = 'btn secondary small task-upload';
+        msg.append(msgBox('הקובץ נשמר. תודה!', 'success'));
+      });
+      paint(k.answer);
+      return el('div', { class: 'task' + (k.answer ? ' answered' : '') }, el('div', { class: 'cv-row' },
+        el('div', { class: 'q-text' }, el('p', { class: 'task-text' }, k.text), status), el('div', { class: 'actions' }, btn)), msg, input);
+    }
+    return el('div', { class: 'task' }, el('p', { class: 'task-text' }, k.text));
+  };
+  return el('div', { class: 'card tasks-card' },
+    el('h3', {}, 'המשימות שלך עד הפגישה הבאה'),
+    t.open.length ? el('div', { class: 'tasks' }, t.open.map(row)) : el('p', { class: 'muted small' }, 'אין כרגע משימות פתוחות.'),
+    t.past.length ? el('details', { class: 'tasks-past' }, el('summary', {}, 'משימות קודמות (' + t.past.length + ')'),
+      el('div', { class: 'tasks' }, t.past.map(row))) : null);
 }
 
 // A questionnaire with its own page (like עוגני קריירה)

@@ -207,3 +207,14 @@ footer b { color: var(--olive); }
 .gbtn { display: flex; justify-content: center; min-height: 44px; margin: 18px 0 8px; }
 .auth-card .hint { color: var(--mute); margin: 14px 0 0; text-align: center; }
 .auth-card .hint a { color: var(--olive); }
+
+/* tasks from the יועץ */
+.tasks-card h3 { margin: 0 0 8px; }
+.tasks { display: flex; flex-direction: column; gap: 10px; }
+.task { border-top: 1px solid var(--rule); padding-top: 10px; }
+.task:first-child { border-top: 0; padding-top: 0; }
+.task-text { margin: 0 0 4px; font-weight: 500; }
+.task-status { margin: 0; color: var(--mute); }
+.task.answered .task-status { color: var(--olive); }
+.tasks-past { margin-top: 12px; }
+.tasks-past summary { cursor: pointer; color: var(--olive); }
