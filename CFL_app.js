@@ -66,6 +66,7 @@ function el(tag, props, ...children) {
 function render(...nodes) {
   app.replaceChildren(...nodes.filter(n => n !== null && n !== undefined));
   app.dataset.view = ''; // which screen is showing (set by the home page, so a late refresh doesn't draw over another screen)
+  homeBtn.hidden = logoutBtn.hidden; // signed in: a way back home from any screen (the home page hides it again)
   window.scrollTo(0, 0);
 }
 
@@ -251,7 +252,7 @@ async function showHome(notice) {
   clearToolCaches(); // pages loaded ahead earlier may be out of date; they are loaded again below
   const cached = cacheGet(HOME_CACHE);
   if (cached) drawHome(cached, notice);
-  else { loadingView(); app.dataset.view = 'home'; }
+  else { loadingView(); app.dataset.view = 'home'; homeBtn.hidden = true; }
   const r = await api('home');
   if (seq !== homeSeq || app.dataset.view !== 'home') return; // another screen was opened meanwhile
   if (!r.ok) { if (!r.handled && !cached) errorView(r.message, () => showHome()); return; }
@@ -267,10 +268,11 @@ function drawHome(r, notice, keepScroll) {
   currentUser = { name: r.name, email: r.email };
   store(EMAIL_KEY, r.email); // questionnaire pages use it to keep each user's draft separate
   logoutBtn.hidden = false;
-  homeBtn.hidden = false;
 
+  // The privacy policy is approved once (and again if it changes) before anything else
+  if (r.privacyNeeded) { showPrivacyApproval(r); app.dataset.view = 'home'; homeBtn.hidden = true; return; }
   // Signed up before 'לשון פניה' existed: ask once, then every questionnaire uses it
-  if (!r.gender) { showGenderQuestion(r.name); app.dataset.view = 'home'; return; }
+  if (!r.gender) { showGenderQuestion(r.name); app.dataset.view = 'home'; homeBtn.hidden = true; return; }
 
   const cards = r.questionnaires.map(q => {
     let badge, action = null;
@@ -301,13 +303,51 @@ function drawHome(r, notice, keepScroll) {
     notice ? msgBox(notice, 'success') : null,
     el('h1', {}, 'שלום, ' + r.name),
     cvCard(r.cv),
+    feedbackCard(r.feedback),
     el('h2', { class: 'section-title' }, 'השאלונים שלך'),
     cards.length ? el('div', { class: 'q-list' }, cards)
       : el('p', { class: 'muted' }, 'עדיין אין שאלונים פתוחים. שאלונים חדשים ייפתחו לאורך התהליך.'),
     cards.length ? el('p', { class: 'muted small' }, 'שאלונים נוספים ייפתחו לאורך התהליך.') : null
   );
   app.dataset.view = 'home';
+  homeBtn.hidden = true; // already home
   if (keepScroll) window.scrollTo(0, y);
+}
+
+// ===================== Feedback from the יועצים =====================
+// Each feedback a יועץ sent by mail is kept here too, to reread any time.
+const fmtDay = at => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(at || '')); return m ? (+m[3]) + '.' + (+m[2]) + '.' + m[1] : String(at || ''); };
+function feedbackCard(list) {
+  if (!list || !list.length) return null;
+  return el('div', { class: 'card fb-card' },
+    el('h2', { class: 'fb-title' }, list.length > 1 ? 'משובים מהיועצים' : 'משוב מהיועצים'),
+    el('div', { class: 'fb-list' }, list.map((f, i) => el('button', { type: 'button', class: 'fb-item', onclick: () => showFeedback(f.id) },
+      el('span', {}, (i === 0 ? 'המשוב האחרון' : 'משוב') + ' · ' + fmtDay(f.at)), el('span', { class: 'fb-open' }, 'לקריאה ←')))));
+}
+// the text as written: "## " lines are headings, **x** is bold, blank lines split paragraphs (no HTML from the text)
+function feedbackBody(text) {
+  return el('div', { class: 'fb-body' }, String(text).replace(/\r/g, '').split(/\n{2,}/).map(b => {
+    const lines = b.split('\n');
+    const inline = s => s.split(/\*\*(.+?)\*\*/g).map((part, k) => k % 2 ? el('b', {}, part) : part);
+    if (/^#{1,3} /.test(lines[0])) return el('div', {}, el('h3', {}, lines[0].replace(/^#{1,3} /, '')), lines.length > 1 ? el('p', {}, ...lines.slice(1).flatMap((l, k) => k ? [el('br'), ...inline(l)] : inline(l))) : null);
+    return el('p', {}, ...lines.flatMap((l, k) => k ? [el('br'), ...inline(l)] : inline(l)));
+  }));
+}
+async function showFeedback(id) {
+  loadingView();
+  app.dataset.view = 'feedback';
+  homeBtn.hidden = false;
+  const r = await api('myFeedback');
+  if (!r.ok) { if (!r.handled) errorView(r.message, () => showHome()); return; }
+  const f = (r.feedback || []).filter(x => x.id === id)[0] || (r.feedback || [])[0];
+  if (!f) { errorView('המשוב לא נמצא.', () => showHome()); return; }
+  render(
+    el('div', { class: 'back' }, linkBtn('→ חזרה לעמוד הראשי', () => showHome())),
+    el('h1', {}, 'משוב'),
+    el('p', { class: 'sub' }, 'נשלח ב-' + fmtDay(f.at)),
+    el('div', { class: 'card' }, feedbackBody(f.text))
+  );
+  window.scrollTo(0, 0);
 }
 
 // ===================== CV (קורות חיים) =====================
@@ -368,6 +408,43 @@ function cvCard(cv) {
 // A questionnaire with its own page (like עוגני קריירה)
 function openPage(page) {
   location.href = page;
+}
+
+function showPrivacyApproval(r) {
+  const w = (f, m, x) => r.gender === 'f' ? f : r.gender === 'm' ? m : x;
+  const msg = el('div');
+  const box = el('input', { type: 'checkbox', id: 'pv_ok' });
+  const btn = el('button', { type: 'submit', class: 'btn primary', disabled: true }, 'אישור והמשך');
+  box.addEventListener('change', () => { btn.disabled = !box.checked; });
+  render(
+    el('h1', {}, 'שלום, ' + r.name),
+    el('form', {
+      class: 'card privacy-approval',
+      onsubmit: async (e) => {
+        e.preventDefault();
+        msg.replaceChildren();
+        if (!box.checked) { msg.append(msgBox('יש לסמן את תיבת האישור')); return; }
+        await withBusy(btn, async () => {
+          const res = await api('acceptPrivacy', { agree: true });
+          if (!res.ok) { if (!res.handled) msg.append(msgBox(res.message)); return; }
+          store(HOME_CACHE, null);
+          showHome();
+        });
+      }
+    },
+      el('h2', {}, 'לפני שמתחילים: פרטיות'),
+      el('p', {}, 'כדי ללוות ' + w('אותך', 'אותך', 'אותך') + ' בתהליך, נשמור את מה ש' + w('תכתבי', 'תכתוב', 'תכתבו') + ' באתר. בקצרה:'),
+      el('ul', { class: 'privacy-points' },
+        el('li', {}, 'התשובות לשאלונים, וקורות החיים אם ' + w('תעלי', 'תעלה', 'תעלו') + ' אותם, נשמרים ב-Google Sheets וב-Google Drive של מפעילי האתר.'),
+        el('li', {}, 'רק היועצים שבמערכת יכולים לראות אותם. המידע לא נמכר ולא מועבר לאף אחד אחר.'),
+        el('li', {}, 'היועצים עשויים להיעזר ב-Claude (בינה מלאכותית של Anthropic) כדי לחשוב על התהליך ולנסח משוב. ההחלטות נשארות אצלם.'),
+        el('li', {}, 'המייל משמש לקוד הכניסה, להודעות על שאלונים חדשים ולתזכורות, ולמשוב מהיועצים. בלי פרסום.'),
+        el('li', {}, 'אפשר לבקש בכל זמן לעיין במידע, לתקן או למחוק אותו: chozeimhachyim@gmail.com.')),
+      el('p', {}, el('a', { href: 'CFL_privacy.html', target: '_blank', rel: 'noopener' }, 'למדיניות הפרטיות המלאה')),
+      el('label', { class: 'check privacy-check', for: 'pv_ok' }, box,
+        ' ' + w('קראתי את מדיניות הפרטיות, ואני מסכימה', 'קראתי את מדיניות הפרטיות, ואני מסכים', 'קראתי את מדיניות הפרטיות, ואני מסכים/ה') + ' שהמידע שלי יישמר וישמש את היועצים בתהליך.'),
+      msg, el('div', { style: 'margin-top:16px' }, btn))
+  );
 }
 
 function showGenderQuestion(name) {

@@ -185,3 +185,20 @@ footer b { color: var(--olive); }
 .cv-status b { color: var(--ink); font-weight: 500; }
 .cv-card .msg { margin: 10px 0 0; font-size: 15px; padding: 8px 12px; }
 .cv-input { display: none; }
+
+/* privacy approval, before using the site */
+.privacy-approval ul.privacy-points { padding-inline-start: 22px; margin: 6px 0 14px; }
+.privacy-approval ul.privacy-points li { margin-bottom: 6px; line-height: 1.6; }
+.privacy-approval .privacy-check { display: flex; gap: 10px; align-items: flex-start; font-weight: 500; margin-top: 10px; cursor: pointer; }
+.privacy-approval .privacy-check input { width: 20px; height: 20px; margin-top: 3px; flex: none; }
+.privacy-approval a { color: var(--olive); font-weight: 500; }
+
+/* feedback from the יועצים */
+.fb-card .fb-title { font-size: 20px; margin: 0 0 10px; }
+.fb-list { display: flex; flex-direction: column; gap: 8px; }
+.fb-item { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; font: inherit; text-align: right;
+  background: var(--tint, #F4F5EF); border: 1px solid var(--rule, #DCD7CA); padding: 10px 14px; cursor: pointer; color: inherit; }
+.fb-item:hover { border-color: var(--olive, #5E6A41); }
+.fb-open { color: var(--olive, #5E6A41); font-weight: 500; white-space: nowrap; }
+.fb-body h3 { color: var(--olive, #5E6A41); font-size: 18px; margin: 18px 0 6px; }
+.fb-body p { margin: 0 0 12px; line-height: 1.75; }

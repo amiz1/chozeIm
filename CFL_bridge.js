@@ -69,13 +69,16 @@
   function addBar(name) {
     if (document.getElementById('cflBar')) return;
     const linkCss = 'color:#5E6A41;font-weight:500;text-decoration:none;background:none;border:0;padding:0;cursor:pointer;font-size:15px';
+    // a thin bar that stays at the top while scrolling: the way home is always one tap away
     const bar = document.createElement('div');
     bar.id = 'cflBar';
     bar.className = 'noprint';
-    bar.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:860px;margin:0 auto;padding:12px 20px;font-size:15px;color:#6E6A5F;direction:rtl';
+    bar.style.cssText = 'position:sticky;top:0;z-index:9000;background:rgba(250,249,245,.96);border-bottom:1px solid #DCD7CA;direction:rtl;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)';
+    const inner = document.createElement('div');
+    inner.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:860px;margin:0 auto;padding:6px 20px;font-size:14px;color:#6E6A5F;line-height:1.4';
     const home = document.createElement('a');
     home.href = 'index.html';
-    home.textContent = 'חזרה לעמוד הראשי';
+    home.textContent = '→ לעמוד הראשי';
     home.style.cssText = linkCss;
     const side = document.createElement('span');
     side.style.cssText = 'display:flex;gap:18px;align-items:center';
@@ -87,7 +90,8 @@
     out.style.cssText = linkCss;
     out.addEventListener('click', logout);
     side.append(who, out);
-    bar.append(home, side);
+    inner.append(home, side);
+    bar.append(inner);
     document.body.insertBefore(bar, document.body.firstChild);
   }
 
@@ -175,6 +179,7 @@
       if (!load(TOKEN_KEY)) { goHome(); return NEVER; }
       const r = takeLoaded(id) || await api('getTool', { id: id });
       if (r.auth === false) { store(TOKEN_KEY, null); goHome(); return NEVER; }
+      if (r.privacy) { goHome(); return NEVER; } // the privacy approval is on the home page
       if (!r.ok) { fatal(r.message); return NEVER; }
       CFL.name = r.name || '';
       CFL.gender = r.gender || '';
@@ -196,6 +201,7 @@
     async submit(id, state, summary, fields) {
       const r = await api('submitTool', { id: id, state: state, summary: summary, fields: fields || {} });
       if (r.auth === false) { store(TOKEN_KEY, null); goHome(); return NEVER; }
+      if (r.privacy) { goHome(); return NEVER; }
       if (r.ok) store(CFL.draftKey(id), null);
       return r;
     },
