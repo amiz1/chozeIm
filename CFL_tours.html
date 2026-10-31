@@ -277,11 +277,13 @@ footer{text-align:center;padding:32px 0 0;margin-top:44px;border-top:1px solid v
   <p class="note">מה שמושך אותנו אינו המקצוע אלא המרכיבים שבתוכו — והמרכיבים האלה קיימים במקומות רבים יותר משנדמה.</p>
 
   <div class="btnrow noprint">
-    <button class="btn" id="cflSend" type="button">שליחה</button>
+    <button class="btn" id="cflSend" type="button">שליחה וקבלת שיקוף אישי</button>
     <button class="btn ghost" id="cflAnswers" type="button" hidden>הסתכל בתשובות</button>
     <button class="btn ghost" id="back2">חזרה לתפקיד שלי</button>
     <span id="cflMsg" style="font-size:15px;color:var(--clay)"></span>
   </div>
+  <div id="cflResponse" class="cfl-response"></div>
+  <style>#s3 #read{display:none!important}</style>
 </section>
 
 <footer>INVAL &nbsp;|&nbsp; סיורים מקצועיים</footer>
@@ -854,51 +856,45 @@ function canon(d){
     myRole:String(d.myRole||'').trim(), q:[0,1,2,3].map(function(i){ return String((d.q||[])[i]||'').trim(); }) }));
 }
 
-/* the summary screen's buttons and note, depending on whether it was sent and whether it changed since */
+/* the summary screen's buttons and note. Sending is final (from 31.10) and brings Claude's personal response,
+   shown in place of the built-in reading; a יועץ can reopen the questionnaire for a new sending. */
+var RESP='wait', RESP_AT='';
 function refreshS3(){
+  CFL.responseCard($('cflResponse'), RESP, RESP_AT);
   if(LOCKED){
     document.querySelectorAll('#s3 .btnrow').forEach(function(e){ e.style.display='none'; });
     ['q1','q2','q3','q4'].forEach(function(k){ $(k).readOnly = true; });
     $('cmp').style.pointerEvents='none';
     return;
   }
-  /* the answers go by themselves as soon as this screen (the שיקוף) is shown, and again after a change made on it;
-     the button is only for a failed send */
-  var onScreen = !$('s3').classList.contains('hidden');
-  if(!SENT){ $('cflSend').hidden=true; $('cflAnswers').hidden=true; if(onScreen && typeof toursSchedule==='function') toursSchedule(toursTyping ? 2500 : 300); return; }
+  if(!SENT){ $('cflSend').hidden=false; $('cflAnswers').hidden=true; return; }
   var dirty = canon(stateNow())!==SENT.json;
-  $('cflSend').hidden=true; $('cflSend').textContent='לנסות לשלוח שוב'; $('cflAnswers').hidden=false;
+  $('cflSend').hidden=!dirty; $('cflSend').textContent='שליחה וקבלת שיקוף חדש'; $('cflAnswers').hidden=false;
   CFL.showSentNote($('s3'), SENT.at, SENT.upd, dirty);
-  if(dirty && onScreen && typeof toursSchedule==='function') toursSchedule(toursTyping ? 2500 : 300);
 }
-var toursTyping=false;
-$('s3').addEventListener('input', function(){ toursTyping=true; });
-function toursSendNow(){
-  return new Promise(function(done){
-    if(LOCKED || $('s3').classList.contains('hidden')){ done(); return; }
-    var st=stateNow();
-    if(SENT && canon(st)===SENT.json){ done(); return; }
-    var b=$('cflSend'); b.hidden=true; $('cflMsg').style.color='var(--mute)'; $('cflMsg').textContent='שולח את התשובות…';
-    var fields={ professions: chosen().map(function(x){ return x.n; }).join(', ') };
-    CFL.submit('tours', st, window.toursSummary(), fields).then(function(r){
-      toursTyping=false;
-      if(!r.ok){ b.hidden=false; b.textContent='לנסות לשלוח שוב'; $('cflMsg').style.color=''; $('cflMsg').textContent='התשובות עוד לא נשלחו: '+(r.message||'השליחה לא הצליחה.'); done(); return; }
-      SENT={ json: canon(st), at: r.submittedAt||'', upd: r.updatedAt||'' };
-      var rr=$('cwlRestored'); if(rr) rr.remove();
-      refreshS3();
-      $('cflMsg').style.color='var(--olive-dk)';
-      $('cflMsg').textContent = r.updated ? '✓ העדכון נשלח אליי.' : '✓ התשובות נשלחו אליי. תודה!';
-      done();
-    });
+function toursSend(){
+  if(LOCKED || $('s3').classList.contains('hidden')) return;
+  var st=stateNow();
+  if(SENT && canon(st)===SENT.json) return;
+  $('cflMsg').textContent='';
+  var fields={ professions: chosen().map(function(x){ return x.n; }).join(', ') };
+  CFL.finalSend(function(){ return CFL.submit('tours', st, window.toursSummary(), fields); }).then(function(r){
+    if(!r) return;
+    SENT={ json: canon(st), at: r.submittedAt||'', upd: r.updatedAt||'' };
+    LOCKED=true;
+    var rr=$('cwlRestored'); if(rr) rr.remove();
+    RESP = r.response || 'later'; RESP_AT = r.responseAt || '';
+    refreshS3();
+    CFL.showSentNote($('s3'), SENT.at, SENT.upd, false, true);
+    try{ $('cflResponse').scrollIntoView({behavior:'smooth',block:'start'}); }catch(e){}
   });
 }
-var toursSchedule = CFL.autoSend(toursSendNow);
 var s3T=null;
 ['input','click'].forEach(function(ev){ $('s3').addEventListener(ev, function(){ clearTimeout(s3T); s3T=setTimeout(refreshS3, 250); }); });
 
 $('cflAnswers').addEventListener('click', function(){ showStep('s1'); window.scrollTo({ top: 0 }); });
 
-$('cflSend').addEventListener('click', function(){ toursSendNow(); });
+$('cflSend').addEventListener('click', toursSend);
 
 /* "תשובות הנועץ" for the יועצים site: the chosen professions, the marks and the own role, read-only */
 function showAnswersView(){
@@ -913,6 +909,7 @@ CFL.start('tours').then(function(info){
     LOCKED = true;
     var d = info.saved || {};
     d.step = info.viewMode==='answers' ? 's2b' : 's3';
+    RESP = info.response || 'none'; RESP_AT = info.responseAt || '';
     restoreNow(d);
     if(info.viewMode==='answers') showAnswersView(); else refreshS3();
     return;
@@ -920,6 +917,7 @@ CFL.start('tours').then(function(info){
   if(info.readOnly && info.saved){
     /* sent, then closed by a יועץ: summary and answers, read-only */
     LOCKED = true;
+    RESP = info.response || 'later'; RESP_AT = info.responseAt || '';
     var d0 = info.saved; d0.step = 's2b';
     restoreNow(d0);            /* builds the answers sections */
     render();                  /* then shows the summary */

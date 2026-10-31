@@ -473,7 +473,7 @@ function restart(){
 <script src="CFL_config.js"></script>
 <script src="CFL_bridge.js"></script>
 <script>
-window.CFL_PAGE={id:'la',keys:['cwl-learning-agility'],fields:false,ignore:['stage'],
+window.CFL_PAGE={id:'la',reflectSel:'#reflect',keys:['cwl-learning-agility'],fields:false,ignore:['stage'],
 lockSel:'.tally button, [onclick*=restart], [onclick*=toggle]',
 results:function(){if(Object.keys(S.scores||{}).length>=50){showExtra();finishCalc();}else go(1);},
 answers:function(){go(1);}};

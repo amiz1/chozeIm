@@ -17,7 +17,9 @@
 //     blank: ['v'],                  // optional: parts that have a value before anything is answered (a default choice)
 //                                    //   (ignore/blank may name an inner part: 's.step')
 //     onReady: function (info) { … },// optional: runs once the page can be filled in (not in read-only views)
-//     sendWhen: 'scrolled',          // optional: a one-page form: send when its end (under the שיקוף) is reached
+//     reflectSel: '#mirror, #read',  // optional: the page's own reflection, hidden (Claude's personal response replaces it)
+//     responseAt: '#out > h2',       // optional: the response card goes before this (else right after the send button's box)
+//     responseAfter: '.bar',         // optional: where the card goes while there is no send button (a read-only view)
 //     lockCss: '.chip{…}'            // optional: CSS for read-only mode (answers that aren't buttons or fields)
 //   }
 // and keeps its own  window.CWL_CFG = { summary: () => '…' }  (the text for the יועץ).
@@ -142,7 +144,9 @@
     return JSON.stringify(sort({ ls: ls, f: st.f || {} }));
   }
 
-  // ---------- sending ----------
+  // ---------- sending (final) and the personal response ----------
+  // From 31.10 sending is final: the answers go once, and Claude writes a personal response (שיקוף) that is shown
+  // in place of the page's own reflection (PAGE.reflectSel is hidden). A יועץ can reopen the questionnaire for a new sending.
   let note = null;
   function showNote(unsent) {
     if (!SENT) return;
@@ -151,11 +155,11 @@
     const b = document.createElement('b');
     if (unsent) {
       b.textContent = 'יש שינויים שעוד לא נשלחו. ';
-      n.append(b, document.createTextNode('כדי שיישמרו, שלחו שוב בסוף השאלון ("שליחת התשובות").'));
+      n.append(b, document.createTextNode('כדי שיישמרו, שלחו בסוף השאלון. גם השליחה הזו סופית.'));
     } else {
       const when = SENT.upd && SENT.upd !== SENT.at ? ' (עודכנו ' + SENT.upd + ')' : (SENT.at ? ' (' + SENT.at + ')' : '');
       b.textContent = 'התשובות נשלחו' + when + '. ';
-      n.append(b, document.createTextNode('אפשר לשנות אותן כאן ולשלוח שוב בכל זמן.'));
+      n.append(b, document.createTextNode(LOCKED ? 'השאלון סגור לעריכה.' : 'השאלון נפתח שוב: אפשר לשנות ולשלוח שוב, ותקבלו שיקוף חדש. גם השליחה הזו סופית.'));
     }
     if (note) note.replaceWith(n);
     else { const bar = document.getElementById('cflBar'); if (bar) bar.after(n); else document.body.prepend(n); }
@@ -170,10 +174,33 @@
       el.setAttribute('role', 'dialog');
       el.setAttribute('aria-modal', 'true');
       document.body.appendChild(el);
+      el.addEventListener('click', e => { if (e.target === el && !el.dataset.busy) el.remove(); });
     }
     el.innerHTML = '<div class="bx' + (kind ? ' ' + kind : '') + '">' + html + '</div>';
-    el.addEventListener('click', e => { if (e.target === el) el.remove(); });
     return el;
+  }
+  // the response card: before PAGE.responseAt, else right after the send button's box
+  let CARD = null, TOP = false; // TOP: read-only views show it at the top, under the bar (pages of screens may not show the send screen)
+  function placeCard() {
+    if (!CARD || document.body.contains(CARD)) return;
+    if (TOP) {
+      CARD.classList.add('top');
+      const rb = document.getElementById('cflReadOnly');
+      if (rb) rb.after(CARD); else document.body.insertBefore(CARD, document.body.firstChild);
+      return;
+    }
+    const at = PAGE.responseAt && document.querySelector(PAGE.responseAt);
+    if (at) { at.before(CARD); return; }
+    const b = document.querySelector('.cwl-send');
+    if (b) { (b.parentElement || b).after(CARD); return; }
+    const after = PAGE.responseAfter && document.querySelector(PAGE.responseAfter);
+    if (after) after.after(CARD);
+  }
+  function showCard(state, at) {
+    CARD = CFL.responseCard(CARD, state, at);
+    CARD.id = 'cflResponse';
+    placeCard();
+    return CARD;
   }
   async function open() {
     if (LOCKED || !INFO) return;
@@ -181,101 +208,65 @@
     if (isEmpty(st)) { box('<h3>עוד אין תשובות לשלוח</h3><p>ענו על השאלות, ואז שלחו.</p><button type="button" class="b" data-x>סגירה</button>'); bindClose(); return; }
     const again = !!SENT;
     if (again && canon(st) === SENT.json) { box('<h3>אין שינויים</h3><p>התשובות כבר נשלחו כפי שהן.</p><button type="button" class="b" data-x>סגירה</button>'); bindClose(); return; }
-    box('<h3>' + (again ? 'שליחת העדכון' : 'שליחת התשובות') + '</h3><p>' +
-      (again ? 'התשובות המעודכנות יחליפו את מה שנשלח קודם.' : 'התשובות יישמרו ויגיעו ליועצים. אפשר יהיה לחזור אליהן ולעדכן אותן גם אחר כך.') +
-      '</p><button type="button" class="b pr" id="cflGo">' + (again ? 'שליחת העדכון' : 'שליחה') + '</button><button type="button" class="b" data-x>ביטול</button><p class="m" id="cflMsg" aria-live="polite"></p>');
+    box('<h3>שליחה סופית</h3><p>התשובות יגיעו רק אליי, ותקבלו מיד שיקוף אישי על מה שעלה בהן.</p>' +
+      '<p><b>אחרי השליחה לא יהיה אפשר לשנות את התשובות.</b> כדאי לעבור עליהן לפני שליחה.</p>' +
+      '<button type="button" class="b pr" id="cflGo">שליחה וקבלת השיקוף</button><button type="button" class="b" data-x>עוד רגע, אני רוצה לבדוק</button><p class="m" id="cflMsg" aria-live="polite"></p>');
     bindClose();
     document.getElementById('cflGo').onclick = async function () {
-      this.disabled = true; this.textContent = 'שולח…';
+      const wrap = document.getElementById('cflSendBox');
+      wrap.dataset.busy = '1';
+      this.disabled = true; this.textContent = 'שולח וכותב את השיקוף האישי…';
+      wrap.querySelectorAll('[data-x]').forEach(x => { x.disabled = true; });
+      document.getElementById('cflMsg').textContent = 'זה לוקח בערך חצי דקה. אפשר להישאר בעמוד.';
       let summary = '';
       try { summary = (window.CWL_CFG && window.CWL_CFG.summary) ? String(window.CWL_CFG.summary() || '') : ''; } catch (e) { summary = ''; }
       const r = await CFL.submit(ID, st, summary, {});
+      delete wrap.dataset.busy;
       if (!r.ok) {
-        this.disabled = false; this.textContent = again ? 'שליחת העדכון' : 'שליחה';
+        this.disabled = false; this.textContent = 'שליחה וקבלת השיקוף';
+        wrap.querySelectorAll('[data-x]').forEach(x => { x.disabled = false; });
         document.getElementById('cflMsg').textContent = r.message || 'השליחה לא הצליחה. נסו שוב.';
         return;
       }
+      wrap.remove();
       SENT = { json: canon(st), at: r.submittedAt || (SENT && SENT.at) || '', upd: r.updatedAt || '' };
+      lock();
       showNote(false);
-      box('<h3>' + (again ? 'העדכון נשמר. תודה!' : 'התשובות נשלחו. תודה!') + '</h3><p>אפשר לחזור לשאלון ולעדכן אותו בכל זמן.</p>' +
-        '<button type="button" class="b pr" id="cflHome">חזרה לעמוד הראשי</button><button type="button" class="b" data-x>להישאר בשאלון</button>', 'ok');
-      bindClose();
-      document.getElementById('cflHome').onclick = () => { location.href = 'index.html'; };
+      sendText();
+      const c = showCard(r.response ? r.response : 'later', r.responseAt || '');
+      if (!document.body.contains(c)) { TOP = true; placeCard(); } // sent from a screen without the send button
+      try { c.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) { }
     };
   }
-  // ---------- sending by itself: once the reflection (the screen with the send button) is on screen ----------
-  // The answers go to the יועץ as soon as the שיקוף is shown, and again (by themselves) after any change made there.
-  // The button stays only for when sending did not work.
-  function autoStatus(state, text) {
-    document.querySelectorAll('.cwl-send').forEach(b => {
-      let s = b.nextElementSibling;
-      if (!s || !s.classList || !s.classList.contains('cfl-auto')) { s = document.createElement('p'); b.after(s); }
-      s.className = 'cfl-auto ' + state; s.setAttribute('aria-live', 'polite'); s.textContent = text;
-      b.style.display = state === 'bad' ? '' : 'none';
-      if (state === 'bad') b.textContent = 'לנסות לשלוח שוב';
-    });
+  function sendText() {
+    const s = LOCKED ? 'התשובות נשלחו אליי, ונסתכל עליהן יחד בפגישה שלנו.'
+      : 'כשתסיימו, שלחו את התשובות וקבלו שיקוף אישי. התשובות יגיעו רק אליי, ונסתכל עליהן יחד בפגישה שלנו. השליחה סופית: אחריה אי אפשר לשנות את התשובות.';
+    document.querySelectorAll('.cfl-send-p').forEach(p => { if (p.textContent !== s) p.textContent = s; });
   }
-  async function autoSendNow() {
-    if (LOCKED || !INFO || INFO.view) return;
-    const st = collect();
-    if (isEmpty(st)) return;
-    if (SENT && canon(st) === SENT.json) { autoStatus('ok', '✓ התשובות נשלחו אליי. אם תשנו משהו, העדכון יישלח מעצמו.'); return; }
-    autoStatus('sending', 'שולח את התשובות אליי…');
-    let summary = '';
-    try { summary = (window.CWL_CFG && window.CWL_CFG.summary) ? String(window.CWL_CFG.summary() || '') : ''; } catch (e) { summary = ''; }
-    const r = await CFL.submit(ID, st, summary, {});
-    if (!r.ok) { autoStatus('bad', 'התשובות עוד לא נשלחו: ' + (r.message || 'השליחה לא הצליחה.')); return; }
-    SENT = { json: canon(st), at: r.submittedAt || (SENT && SENT.at) || '', upd: r.updatedAt || '' };
-    showNote(false);
-    autoStatus('ok', '✓ התשובות נשלחו אליי. אם תשנו משהו, העדכון יישלח מעצמו.');
-  }
-  let sendOnScreen = false;
-  function watchSend() {
-    const schedule = CFL.autoSend(autoSendNow);
-    // a page of steps: the send button is on the reflection screen, so the answers go as soon as that screen is shown.
-    // A page that is all one long form (sendWhen: 'scrolled'): they go when the reader reaches the end, under the שיקוף.
-    const scrolled = PAGE.sendWhen === 'scrolled' && 'IntersectionObserver' in window;
-    const shown = new Set();
-    const io = scrolled ? new IntersectionObserver(es => {
-      es.forEach(e => { if (e.isIntersecting) shown.add(e.target); else shown.delete(e.target); });
-      const was = sendOnScreen; sendOnScreen = shown.size > 0;
-      if (sendOnScreen && !was) schedule(500); // the end of the page just came on screen: send now
-    }) : null;
-    if (!scrolled) {
-      const check = () => {
-        const was = sendOnScreen;
-        sendOnScreen = [...document.querySelectorAll('.cwl-send')].some(b => (b.parentElement || b).getClientRects().length > 0);
-        if (sendOnScreen && !was) schedule(500); // the reflection screen was just shown: send now
-      };
-      setInterval(check, 700);
-      document.addEventListener('click', () => setTimeout(check, 50));
-      check();
-    }
+  // the text above the send button asked to press it: now it says the sending is final and brings a שיקוף
+  function wireSend() {
     const seen = new WeakSet();
-    const wire = () => document.querySelectorAll('.cwl-send').forEach(b => {
-      const box = b.parentElement || b;
-      if (seen.has(box)) return;
-      seen.add(box);
-      // the text above the button asked to press it: now the answers go by themselves
-      box.querySelectorAll('p').forEach(p => {
-        if (/נשאר רק לשלוח|כדי לשלוח לי/.test(p.textContent))
-          p.textContent = 'התשובות נשלחות אליי מעצמן, ברגע שהשיקוף מוכן. הן יגיעו רק אליי, ונסתכל עליהן יחד בפגישה שלנו.';
+    const wire = () => {
+      document.querySelectorAll('.cwl-send').forEach(b => {
+        const bx = b.parentElement || b;
+        if (seen.has(bx)) return;
+        seen.add(bx);
+        if (b.textContent !== 'שליחה וקבלת שיקוף אישי') b.textContent = 'שליחה וקבלת שיקוף אישי';
+        bx.querySelectorAll('p').forEach(p => {
+          if (/נשאר רק לשלוח|כדי לשלוח לי|נשלחות אליי מעצמן/.test(p.textContent)) p.classList.add('cfl-send-p');
+        });
       });
-      if (io) io.observe(box);
-    });
+      sendText();
+      placeCard();
+    };
     wire();
     new MutationObserver(wire).observe(document.body, { childList: true, subtree: true });
-    // a change made while the reflection is on screen is sent a moment after typing stops
-    ['input', 'change', 'click'].forEach(ev => document.addEventListener(ev, (e) => {
-      if (!sendOnScreen || (e.target && e.target.closest && e.target.closest('#cflSendBox, .cwl-send'))) return;
-      schedule(ev === 'input' ? 2500 : 900);
-    }));
   }
 
   function bindClose() { document.querySelectorAll('#cflSendBox [data-x]').forEach(b => b.onclick = () => document.getElementById('cflSendBox').remove()); }
   window.CWLReturn = {
     open: open,
-    button: label => '<button type="button" class="cwl-send" onclick="CWLReturn.open()">' + (label || 'שליחת התשובות') + '</button>'
+    button: label => '<button type="button" class="cwl-send" onclick="CWLReturn.open()">' + (label || 'שליחה וקבלת שיקוף אישי') + '</button>'
   };
 
   // ---------- read-only (sent, then closed by a יועץ; or the יועצים site) ----------
@@ -318,11 +309,13 @@
   .cfl-cwl-note{max-width:820px;margin:14px auto;background:#F4F5EF;border-right:4px solid #5E6A41;padding:12px 16px;font-size:16px;direction:rtl;font-family:"Heebo",Arial,sans-serif}
   .cfl-cwl-note.unsent{background:#FBF6F2;border-right-color:#9C6B4F}
   .cfl-locked .cwl-send{display:none!important}
-  .cfl-auto{margin:10px 0 0;font-size:16px;font-weight:500;color:#5E6A41;font-family:"Heebo",Arial,sans-serif}
-  .cfl-auto.sending{color:#6E6A5F}
-  .cfl-auto.bad{color:#9C6B4F}
-  .cfl-locked .cfl-auto{display:none!important}
+  #cflSendBox .bx p b{color:#9C6B4F}
+  :where(.cwl-send){font:inherit;font-size:17px;font-weight:700;padding:12px 22px;border:1px solid #2B2B2B;background:#2B2B2B;color:#FAF9F5;cursor:pointer;border-radius:2px}
+  :where(.cwl-send):hover{background:#44443F}
+  .cfl-response.top{max-width:860px;margin:16px auto 6px;box-sizing:border-box}
   @media print{#cflSendBox,.cfl-cwl-note{display:none!important}}`;
+  // the page's own reflection is replaced by the personal response
+  if (PAGE.reflectSel) css.textContent += String(PAGE.reflectSel).split(',').map(s => s.trim()).filter(Boolean).map(s => s + '{display:none!important}').join('');
   document.head.appendChild(css);
 
   // ---------- start ----------
@@ -368,7 +361,7 @@
         keepNothing();
         lock();
         if (typeof PAGE.staffView === 'function') { try { PAGE.staffView(); } catch (e) { } }
-        if (info.viewMode !== 'answers') showResults();
+        if (info.viewMode !== 'answers') { showResults(); TOP = true; showCard(info.response || 'none', info.responseAt || ''); wireSend(); }
         else if (typeof PAGE.answers === 'function') { try { PAGE.answers(); } catch (e) { } }
         return;
       }
@@ -383,6 +376,9 @@
           lock();
           showResults();
           CFL.readOnlyBar(showResults, () => { window.scrollTo(0, 0); });
+          TOP = true;
+          showCard(info.response || 'later', info.responseAt || '');
+          wireSend();
           return;
         }
         showNote(canon(collect()) !== SENT.json);
@@ -390,7 +386,8 @@
         ['input', 'change', 'click'].forEach(ev => document.addEventListener(ev, recheck));
       }
       if (typeof PAGE.onReady === 'function') { try { PAGE.onReady(info); } catch (e) { } }
-      watchSend();
+      showCard('wait');
+      wireSend();
     });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();

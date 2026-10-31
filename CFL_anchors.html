@@ -212,11 +212,12 @@ footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--rule);font-si
 <section class="step" id="s3">
   <h1>מה עולה מהשאלון</h1>
   <p class="lede">זו לא אבחנה ולא ציון. אלה כמה דברים שבלטו לי בתשובות שלך, כנקודת פתיחה לשיחה שלנו.</p>
-  <div class="reflect" id="reflect"></div>
+  <div class="reflect" id="reflect" hidden style="display:none"></div>
+  <div id="cflResponse" class="cfl-response"></div>
   <div id="verdict"></div>
   <div class="note clay"><b>וחשוב לזכור:</b> אדגר שיין, שפיתח את השאלון, בנה אותו כמפה לשיחה, ולא כמבחן. בפגישה נבדוק יחד מה מזה מדויק לך, ומה לא.</div>
   <div class="actions">
-    <button class="btn" id="cflSend" onclick="cflSubmit()">שליחה</button>
+    <button class="btn" id="cflSend" onclick="cflSubmit()">שליחה וקבלת שיקוף אישי</button>
     <button class="btn ghost" id="cflAnswers" onclick="go(1)" hidden>הסתכל בתשובות</button>
     <button class="btn ghost" id="cflRestart" onclick="toggle('cf')">התחלה מחדש</button>
     <span class="status" id="sm"></span>
@@ -543,34 +544,37 @@ function restart(){
 /* the answers in a fixed form, to compare what's on screen with what was last sent */
 function canon(st){ const sc={}; for(let i=0;i<40;i++) sc[i]=Number((st.scores||{})[i])||0; return JSON.stringify({scores:sc,picks:(st.picks||[]).map(Number).slice().sort((a,b)=>a-b)}); }
 
-/* the summary screen's buttons and note, depending on whether it was sent and whether it changed since */
+/* the summary screen's buttons and note. Sending is final (from 31.10) and brings Claude's personal response,
+   shown in place of the built-in reflection; a יועץ can reopen the questionnaire for a new sending. */
+var RESP = 'wait', RESP_AT = '';
+function drawResponse(){ CFL.responseCard(document.getElementById('cflResponse'), RESP, RESP_AT); }
 function refreshS3(){
   const send=document.getElementById('cflSend'), ans=document.getElementById('cflAnswers'),
         rst=document.getElementById('cflRestart'), s3=document.getElementById('s3');
+  drawResponse();
   if(LOCKED){ s3.querySelectorAll('.actions').forEach(e=>e.style.display='none'); document.getElementById('cf').style.display='none'; return; }
-  /* the answers go by themselves as soon as this screen (the שיקוף) is shown; the button is only for a failed send */
-  const complete = Object.keys(S.scores).length>=40 && S.picks.length===3;
-  if(!SENT){ send.hidden=true; ans.hidden=true; rst.hidden=false; if(complete && typeof cflSchedule==='function') cflSchedule(300); return; }
+  if(!SENT){ send.hidden=false; ans.hidden=true; rst.hidden=false; return; }
   const dirty = canon(S)!==SENT.json;
-  send.hidden=true; send.textContent='שליחת העדכון';
-  if(dirty && complete && typeof cflSchedule==='function') cflSchedule(300);
+  send.hidden=!dirty; send.textContent='שליחה וקבלת שיקוף חדש';
   ans.hidden=false; rst.hidden=true; document.getElementById('cf').style.display='none';
   CFL.showSentNote(s3, SENT.at, SENT.upd, dirty);
 }
 
 async function cflSubmit(){
-  const m=document.getElementById('sm'), b=document.getElementById('cflSend');
+  const m=document.getElementById('sm');
   if(LOCKED) return;
   if(Object.keys(S.scores).length<40 || S.picks.length!==3){ m.textContent='חסרים דירוגים או בחירות. חזרו לשלבים הקודמים.'; return; }
   if(SENT && canon(S)===SENT.json) return;
-  b.hidden=true; m.style.color='var(--mute)'; m.textContent='שולח את התשובות…';
-  const r = await CFL.submit('anchors', { scores:S.scores, picks:S.picks }, buildSummary());
-  if(!r.ok){ b.hidden=false; b.textContent='לנסות לשלוח שוב'; m.style.color=''; m.textContent='התשובות עוד לא נשלחו: '+(r.message||'השליחה לא הצליחה.'); return; }
+  m.textContent='';
+  const r = await CFL.finalSend(() => CFL.submit('anchors', { scores:S.scores, picks:S.picks }, buildSummary()));
+  if(!r) return;
   SENT = { json: canon(S), at: r.submittedAt||'', upd: r.updatedAt||'' };
+  LOCKED = true;
+  RESP = r.response || 'later'; RESP_AT = r.responseAt || '';
   refreshS3();
-  m.style.color=''; m.textContent = r.updated ? '✓ העדכון נשלח אליי.' : '✓ התשובות נשלחו אליי. תודה!';
+  CFL.showSentNote(document.getElementById('s3'), SENT.at, SENT.upd, false, true);
+  try{ document.getElementById('cflResponse').scrollIntoView({behavior:'smooth',block:'start'}); }catch(e){}
 }
-var cflSchedule = CFL.autoSend(cflSubmit);
 
 /* "תשובות הנועץ" for the יועצים site: the rating and the three picks, read-only */
 function showAnswersView(){
@@ -587,6 +591,7 @@ function showAnswersView(){
   if(info.view){
     LOCKED = true;
     S = { scores: (info.saved||{}).scores||{}, picks: (info.saved||{}).picks||[], stage: 0 };
+    RESP = info.response || 'none'; RESP_AT = info.responseAt || '';
     if(info.viewMode==='answers') showAnswersView(); else calc();
     return;
   }
@@ -594,6 +599,7 @@ function showAnswersView(){
     /* sent, then closed by a יועץ: summary and answers, read-only */
     LOCKED = true;
     S = { scores: info.saved.scores, picks: info.saved.picks, stage: 0 };
+    RESP = info.response || 'later'; RESP_AT = info.responseAt || '';
     calc();
     CFL.readOnlyBar(function(){ calc(); }, showAnswersView);
     return;

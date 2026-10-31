@@ -445,7 +445,7 @@ document.getElementById('go').addEventListener('click',()=>{
 <script src="CFL_config.js"></script>
 <script src="CFL_bridge.js"></script>
 <script>
-window.CFL_PAGE={id:'authenticity',keys:['cim_'+(document.title||'tool').replace(/[^֐-׿a-zA-Z0-9]/g,'_')],flush:function(){if(typeof saveState==='function')saveState();},results:function(){var b=document.getElementById('go');if(b)b.click();},staffView:function(){/* the יועצים site also gets the tab 'מה היועץ רואה' */document.querySelectorAll('style').forEach(function(s){if(s.textContent.indexOf('.switchwrap,#p2{display:none!important}')!==-1)s.remove();});}};
+window.CFL_PAGE={id:'authenticity',reflectSel:'#read',keys:['cim_'+(document.title||'tool').replace(/[^֐-׿a-zA-Z0-9]/g,'_')],flush:function(){if(typeof saveState==='function')saveState();},results:function(){var b=document.getElementById('go');if(b)b.click();},staffView:function(){/* the יועצים site also gets the tab 'מה היועץ רואה' */document.querySelectorAll('style').forEach(function(s){if(s.textContent.indexOf('.switchwrap,#p2{display:none!important}')!==-1)s.remove();});}};
 </script>
 <script src="CFL_cwl.js"></script>
 </body>

@@ -150,7 +150,8 @@
         const d = e.data || {};
         if (d.type !== 'cfl-view') return;
         resolve({ ok: true, status: 'submitted', view: true, viewMode: VIEW_MODE, saved: d.state,
-          submittedAt: d.submittedAt || '', updatedAt: d.updatedAt || '', name: d.name || '', gender: d.gender || '' });
+          submittedAt: d.submittedAt || '', updatedAt: d.updatedAt || '', name: d.name || '', gender: d.gender || '',
+          response: d.response || '', responseAt: d.responseAt || '' });
       });
       window.parent.postMessage({ type: 'cfl-view-ready' }, location.origin);
     });
@@ -206,27 +207,86 @@
       return r;
     },
 
-    /** Sends by itself once the reflection (the results screen) is on screen: no button to press.
-     *  send() does the sending (and its own messages). Returns schedule(ms): waits ms after the last call,
-     *  sends one at a time, and a change made during a send is sent right after it. A pending send also goes
-     *  out when the page is hidden (switching tabs, closing it). */
-    autoSend(send) {
-      if (VIEW) return () => { };
-      let t = null, busy = false, again = false;
-      const run = async () => {
-        t = null;
-        if (busy) { again = true; return; }
-        busy = true;
-        try { await send(); } catch (e) { } finally { busy = false; if (again) { again = false; run(); } }
-      };
-      const now = () => { if (t) { clearTimeout(t); run(); } };
-      document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') now(); });
-      window.addEventListener('pagehide', now);
-      return ms => { if (t) clearTimeout(t); t = setTimeout(run, ms || 0); };
+    /** Final sending with a warning first. send() does the sending and resolves with the server's answer.
+     *  Resolves with that answer once it was sent (ok), or null when the נועץ stepped back. */
+    finalSend(send) {
+      return new Promise(resolve => {
+        const wrap = document.createElement('div');
+        wrap.id = 'cflFinal';
+        wrap.setAttribute('role', 'dialog'); wrap.setAttribute('aria-modal', 'true');
+        wrap.style.cssText = 'position:fixed;inset:0;background:rgba(20,20,15,.55);display:flex;align-items:flex-start;justify-content:center;z-index:9999;overflow:auto;padding:60px 14px;direction:rtl';
+        const bx = document.createElement('div');
+        bx.style.cssText = 'background:#fff;color:#2B2B28;max-width:480px;width:100%;border-top:5px solid #5E6A41;padding:22px 20px;font-family:"Heebo",Arial,sans-serif;font-size:17px;line-height:1.6;text-align:right';
+        const h = document.createElement('h3'); h.textContent = 'שליחה סופית'; h.style.cssText = 'margin:0 0 8px;font-size:22px';
+        const p1 = document.createElement('p'); p1.textContent = 'התשובות יגיעו רק אליי, ותקבלו מיד שיקוף אישי על מה שעלה בהן.'; p1.style.margin = '0 0 10px';
+        const p2 = document.createElement('p'); p2.style.margin = '0 0 14px';
+        const w = document.createElement('b'); w.textContent = 'אחרי השליחה לא יהיה אפשר לשנות את התשובות.'; w.style.color = '#9C6B4F';
+        p2.append(w, document.createTextNode(' כדאי לעבור עליהן לפני שליחה.'));
+        const btn = (label, primary) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = label;
+          b.style.cssText = 'display:block;width:100%;font:inherit;font-weight:700;padding:12px 16px;margin:0 0 8px;cursor:pointer;border:1px solid ' + (primary ? '#2B2B2B;background:#2B2B2B;color:#FAF9F5' : '#5E6A41;background:#fff;color:#5E6A41'); return b; };
+        const go = btn('שליחה וקבלת השיקוף', true), back = btn('עוד רגע, אני רוצה לבדוק', false);
+        const msg = document.createElement('p'); msg.setAttribute('aria-live', 'polite'); msg.style.cssText = 'margin:0;color:#9C6B4F;font-weight:500;min-height:1.2em';
+        bx.append(h, p1, p2, go, back, msg); wrap.appendChild(bx); document.body.appendChild(wrap);
+        let busy = false;
+        const close = v => { wrap.remove(); resolve(v); };
+        back.onclick = () => { if (!busy) close(null); };
+        wrap.addEventListener('click', e => { if (e.target === wrap && !busy) close(null); });
+        go.onclick = async () => {
+          busy = true; go.disabled = back.disabled = true; go.textContent = 'שולח וכותב את השיקוף האישי…';
+          msg.style.color = '#6E6A5F'; msg.textContent = 'זה לוקח בערך חצי דקה. אפשר להישאר בעמוד.';
+          let r;
+          try { r = await send(); } catch (e) { r = { ok: false }; }
+          busy = false;
+          if (r && r.ok) { close(r); return; }
+          go.disabled = back.disabled = false; go.textContent = 'שליחה וקבלת השיקוף';
+          msg.style.color = '#9C6B4F'; msg.textContent = (r && r.message) || 'השליחה לא הצליחה. נסו שוב.';
+        };
+        go.focus();
+      });
+    },
+
+    /** The personal response (Claude's שיקוף) as a card. state: 'wait' (before sending), 'writing', 'later'
+     *  (sent, not written yet), 'none' (יועצים site, nothing written), or the text itself. Fills el (made if missing). */
+    responseCard(el, state, at) {
+      if (!el) { el = document.createElement('div'); el.className = 'cfl-response'; }
+      el.textContent = '';
+      el.dataset.state = /^(wait|writing|later|none)$/.test(state) ? state : 'text';
+      const h = document.createElement('h3');
+      h.textContent = VIEW ? 'השיקוף האישי שהנועץ/ת קיבל/ה' : 'השיקוף האישי שלך';
+      if (VIEW) h.textContent = genderText(h.textContent, CFL.gender);
+      el.appendChild(h);
+      const p = t => { const x = document.createElement('p'); x.textContent = t; el.appendChild(x); return x; };
+      if (state === 'wait') p('אחרי שתשלחו את התשובות, ייכתב כאן שיקוף אישי על מה שעלה בהן.').className = 'm';
+      else if (state === 'writing') p('כותב את השיקוף האישי… זה לוקח בערך חצי דקה.').className = 'm';
+      else if (state === 'later') p('התשובות נשלחו. השיקוף האישי עוד לא מוכן. הוא יופיע כאן כשתחזרו לעמוד, בעוד כמה דקות.').className = 'm';
+      else if (state === 'none') p('השיקוף האישי עוד לא נכתב.').className = 'm';
+      else {
+        // paragraphs by empty lines; lines that start with "• " are a list
+        String(state || '').replace(/\r/g, '').split(/\n\s*\n/).forEach(block => {
+          const lines = block.split('\n').map(s => s.trim()).filter(Boolean);
+          if (!lines.length) return;
+          let ul = null;
+          lines.forEach(line => {
+            const m = line.match(/^[•\-*]\s*(.+)$/);
+            if (m) { if (!ul) { ul = document.createElement('ul'); el.appendChild(ul); } const li = document.createElement('li'); li.textContent = m[1]; ul.appendChild(li); }
+            else { ul = null; p(line); }
+          });
+        });
+        if (at) { const s = document.createElement('p'); s.className = 'at'; s.textContent = 'נכתב ' + at; el.appendChild(s); }
+      }
+      if (!document.getElementById('cflResponseCss')) {
+        const css = document.createElement('style');
+        css.id = 'cflResponseCss';
+        css.textContent = '.cfl-response{direction:rtl;text-align:right;background:#fff;color:#2B2B28;border:1px solid #DCD8CC;border-top:5px solid #B08A3E;border-radius:8px;padding:20px 22px;margin:22px 0;font-family:"Heebo",Arial,sans-serif;font-size:18px;line-height:1.7}' +
+          '.cfl-response h3{margin:0 0 10px;font-size:21px;color:#2B2B28}.cfl-response p{margin:0 0 12px}.cfl-response ul{margin:0 0 12px;padding-right:22px}.cfl-response li{margin:0 0 6px}' +
+          '.cfl-response p.m{color:#6E6A5F;font-size:16px}.cfl-response p.at{color:#8A867B;font-size:13px;margin:6px 0 0}';
+        document.head.appendChild(css);
+      }
+      return el;
     },
 
     /** Box at the top of the summary once the questionnaire was sent. unsent = there are edits not sent yet. */
-    sentNote(submittedAt, updatedAt, unsent) {
+    sentNote(submittedAt, updatedAt, unsent, locked) {
       const n = document.createElement('div');
       n.className = 'cfl-sent noprint';
       if (VIEW) { n.hidden = true; return n; } // the יועצים page shows its own heading
@@ -235,11 +295,11 @@
       const b = document.createElement('b');
       if (unsent) {
         b.textContent = 'יש שינויים שעוד לא נשלחו. ';
-        n.append(b, document.createTextNode('כדי שיישמרו, לחצו על "שליחת העדכון".'));
+        n.append(b, document.createTextNode('כדי שיישמרו, שלחו שוב. גם השליחה הזו סופית.'));
       } else {
         const when = updatedAt && updatedAt !== submittedAt ? ' (עודכנו ' + updatedAt + ')' : (submittedAt ? ' (' + submittedAt + ')' : '');
         b.textContent = 'התשובות נשלחו' + when + '. ';
-        n.append(b, document.createTextNode('אפשר לחזור לתשובות ולעדכן אותן בכל זמן, דרך "הסתכל בתשובות".'));
+        n.append(b, document.createTextNode(locked ? 'השאלון סגור לעריכה.' : 'השאלון נפתח שוב: אפשר לעדכן את התשובות דרך "הסתכל בתשובות" ולשלוח שוב. גם השליחה הזו סופית.'));
       }
       return n;
     },
@@ -272,9 +332,9 @@
     },
 
     /** Replaces (or adds) the sent note at the top of a container. */
-    showSentNote(container, submittedAt, updatedAt, unsent) {
+    showSentNote(container, submittedAt, updatedAt, unsent, locked) {
       const old = container.querySelector('.cfl-sent');
-      const n = CFL.sentNote(submittedAt, updatedAt, unsent);
+      const n = CFL.sentNote(submittedAt, updatedAt, unsent, locked);
       if (old) old.replaceWith(n); else container.insertBefore(n, container.firstChild);
     }
   };
