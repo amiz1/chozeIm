@@ -548,26 +548,29 @@ function refreshS3(){
   const send=document.getElementById('cflSend'), ans=document.getElementById('cflAnswers'),
         rst=document.getElementById('cflRestart'), s3=document.getElementById('s3');
   if(LOCKED){ s3.querySelectorAll('.actions').forEach(e=>e.style.display='none'); document.getElementById('cf').style.display='none'; return; }
-  if(!SENT){ send.hidden=false; send.textContent='שליחה'; ans.hidden=true; rst.hidden=false; return; }
+  /* the answers go by themselves as soon as this screen (the שיקוף) is shown; the button is only for a failed send */
+  const complete = Object.keys(S.scores).length>=40 && S.picks.length===3;
+  if(!SENT){ send.hidden=true; ans.hidden=true; rst.hidden=false; if(complete && typeof cflSchedule==='function') cflSchedule(300); return; }
   const dirty = canon(S)!==SENT.json;
-  send.hidden=!dirty; send.textContent='שליחת העדכון';
+  send.hidden=true; send.textContent='שליחת העדכון';
+  if(dirty && complete && typeof cflSchedule==='function') cflSchedule(300);
   ans.hidden=false; rst.hidden=true; document.getElementById('cf').style.display='none';
   CFL.showSentNote(s3, SENT.at, SENT.upd, dirty);
 }
 
 async function cflSubmit(){
   const m=document.getElementById('sm'), b=document.getElementById('cflSend');
+  if(LOCKED) return;
   if(Object.keys(S.scores).length<40 || S.picks.length!==3){ m.textContent='חסרים דירוגים או בחירות. חזרו לשלבים הקודמים.'; return; }
-  if(!SENT && !confirm('לשלוח את התשובות? אפשר יהיה לחזור אליהן ולעדכן אותן גם אחר כך.')) return;
-  const label=b.textContent; b.disabled=true; b.textContent='שולח…'; m.textContent='';
+  if(SENT && canon(S)===SENT.json) return;
+  b.hidden=true; m.style.color='var(--mute)'; m.textContent='שולח את התשובות…';
   const r = await CFL.submit('anchors', { scores:S.scores, picks:S.picks }, buildSummary());
-  b.disabled=false; b.textContent=label;
-  if(!r.ok){ m.textContent=r.message||'השליחה לא הצליחה. נסו שוב.'; return; }
+  if(!r.ok){ b.hidden=false; b.textContent='לנסות לשלוח שוב'; m.style.color=''; m.textContent='התשובות עוד לא נשלחו: '+(r.message||'השליחה לא הצליחה.'); return; }
   SENT = { json: canon(S), at: r.submittedAt||'', upd: r.updatedAt||'' };
   refreshS3();
-  m.textContent = r.updated ? 'העדכון נשלח.' : 'התשובות נשלחו. תודה!';
-  window.scrollTo({top:0,behavior:'smooth'});
+  m.style.color=''; m.textContent = r.updated ? '✓ העדכון נשלח אליי.' : '✓ התשובות נשלחו אליי. תודה!';
 }
+var cflSchedule = CFL.autoSend(cflSubmit);
 
 /* "תשובות הנועץ" for the יועצים site: the rating and the three picks, read-only */
 function showAnswersView(){

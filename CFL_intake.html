@@ -380,7 +380,7 @@ function renderEnd(){
   <p>לעצור ולהתבונן בעצמך זה לא מובן מאליו. זה הצעד הראשון שלנו יחד.</p>
   ${AUTO_REFL?autoReflHTML(d):''}<p>${AUTO_REFL&&autoRefl(d).length?'אחרי שתשלח/י לי את התשובות, אקרא אותן בעיון לפני הפגישה שלנו.':'אחרי שתשלח/י לי את התשובות, אקרא אותן בעיון, ואחזור אלייך עם כמה מילים אישיות לפני הפגישה שלנו.'}</p>
   <p class="muted small">כל מה שכתבת נשמר בדיסקרטיות מלאה.</p></div>
-  <div class="card noprint"><h3 style="margin-top:0">שליחה אליי</h3><p class="small">כשתרגיש/י מוכן/ה, לחצ/י על הכפתור כדי לשלוח לי את התשובות. הן יגיעו רק אליי.</p><button type="button" class="btn" id="cflSend">שליחה</button> <span id="cflMsg" style="font-size:15px;color:var(--clay)"></span>
+  <div class="card noprint"><h3 style="margin-top:0">שליחה אליי</h3><p class="small" id="cflAutoTxt">התשובות נשלחות אליי מעצמן, ברגע שהשיקוף מוכן. הן יגיעו רק אליי.</p><button type="button" class="btn" id="cflSend" style="display:none">לנסות לשלוח שוב</button> <span id="cflMsg" style="font-size:15px;color:var(--clay)"></span>
 
   <div class="nav" style="margin-top:14px"><button class="btn ghost" id="edit">חזרה לתשובות</button><span></span></div>
   <div class="limit" id="cpm"></div></div>`);
@@ -1107,17 +1107,28 @@ function cflAfterEnd(){
     const old=app.querySelector('.cfl-sent'),n=CFL.sentNote(SENT.at,SENT.upd,dirty);
     if(old)old.replaceWith(n);else app.insertBefore(n,app.children[1]||null);
   }
-  send.onclick=async()=>{
-    if(!SENT&&!confirm('לשלוח את התשובות? אפשר יהיה לחזור אליהן ולעדכן אותן גם אחר כך.'))return;
-    const label=send.textContent;send.disabled=true;send.textContent='שולח…';$('cflMsg').textContent='';
-    const st=cflState();
-    const r=await CFL.submit('intake',st,cwlReadable(pack()),{path:pathOf()});
-    send.disabled=false;send.textContent=label;
-    if(!r.ok){$('cflMsg').textContent=r.message||'השליחה לא הצליחה. נסו שוב.';return;}
-    SENT={json:cflCanon(st),at:r.submittedAt||'',upd:r.updatedAt||''};
-    renderEnd();scrollTo(0,0);
-  };
+  /* the answers go by themselves as soon as this screen (the שיקוף) is shown, and again after a change made on it;
+     the button is only for when sending did not work */
+  send.onclick=()=>cflSendNow();
+  if(!SENT||cflCanon(cflState())!==SENT.json)cflSchedule(300);
 }
+async function cflSendNow(){
+  const send=$('cflSend');
+  if(LOCKED||!send||!document.body.contains(send))return;
+  const st=cflState();
+  if(SENT&&cflCanon(st)===SENT.json)return;
+  send.style.display='none';$('cflMsg').style.color='var(--mute)';$('cflMsg').textContent='שולח את התשובות…';
+  const r=await CFL.submit('intake',st,cwlReadable(pack()),{path:pathOf()});
+  if(!r.ok){send.style.display='';$('cflMsg').style.color='var(--clay)';$('cflMsg').textContent='התשובות עוד לא נשלחו: '+(r.message||'השליחה לא הצליחה.');return;}
+  SENT={json:cflCanon(st),at:r.submittedAt||'',upd:r.updatedAt||''};
+  const y=scrollY;renderEnd();scrollTo(0,y);
+}
+const cflSchedule=CFL.autoSend(cflSendNow);
+/* a change made on the שיקוף screen (e.g. the short feedback at its end) is sent a moment after typing stops */
+['input','change','click'].forEach(ev=>document.addEventListener(ev,e=>{
+  if(LOCKED||!$('cflSend')||(e.target&&e.target.id==='cflSend'))return;
+  cflSchedule(ev==='input'?2500:900);
+}));
 
 /* "תשובות הנועץ" for the יועצים site: every section with the answers, read-only */
 function renderAllAnswers(){

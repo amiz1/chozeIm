@@ -206,6 +206,25 @@
       return r;
     },
 
+    /** Sends by itself once the reflection (the results screen) is on screen: no button to press.
+     *  send() does the sending (and its own messages). Returns schedule(ms): waits ms after the last call,
+     *  sends one at a time, and a change made during a send is sent right after it. A pending send also goes
+     *  out when the page is hidden (switching tabs, closing it). */
+    autoSend(send) {
+      if (VIEW) return () => { };
+      let t = null, busy = false, again = false;
+      const run = async () => {
+        t = null;
+        if (busy) { again = true; return; }
+        busy = true;
+        try { await send(); } catch (e) { } finally { busy = false; if (again) { again = false; run(); } }
+      };
+      const now = () => { if (t) { clearTimeout(t); run(); } };
+      document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') now(); });
+      window.addEventListener('pagehide', now);
+      return ms => { if (t) clearTimeout(t); t = setTimeout(run, ms || 0); };
+    },
+
     /** Box at the top of the summary once the questionnaire was sent. unsent = there are edits not sent yet. */
     sentNote(submittedAt, updatedAt, unsent) {
       const n = document.createElement('div');

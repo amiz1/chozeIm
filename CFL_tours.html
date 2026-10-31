@@ -862,32 +862,43 @@ function refreshS3(){
     $('cmp').style.pointerEvents='none';
     return;
   }
-  if(!SENT){ $('cflSend').hidden=false; $('cflSend').textContent='שליחה'; $('cflAnswers').hidden=true; return; }
+  /* the answers go by themselves as soon as this screen (the שיקוף) is shown, and again after a change made on it;
+     the button is only for a failed send */
+  var onScreen = !$('s3').classList.contains('hidden');
+  if(!SENT){ $('cflSend').hidden=true; $('cflAnswers').hidden=true; if(onScreen && typeof toursSchedule==='function') toursSchedule(toursTyping ? 2500 : 300); return; }
   var dirty = canon(stateNow())!==SENT.json;
-  $('cflSend').hidden=!dirty; $('cflSend').textContent='שליחת העדכון'; $('cflAnswers').hidden=false;
+  $('cflSend').hidden=true; $('cflSend').textContent='לנסות לשלוח שוב'; $('cflAnswers').hidden=false;
   CFL.showSentNote($('s3'), SENT.at, SENT.upd, dirty);
+  if(dirty && onScreen && typeof toursSchedule==='function') toursSchedule(toursTyping ? 2500 : 300);
 }
+var toursTyping=false;
+$('s3').addEventListener('input', function(){ toursTyping=true; });
+function toursSendNow(){
+  return new Promise(function(done){
+    if(LOCKED || $('s3').classList.contains('hidden')){ done(); return; }
+    var st=stateNow();
+    if(SENT && canon(st)===SENT.json){ done(); return; }
+    var b=$('cflSend'); b.hidden=true; $('cflMsg').style.color='var(--mute)'; $('cflMsg').textContent='שולח את התשובות…';
+    var fields={ professions: chosen().map(function(x){ return x.n; }).join(', ') };
+    CFL.submit('tours', st, window.toursSummary(), fields).then(function(r){
+      toursTyping=false;
+      if(!r.ok){ b.hidden=false; b.textContent='לנסות לשלוח שוב'; $('cflMsg').style.color=''; $('cflMsg').textContent='התשובות עוד לא נשלחו: '+(r.message||'השליחה לא הצליחה.'); done(); return; }
+      SENT={ json: canon(st), at: r.submittedAt||'', upd: r.updatedAt||'' };
+      var rr=$('cwlRestored'); if(rr) rr.remove();
+      refreshS3();
+      $('cflMsg').style.color='var(--olive-dk)';
+      $('cflMsg').textContent = r.updated ? '✓ העדכון נשלח אליי.' : '✓ התשובות נשלחו אליי. תודה!';
+      done();
+    });
+  });
+}
+var toursSchedule = CFL.autoSend(toursSendNow);
 var s3T=null;
 ['input','click'].forEach(function(ev){ $('s3').addEventListener(ev, function(){ clearTimeout(s3T); s3T=setTimeout(refreshS3, 250); }); });
 
 $('cflAnswers').addEventListener('click', function(){ showStep('s1'); window.scrollTo({ top: 0 }); });
 
-$('cflSend').addEventListener('click', function(){
-  if(!SENT && !confirm('לשלוח את התשובות? אפשר יהיה לחזור אליהן ולעדכן אותן גם אחר כך.')) return;
-  var b=$('cflSend'), label=b.textContent; b.disabled=true; b.textContent='שולח…'; $('cflMsg').textContent='';
-  var fields={ professions: chosen().map(function(x){ return x.n; }).join(', ') };
-  var st=stateNow();
-  CFL.submit('tours', st, window.toursSummary(), fields).then(function(r){
-    b.disabled=false; b.textContent=label;
-    if(!r.ok){ $('cflMsg').textContent=r.message||'השליחה לא הצליחה. נסו שוב.'; return; }
-    SENT={ json: canon(st), at: r.submittedAt||'', upd: r.updatedAt||'' };
-    var rr=$('cwlRestored'); if(rr) rr.remove();
-    refreshS3();
-    $('cflMsg').style.color='var(--olive-dk)';
-    $('cflMsg').textContent = r.updated ? 'העדכון נשלח.' : 'התשובות נשלחו. תודה!';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-});
+$('cflSend').addEventListener('click', function(){ toursSendNow(); });
 
 /* "תשובות הנועץ" for the יועצים site: the chosen professions, the marks and the own role, read-only */
 function showAnswersView(){

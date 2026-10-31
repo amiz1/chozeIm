@@ -17,6 +17,7 @@
 //     blank: ['v'],                  // optional: parts that have a value before anything is answered (a default choice)
 //                                    //   (ignore/blank may name an inner part: 's.step')
 //     onReady: function (info) { … },// optional: runs once the page can be filled in (not in read-only views)
+//     sendWhen: 'scrolled',          // optional: a one-page form: send when its end (under the שיקוף) is reached
 //     lockCss: '.chip{…}'            // optional: CSS for read-only mode (answers that aren't buttons or fields)
 //   }
 // and keeps its own  window.CWL_CFG = { summary: () => '…' }  (the text for the יועץ).
@@ -202,6 +203,75 @@
       document.getElementById('cflHome').onclick = () => { location.href = 'index.html'; };
     };
   }
+  // ---------- sending by itself: once the reflection (the screen with the send button) is on screen ----------
+  // The answers go to the יועץ as soon as the שיקוף is shown, and again (by themselves) after any change made there.
+  // The button stays only for when sending did not work.
+  function autoStatus(state, text) {
+    document.querySelectorAll('.cwl-send').forEach(b => {
+      let s = b.nextElementSibling;
+      if (!s || !s.classList || !s.classList.contains('cfl-auto')) { s = document.createElement('p'); b.after(s); }
+      s.className = 'cfl-auto ' + state; s.setAttribute('aria-live', 'polite'); s.textContent = text;
+      b.style.display = state === 'bad' ? '' : 'none';
+      if (state === 'bad') b.textContent = 'לנסות לשלוח שוב';
+    });
+  }
+  async function autoSendNow() {
+    if (LOCKED || !INFO || INFO.view) return;
+    const st = collect();
+    if (isEmpty(st)) return;
+    if (SENT && canon(st) === SENT.json) { autoStatus('ok', '✓ התשובות נשלחו אליי. אם תשנו משהו, העדכון יישלח מעצמו.'); return; }
+    autoStatus('sending', 'שולח את התשובות אליי…');
+    let summary = '';
+    try { summary = (window.CWL_CFG && window.CWL_CFG.summary) ? String(window.CWL_CFG.summary() || '') : ''; } catch (e) { summary = ''; }
+    const r = await CFL.submit(ID, st, summary, {});
+    if (!r.ok) { autoStatus('bad', 'התשובות עוד לא נשלחו: ' + (r.message || 'השליחה לא הצליחה.')); return; }
+    SENT = { json: canon(st), at: r.submittedAt || (SENT && SENT.at) || '', upd: r.updatedAt || '' };
+    showNote(false);
+    autoStatus('ok', '✓ התשובות נשלחו אליי. אם תשנו משהו, העדכון יישלח מעצמו.');
+  }
+  let sendOnScreen = false;
+  function watchSend() {
+    const schedule = CFL.autoSend(autoSendNow);
+    // a page of steps: the send button is on the reflection screen, so the answers go as soon as that screen is shown.
+    // A page that is all one long form (sendWhen: 'scrolled'): they go when the reader reaches the end, under the שיקוף.
+    const scrolled = PAGE.sendWhen === 'scrolled' && 'IntersectionObserver' in window;
+    const shown = new Set();
+    const io = scrolled ? new IntersectionObserver(es => {
+      es.forEach(e => { if (e.isIntersecting) shown.add(e.target); else shown.delete(e.target); });
+      const was = sendOnScreen; sendOnScreen = shown.size > 0;
+      if (sendOnScreen && !was) schedule(500); // the end of the page just came on screen: send now
+    }) : null;
+    if (!scrolled) {
+      const check = () => {
+        const was = sendOnScreen;
+        sendOnScreen = [...document.querySelectorAll('.cwl-send')].some(b => (b.parentElement || b).getClientRects().length > 0);
+        if (sendOnScreen && !was) schedule(500); // the reflection screen was just shown: send now
+      };
+      setInterval(check, 700);
+      document.addEventListener('click', () => setTimeout(check, 50));
+      check();
+    }
+    const seen = new WeakSet();
+    const wire = () => document.querySelectorAll('.cwl-send').forEach(b => {
+      const box = b.parentElement || b;
+      if (seen.has(box)) return;
+      seen.add(box);
+      // the text above the button asked to press it: now the answers go by themselves
+      box.querySelectorAll('p').forEach(p => {
+        if (/נשאר רק לשלוח|כדי לשלוח לי/.test(p.textContent))
+          p.textContent = 'התשובות נשלחות אליי מעצמן, ברגע שהשיקוף מוכן. הן יגיעו רק אליי, ונסתכל עליהן יחד בפגישה שלנו.';
+      });
+      if (io) io.observe(box);
+    });
+    wire();
+    new MutationObserver(wire).observe(document.body, { childList: true, subtree: true });
+    // a change made while the reflection is on screen is sent a moment after typing stops
+    ['input', 'change', 'click'].forEach(ev => document.addEventListener(ev, (e) => {
+      if (!sendOnScreen || (e.target && e.target.closest && e.target.closest('#cflSendBox, .cwl-send'))) return;
+      schedule(ev === 'input' ? 2500 : 900);
+    }));
+  }
+
   function bindClose() { document.querySelectorAll('#cflSendBox [data-x]').forEach(b => b.onclick = () => document.getElementById('cflSendBox').remove()); }
   window.CWLReturn = {
     open: open,
@@ -248,6 +318,10 @@
   .cfl-cwl-note{max-width:820px;margin:14px auto;background:#F4F5EF;border-right:4px solid #5E6A41;padding:12px 16px;font-size:16px;direction:rtl;font-family:"Heebo",Arial,sans-serif}
   .cfl-cwl-note.unsent{background:#FBF6F2;border-right-color:#9C6B4F}
   .cfl-locked .cwl-send{display:none!important}
+  .cfl-auto{margin:10px 0 0;font-size:16px;font-weight:500;color:#5E6A41;font-family:"Heebo",Arial,sans-serif}
+  .cfl-auto.sending{color:#6E6A5F}
+  .cfl-auto.bad{color:#9C6B4F}
+  .cfl-locked .cfl-auto{display:none!important}
   @media print{#cflSendBox,.cfl-cwl-note{display:none!important}}`;
   document.head.appendChild(css);
 
@@ -316,6 +390,7 @@
         ['input', 'change', 'click'].forEach(ev => document.addEventListener(ev, recheck));
       }
       if (typeof PAGE.onReady === 'function') { try { PAGE.onReady(info); } catch (e) { } }
+      watchSend();
     });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
