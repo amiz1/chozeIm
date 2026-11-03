@@ -45,6 +45,8 @@ h2 { font-weight: 700; font-size: 21px; margin: 0 0 4px; }
 b, strong { font-weight: 700; }
 .sub { font-size: 18px; font-weight: 300; color: var(--mute); margin: 0 0 22px; }
 .loading { color: var(--mute); text-align: center; padding: 40px 0; }
+.loading svg { display: block; margin: 0 auto 4px; }
+.loading p { margin: 0; }
 
 .card {
   background: var(--card);

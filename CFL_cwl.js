@@ -217,12 +217,17 @@
       wrap.dataset.busy = '1';
       this.disabled = true; this.textContent = 'שולח וכותב את השיקוף האישי…';
       wrap.querySelectorAll('[data-x]').forEach(x => { x.disabled = true; });
-      document.getElementById('cflMsg').textContent = 'זה לוקח בערך חצי דקה. אפשר להישאר בעמוד.';
+      // the box shows the pen drawing and what is happening now, until the שיקוף is back
+      const bx = wrap.querySelector('.bx'), shown = [...bx.children];
+      shown.forEach(x => { if (x.id !== 'cflMsg') x.style.display = 'none'; });
+      const writing = CFL.writingView(); bx.prepend(writing.node);
       let summary = '';
       try { summary = (window.CWL_CFG && window.CWL_CFG.summary) ? String(window.CWL_CFG.summary() || '') : ''; } catch (e) { summary = ''; }
       const r = await CFL.submit(ID, st, summary, {});
+      writing.stop();
       delete wrap.dataset.busy;
       if (!r.ok) {
+        writing.node.remove(); shown.forEach(x => { x.style.display = ''; });
         this.disabled = false; this.textContent = 'שליחה וקבלת השיקוף';
         wrap.querySelectorAll('[data-x]').forEach(x => { x.disabled = false; });
         document.getElementById('cflMsg').textContent = r.message || 'השליחה לא הצליחה. נסו שוב.';

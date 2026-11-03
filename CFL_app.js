@@ -111,8 +111,16 @@ function linkBtn(text, onclick) {
   return el('button', { type: 'button', class: 'link-btn', onclick: onclick }, text);
 }
 
+// The logo's pen signing its circles: shown while the site waits (the same drawing is in CFL_bridge.js)
+const PEN_SVG = '<svg class="cfl-pen" viewBox="0 0 100 100" width="96" height="96" role="img" aria-label="רגע…" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="cflPenG" x1="0" y1="0" x2="1" y2="0.3"><stop offset="0" stop-color="#5E6A41"/><stop offset="0.65" stop-color="#9C9467"/><stop offset="1" stop-color="#E3D6B4"/></linearGradient></defs><style>.cfl-pen .r{fill:none;stroke:url(#cflPenG);stroke-linecap:round;stroke-dasharray:0 100;opacity:0;animation:cflPenR 3.6s ease-in-out infinite}.cfl-pen .r1{stroke-width:6.5}.cfl-pen .r2{stroke-width:5.5;animation-name:cflPenR2}.cfl-pen .r3{stroke-width:4.5;animation-name:cflPenR3}.cfl-pen .s{fill:none;stroke:#7A5236;stroke-width:1.4;stroke-linecap:round;stroke-dasharray:0 100;opacity:0;animation:cflPenS 3.6s linear infinite}.cfl-pen .p{opacity:0;animation:cflPenP 3.6s linear infinite}@keyframes cflPenR{0%{opacity:1;stroke-dasharray:0 100}24%{stroke-dasharray:75 100}86%{opacity:1;stroke-dasharray:75 100}100%{opacity:0;stroke-dasharray:75 100}}@keyframes cflPenR2{0%,9%{opacity:0;stroke-dasharray:0 100}10%{opacity:1}33%{stroke-dasharray:75 100}86%{opacity:1;stroke-dasharray:75 100}100%{opacity:0;stroke-dasharray:75 100}}@keyframes cflPenR3{0%,19%{opacity:0;stroke-dasharray:0 100}20%{opacity:1}42%{stroke-dasharray:75 100}86%{opacity:1;stroke-dasharray:75 100}100%{opacity:0;stroke-dasharray:75 100}}@keyframes cflPenS{0%,39%{opacity:0;stroke-dasharray:0 100}40%{opacity:1}72%{stroke-dasharray:100 100}86%{opacity:1;stroke-dasharray:100 100}100%{opacity:0;stroke-dasharray:100 100}}@keyframes cflPenP{0%,33%{opacity:0}40%{opacity:1}86%{opacity:1}100%{opacity:0}}@media (prefers-reduced-motion:reduce){.cfl-pen .r,.cfl-pen .s,.cfl-pen .p{animation:none;opacity:1;stroke-dasharray:75 100}.cfl-pen .s{stroke-dasharray:100 100}}</style><circle class="r r1" cx="50" cy="50" r="43" pathLength="100" transform="rotate(35 50 50)"/><circle class="r r2" cx="51.5" cy="52" r="32" pathLength="100" transform="rotate(35 51.5 52)"/><circle class="r r3" cx="53" cy="54" r="21" pathLength="100" transform="rotate(35 53 54)"/><path class="s" pathLength="100" d="M41 69 c2.5 -3 4.5 1.5 7 -1 s4.5 -4.5 7 -1.5 s4.5 3 8 -2.5"/><g class="p"><g transform="rotate(45) scale(1.35)"><path d="M-1.6 -6.5 L0 0 L1.6 -6.5 Z" fill="#7A5236"/><rect x="-2.1" y="-24" width="4.2" height="17" rx="2" fill="none" stroke="#7A5236" stroke-width="1.2"/><line x1="-2.1" y1="-10" x2="2.1" y2="-10" stroke="#7A5236" stroke-width="1"/></g><animateMotion dur="3.6s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.4;0.72;1" path="M41 69 c2.5 -3 4.5 1.5 7 -1 s4.5 -4.5 7 -1.5 s4.5 3 8 -2.5"/></g></svg>';
+function penNode(size) {
+  const t = document.createElement('template'); t.innerHTML = PEN_SVG;
+  const svg = t.content.firstChild;
+  if (size) { svg.setAttribute('width', size); svg.setAttribute('height', size); }
+  return svg;
+}
 function loadingView() {
-  render(el('p', { class: 'loading' }, 'טוען…'));
+  render(el('div', { class: 'loading' }, penNode(), el('p', {}, 'טוען…')));
 }
 
 function errorView(message, retry) {
