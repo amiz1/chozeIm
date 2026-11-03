@@ -836,7 +836,7 @@ function restoreNow(fromSite){
     var n=document.createElement('div');
     n.id='cwlRestored';
     n.style.cssText='background:#F2EDDC;border-right:4px solid #B8933F;padding:12px 16px;margin:14px 0;border-radius:6px;font-size:17px';
-    n.innerHTML='<b>שמרנו את מה שמילאת.</b> אפשר להמשיך מאיפה שעצרת. <button type="button" id="cwlFresh" style="font:inherit;background:none;border:0;color:#6C6A61;text-decoration:underline;cursor:pointer">להתחיל מחדש</button>';
+    n.innerHTML='<b>שמרנו את מה שמילאת.</b> אפשר להמשיך מאיפה שעצרת. <button type="button" id="cwlFresh" hidden style="display:none;font:inherit;background:none;border:0;color:#6C6A61;text-decoration:underline;cursor:pointer">להתחיל מחדש</button>';
     var h=document.querySelector('header'); h.parentNode.insertBefore(n, h.nextSibling);
     $('cwlFresh').onclick=function(){ if(!confirm('למחוק את מה שמילאת ולהתחיל מחדש?')) return; try{ localStorage.removeItem(SK); }catch(e){} location.reload(); };
   }catch(e){ console.warn('restore failed', e); }

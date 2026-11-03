@@ -53,8 +53,8 @@ button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 </div>
 
 <div class="card">
-<label class="f" for="nm">איך קוראים לך?</label>
-<input type="text" id="nm" autocomplete="name">
+<label class="f" for="nm" hidden>איך קוראים לך?</label>
+<input type="text" id="nm" autocomplete="name" hidden style="display:none"><!-- the signed-in name is filled in -->
 <label class="f">מה עשית בשנים האחרונות?</label>
 <div class="chips" id="svc"></div>
 </div>

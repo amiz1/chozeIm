@@ -144,7 +144,7 @@ footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--rule);font-si
 
 <div class="actions">
 <button type="button" id="go">סיום</button>
-<button type="button" class="ghost" id="clr">ניקוי</button>
+<button type="button" class="ghost" id="clr" hidden style="display:none">ניקוי</button>
 <span class="status" id="msg"></span>
 </div>
 <p id="saved" class="cap" style="margin-top:14px"></p>
@@ -280,7 +280,7 @@ function restoreState(){
   for(const k in st.n){const el=document.getElementById(k);if(el){el.value=st.n[k];n++;}}
   if(n){
     const el=document.getElementById('saved');
-    if(el) el.textContent='שוחזרה עבודה קודמת · '+n+' תשובות. אפשר להמשיך מאיפה שהפסקת, או ללחוץ ניקוי כדי להתחיל מחדש.';
+    if(el) el.textContent='שוחזרה עבודה קודמת · '+n+' תשובות. אפשר להמשיך מאיפה שהפסקת.';
   }
   return n>0;
 }

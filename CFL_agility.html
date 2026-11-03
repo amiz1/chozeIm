@@ -114,11 +114,11 @@ footer{margin-top:54px;padding-top:20px;border-top:1px solid var(--rule);font-si
   <div class="note clay"><b>למה אין כאן פירוט של הממדים.</b> שמות הפרקים מופיעים, אך מה שכל ממד מודד יופיע רק אחרי החישוב. מי שיודע מראש עונה לפי מה שהיה רוצה לקבל.</div>
 
 
-  <div class="note olive" id="cwlStartBox"><label for="cwlStartName" style="display:block;font-weight:700;margin-bottom:6px">השם שלך</label>
+  <div class="note olive" id="cwlStartBox" hidden style="display:none"><!-- the signed-in name is filled in --><label for="cwlStartName" style="display:block;font-weight:700;margin-bottom:6px">השם שלך</label>
   <input id="cwlStartName" type="text" autocomplete="name" placeholder="שם פרטי ושם משפחה" style="width:100%;box-sizing:border-box;font:inherit;font-size:17px;padding:10px 12px;border:1px solid #DAD5C7;border-radius:8px;background:#fff;color:inherit">
   <div id="cwlStartMsg" style="color:#9C6B4F;font-size:15px;min-height:1.2em;margin-top:6px"></div></div>
 <script>
-function cwlNeedName(){var i=document.getElementById('cwlStartName'),v=(i&&i.value||'').trim();if(!v){document.getElementById('cwlStartMsg').textContent='כתבו בבקשה את השם שלכם, כדי שאדע ממי התשובות.';i.focus();return false;}try{localStorage.setItem('cwl-return-name',v)}catch(e){}return true;}
+function cwlNeedName(){var i=document.getElementById('cwlStartName'),v=(i&&i.value||'').trim();if(!v&&false){document.getElementById('cwlStartMsg').textContent='כתבו בבקשה את השם שלכם, כדי שאדע ממי התשובות.';i.focus();return false;}try{localStorage.setItem('cwl-return-name',v)}catch(e){}return true;}
 (function(){try{var v=localStorage.getItem('cwl-return-name');if(v)document.getElementById('cwlStartName').value=v}catch(e){}document.getElementById('cwlStartName').addEventListener('input',function(){document.getElementById('cwlStartMsg').textContent=''})})();
 </script>
 
@@ -175,7 +175,7 @@ function cwlNeedName(){var i=document.getElementById('cwlStartName'),v=(i&&i.val
 
   <div class="actions">
     <button class="cwl-send" onclick="CWLReturn.open()">שליחת התשובות אליי</button>
-    <button class="btn ghost" onclick="toggle('cf')">התחלה מחדש</button>
+    <button class="btn ghost" onclick="toggle('cf')" hidden style="display:none">התחלה מחדש</button>
     <span class="status" id="sm"></span>
   </div>
   <div class="note clay" id="cf" style="display:none">

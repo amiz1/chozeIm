@@ -86,7 +86,7 @@ function render(){
  <p>כשהתפקיד נגמר, או עומד להיגמר, עולה שאלה חדשה: מה מכל זה הוא באמת שלי, ומה מזה אני רוצה לקחת איתי.</p>
  <p>השאלון הזה לא מבקש להחליט, וגם לא לתכנן. הוא מזמין לעצור ולהתבונן. קודם כותבים את הרשימה. אחר כך שואלים על כל יכולת שתי שאלות: האם היא עדיין נותנת לי משהו, והאם היא יכולה לבוא איתי גם בלי התפקיד.</p>
  <div class="note">הכול נשמר אוטומטית בדפדפן, ואפשר לעצור ולחזור בכל שלב.</div>
- <label for="nm">השם שלי <small>· לא חובה</small></label><input type="text" id="nm" value="${esc(S.name)}">`;$('#next').textContent='מתחילים'}
+ `;$('#next').textContent='מתחילים'}
  else if(s==='list'){h=`<p class="brand">שלב 1 מתוך 5</p><h2>הרשימה</h2><p class="sub">רשמו את היכולות שיש לכם. לא תארים ולא תפקידים, אלא דברים שאתם יודעים לעשות.</p>
  <p>כדי לא לשכוח חצי מהן, הנה חמש משפחות. פתחו אותן אחת אחת, ובכל אחת שאלו: מה יש לי כאן?</p>
  ${FAM.map(f=>`<details class="fam"><summary>${f[0]}</summary><p>${f[1]}</p><p><b>לדוגמה:</b> ${f[2]}</p></details>`).join('')}
@@ -125,7 +125,7 @@ function render(){
  else if(s==='done'){h=`<h2>סיימת. תודה!</h2><p>עשית כאן עבודה של התבוננות, וזו עבודה אמיתית. נשאר רק לשלוח לי את מה שכתבת. זה יגיע רק אליי, ונסתכל על זה יחד בפגישה שלנו.</p>
  <button type="button" class="cwl-send" onclick="CWLReturn.open()">שליחת התשובות אליי</button>
  <p class="saved" style="margin-top:14px">רוצה לתקן משהו לפני השליחה? אפשר לחזור אחורה בכפתור "הקודם".</p>
- <button class="link" id="reset">מחיקת כל התשובות</button><div id="resetAsk" hidden><p class="note clay">כל התשובות יימחקו, ואי אפשר יהיה לשחזר אותן.</p><button class="ghost" id="resetYes">כן, למחוק הכול</button></div>`;$('#next').style.display='none'}
+ <button class="link" id="reset" hidden style="display:none">מחיקת כל התשובות</button><div id="resetAsk" hidden><p class="note clay">כל התשובות יימחקו, ואי אפשר יהיה לשחזר אותן.</p><button class="ghost" id="resetYes">כן, למחוק הכול</button></div>`;$('#next').style.display='none'}
  $('#app').innerHTML=h;
  const n=filledAb().length;$('#count').textContent=(s==='list'||s==='rate')?`${n} יכולות`:'';
  $('#prog').style.width=Math.round(S.i/(SCREENS.length-1)*100)+'%';bind();save()}

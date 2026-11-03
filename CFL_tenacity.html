@@ -228,7 +228,7 @@ build();
   if(answered()){const s=$('cwlSaved');if(s)s.textContent='שמרנו את מה שמילאת. אפשר להמשיך מאיפה שעצרת.'}}
  /* כפתורי הסרגל */
  const bar=document.querySelector('.bar');
- bar.innerHTML='<button class="btn" type="button" id="cwlFin">סיום</button><button class="btn ghost" type="button" id="cwlClr">התחלה מחדש</button><span class="status" id="prog"></span><span class="status" id="cwlSaved" style="width:100%"></span>';
+ bar.innerHTML='<button class="btn" type="button" id="cwlFin">סיום</button><button class="btn ghost" type="button" id="cwlClr" hidden style="display:none">התחלה מחדש</button><span class="status" id="prog"></span><span class="status" id="cwlSaved" style="width:100%"></span>';
  $('cwlClr').onclick=()=>{if(!confirm('למחוק את כל התשובות ולהתחיל מחדש?'))return;try{localStorage.removeItem(SK)}catch(e){}location.reload()};
  $('cwlFin').onclick=()=>{
   const miss=[];A.forEach((x,i)=>{if(x.value===''&&!noop[i])miss.push(x.closest('.cell'))});B.forEach(x=>{if(x.value==='')miss.push(x.closest('.cell'))});

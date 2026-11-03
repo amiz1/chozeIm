@@ -138,7 +138,7 @@ const R=[];
 R[0]=()=>blk('פתיחה','לפני שמתחילים','',`
 <p>במהלך השאלון תברר/י מה חשוב לך כעת, עד כמה כל אפשרות נותנת לכך מענה, ומה עדיין צריך לבדוק. בין הערכת האפשרויות לבין דירוג חשיבות הערכים יש מרווח מכוון. אפשר לבחור מרווח קצר אם מועד ההחלטה קרוב.</p>
 <p>בסוף תתקבל תמונת התאמה, מחירים ושאלות להמשך בירור. היא נועדה לתמוך בשיחה ובהחלטה שלך.</p>
-<label>שם (לא חובה)<input type="text" value="${esc(S.name)}" oninput="S.name=this.value;save()"></label>
+
 <div class="note"><b>שמירת התשובות:</b> עד השליחה הן נשמרות בדפדפן הזה בלבד. כדי לחזור לשאלון לפני השליחה, פתח/י אותו מאותו מכשיר ומאותו דפדפן. אחרי השליחה הן שמורות באתר, ואפשר להמשיך מכל מכשיר.</div>
 ${!storageWorks?'<div class="flag">הדפדפן אינו מאפשר שמירה כרגע. כדאי למלא את השאלון בדפדפן אחר, למשל Chrome.</div>':''}
 ${nav(0,1,'מתחילים')}`);
@@ -422,7 +422,7 @@ R[13]=()=>blk('סיכום','התמונה שלי',S.name?esc(S.name):'',`
  <div class="cwl-card" style="border:1px solid var(--rule);border-top:5px solid #B8933F;background:#fff;border-radius:8px;padding:20px 22px;margin:26px 0;font-size:18px">
  <h3 style="margin-top:0">שליחה אליי</h3><p>נשאר רק לשלוח לי את התמונה שלך. היא תגיע רק אליי, ונסתכל עליה יחד בפגישה שלנו.</p>
  <button type="button" class="cwl-send" onclick="CWLReturn.open()">שליחת התשובות אליי</button></div>
- <div class="actions"><button class="ghost" onclick="go(${S.offer==='yes'?12:8})">חזרה</button><button class="ghost" onclick="clearAll()">מחיקת התשובות והתחלה מחדש</button></div>`);
+ <div class="actions"><button class="ghost" onclick="go(${S.offer==='yes'?12:8})">חזרה</button><button class="ghost" onclick="clearAll()" hidden style="display:none">מחיקת התשובות והתחלה מחדש</button></div>`);
 function encode(){const p={};Object.keys(S).forEach(k=>{if(k!=='step')p[k]=S[k];});
  return 'CIM-MATRIX-1:'+btoa(unescape(encodeURIComponent(JSON.stringify(p))));}
 window.makeCode=()=>{const b=$('rawbox');b.value=encode();b.classList.add('on');b.select();

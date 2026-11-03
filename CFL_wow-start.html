@@ -102,7 +102,7 @@ function render(){
  <p>לאורך החיים יש רגעים שבהם משהו פשוט עבד. לא בהכרח הישגים גדולים, אלא רגעים שבהם הרגשת שאת או אתה במקום הנכון, והזמן עבר בלי לשים לב.</p>
  <p>יש כאן שני חלקים. בראשון נעבור על תקופות החיים ונחפש שישה עד שמונה רגעים כאלה. בשני נכתוב שלושה עד חמישה הישגים: דברים שעשיתי והצלחתי.</p>
  <div class="note">הכול נשמר אוטומטית בדפדפן, ואפשר לעצור ולחזור בכל שלב. בטלפון אפשר גם להכתיב במקום להקליד.</div>
- <div class="note"><b>למי זה מיועד:</b> לאנשים שנמצאים בלימודים, או בשנים הראשונות אחריהם, בצעדים המקצועיים הראשונים.</div><label for="nm">השם שלי <small>· לא חובה</small></label><input type="text" id="nm" value="${esc(S.name)}">`;$('#next').textContent='מתחילים'}
+ <div class="note"><b>למי זה מיועד:</b> לאנשים שנמצאים בלימודים, או בשנים הראשונות אחריהם, בצעדים המקצועיים הראשונים.</div>`;$('#next').textContent='מתחילים'}
  else if(s==='stage'){h=`<h2>איפה אני היום?</h2><p class="sub">כדי להציג רק את התקופות הרלוונטיות</p>
  <button class="choice" data-v="A" aria-pressed="${S.v==='A'}">בתחילת הדרך<span>בלימודים, או בשנים הראשונות אחריהם</span></button>
  <button class="choice" data-v="B" aria-pressed="${S.v==='B'}">כבר כמה שנים בדרך המקצועית<span>גם אם לקראת פרישה או אחריה</span></button>`}
@@ -144,7 +144,7 @@ function render(){
  else if(s==='done'){const txt=summary();h=`<h2>סיימת. תודה!</h2><p>כתבת כאן דברים אישיים וחשובים. נשאר רק לשלוח לי אותם. הם יגיעו רק אליי, ונסתכל עליהם יחד בפגישה שלנו.</p>
  <button type="button" class="cwl-send" onclick="CWLReturn.open()">שליחת התשובות אליי</button>
  <p class="saved" style="margin-top:14px">רוצה לתקן משהו לפני השליחה? אפשר לחזור אחורה בכפתור ״הקודם״.</p>
- <div class="row"><button class="link" id="reset">מחיקת כל התשובות</button></div>`;$('#next').style.display='none'}
+ <div class="row"><button class="link" id="reset" hidden style="display:none">מחיקת כל התשובות</button></div>`;$('#next').style.display='none'}
  app.innerHTML=h;
  const n=nMoments();$('#count').textContent=!S.v||s==='done'?'':(/^a\d$|achLine|achIntro/.test(s)?`${nAch()} הישגים · היעד 3 עד 5`:`${n} רגעים · היעד 6 עד 8`);
  $('#prog').style.width=Math.round(S.i/(sc.length-1)*100)+'%';window.scrollTo(0,0);bind();save()}
