@@ -264,6 +264,22 @@
     if (top) top.after(box); else document.body.insertBefore(box, document.body.firstChild);
   }
 
+  // A questionnaire filled in the old system: only the text that was sent was kept. It is shown instead of the page.
+  function legacyView(r) {
+    [...document.body.children].forEach(x => { if (x.id !== 'cflBar' && x.tagName !== 'SCRIPT' && x.tagName !== 'STYLE') x.style.display = 'none'; });
+    const box = document.createElement('div');
+    box.id = 'cflLegacy';
+    box.style.cssText = 'max-width:820px;margin:24px auto 40px;padding:0 18px;direction:rtl;text-align:right;font-family:"Heebo",Arial,sans-serif;color:#2B2B28';
+    const h = document.createElement('h1'); h.textContent = r.title || 'השאלון'; h.style.cssText = 'font-size:30px;margin:0 0 6px';
+    const sub = document.createElement('p'); sub.style.cssText = 'margin:0 0 18px;color:#6E6A5F;font-size:16px';
+    sub.textContent = 'מולא במערכת הקודמת' + (r.submittedAt ? ' · נשלח ' + r.submittedAt : '') + '. אלה התשובות כפי שנשלחו.';
+    const t = document.createElement('div'); t.textContent = r.text || '';
+    t.style.cssText = 'white-space:pre-wrap;background:#fff;border:1px solid #DCD8CC;border-top:4px solid #5E6A41;padding:18px 20px;font-size:17px;line-height:1.7';
+    box.append(h, sub, t);
+    document.body.appendChild(box);
+    window.scrollTo(0, 0);
+  }
+
   const CFL = {
     view: VIEW,
     gender: '',
@@ -295,6 +311,7 @@
       if (r.email && r.email !== CFL.email) { CFL.email = r.email; store(EMAIL_KEY, r.email); }
       addBar(CFL.name);
       applyGender(CFL.gender);
+      if (r.legacy) { legacyView(r); return NEVER; } // filled in the old system: its text only
       if (r.status === 'submitted' && r.readOnly) sentWatch(r);
       versionNote(r);
       return r;
