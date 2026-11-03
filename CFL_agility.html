@@ -388,7 +388,8 @@ function renderScen(){
 function showExtra(){
   S.ex=S.ex||{};const it=allItems();let hiI=1,loI=1;
   for(let n=1;n<=50;n++){if((S.scores[n]||0)>(S.scores[hiI]||0))hiI=n;if((S.scores[n]||7)<(S.scores[loI]||7))loI=n;}
-  S.ex.hiI=hiI;S.ex.loI=loI;
+  /* once chosen, the statements stay: the examples written are about them (and the summary stays the same) */
+  if(S.ex.hiI)hiI=S.ex.hiI;else S.ex.hiI=hiI;if(S.ex.loI)loI=S.ex.loI;else S.ex.loI=loI;
   const strip=t=>String(t).replace(/<[^>]+>/g,'');
   document.getElementById('exq').innerHTML=
    '<label class="exl" for="ex_hi">ההיגד שדירגת הכי גבוה:</label><div class="exquote">'+strip(it[hiI-1])+'</div><p class="hint">ספר/י על פעם אחת שבה זה קרה.</p><textarea id="ex_hi" class="ext" rows="3"></textarea>'+

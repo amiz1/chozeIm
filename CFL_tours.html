@@ -872,6 +872,7 @@ function refreshS3(){
   $('cflSend').hidden=!dirty; $('cflSend').textContent='שליחה וקבלת שיקוף חדש'; $('cflAnswers').hidden=false;
   CFL.showSentNote($('s3'), SENT.at, SENT.upd, dirty);
 }
+window.CFL_SUMMARY=function(){ return window.toursSummary(); }; // the text the page makes from the answers on screen (compared with the one sent)
 function toursSend(){
   if(LOCKED || $('s3').classList.contains('hidden')) return;
   var st=stateNow();

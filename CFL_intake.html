@@ -1130,6 +1130,8 @@ async function cflSendFinal(){
 }
 
 /* "תשובות הנועץ" for the יועצים site: every section with the answers, read-only */
+/* the text summary the page makes from the answers on screen (to compare with the one sent) */
+window.CFL_SUMMARY=()=>cwlReadable(pack());
 function renderAllAnswers(){
   const app=$('app');
   let h=brand('התשובות כפי שמולאו')+

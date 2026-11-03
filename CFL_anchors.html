@@ -518,6 +518,7 @@ function calc(){
   go(3);
 }
 
+window.CFL_SUMMARY=()=>buildSummary(); // the text the page makes from the answers on screen (compared with the one sent)
 function buildSummary(){
   const rows=computed();
   let t='עוגני קריירה — '+new Date().toLocaleDateString('he-IL')+'\n\nהפרופיל\n';

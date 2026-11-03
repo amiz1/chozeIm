@@ -153,10 +153,86 @@
         if (d.type !== 'cfl-view') return;
         resolve({ ok: true, status: 'submitted', view: true, viewMode: VIEW_MODE, saved: d.state,
           submittedAt: d.submittedAt || '', updatedAt: d.updatedAt || '', name: d.name || '', gender: d.gender || '',
-          response: d.response || '', responseAt: d.responseAt || '' });
+          response: d.response || '', responseAt: d.responseAt || '', summary: d.summary || '' });
       });
       window.parent.postMessage({ type: 'cfl-view-ready' }, location.origin);
     });
+  }
+
+  // ---------- a sent questionnaire, seen read-only (by the נועץ, or on the יועצים site) ----------
+  // 1. Questions left unanswered are shaded (also questions added to the page after the sending).
+  // 2. On the יועצים site: the text summary saved at the sending is compared with the one the page makes now from
+  //    the same answers. Lines that are no longer made are answers the page can't show any more (it changed since):
+  //    a warning, and a button that shows just those lines. (Not for the נועץ: the summary has parts meant for the
+  //    יועץ only, and is never sent to the נועץ's browser.)
+  function sentWatch(info) {
+    shadeStart();
+    // on the summary view (where the page draws everything the summary is made of), after it drew the answers
+    if (VIEW && VIEW_MODE === 'results' && info.summary) setTimeout(() => lostCheck(info.summary), 1500);
+  }
+  function shadeEmpty() {
+    const mark = (el, on) => { if (el && el.classList.contains('cfl-empty') !== on) el.classList.toggle('cfl-empty', on); };
+    document.querySelectorAll('input[type=text], input:not([type]), input[type=number], input[type=email], input[type=tel], textarea, select').forEach(x => {
+      if (x.closest('#cflReadOnly, #cflBar, .cfl-response, .cfl-lost, #cflSendBox, #cflFinal') || x.type === 'hidden') return;
+      mark(x, !String(x.value || '').trim());
+    });
+    // choices: native radios by name, and the pages' own choice buttons (role=radio/checkbox) by their parent
+    const groups = new Map();
+    document.querySelectorAll('input[type=radio][name]').forEach(r => { const k = 'n:' + r.name; if (!groups.has(k)) groups.set(k, []); groups.get(k).push(r); });
+    document.querySelectorAll('[role=radio][aria-checked]').forEach(r => { const k = r.parentElement; if (!groups.has(k)) groups.set(k, []); groups.get(k).push(r); });
+    groups.forEach(list => {
+      const none = !list.some(r => r.checked || r.getAttribute('aria-checked') === 'true');
+      let box = list[0].parentElement; // the smallest box holding the whole group
+      while (box && box !== document.body && !list.every(r => box.contains(r))) box = box.parentElement;
+      if (box && box !== document.body) mark(box, none);
+    });
+  }
+  let shadeOn = false;
+  function shadeStart() {
+    if (shadeOn) return; shadeOn = true;
+    const css = document.createElement('style');
+    css.textContent = '.cfl-empty{background-color:#EFEDE6!important;background-image:repeating-linear-gradient(135deg,rgba(0,0,0,.035) 0 6px,transparent 6px 12px)!important;outline:1px dashed #C9C4B5;outline-offset:2px}' +
+      '.cfl-lost{max-width:860px;margin:10px auto 0;padding:12px 18px;direction:rtl;font-family:"Heebo",Arial,sans-serif;font-size:15px;line-height:1.6;background:#FBF6F2;border-right:4px solid #9C6B4F;color:#2B2B28;box-sizing:border-box}' +
+      '.cfl-lost button{font:inherit;font-size:14px;margin-inline-start:8px;padding:4px 12px;cursor:pointer;border:1px solid #9C6B4F;background:#fff;color:#9C6B4F}' +
+      '.cfl-lost pre{white-space:pre-wrap;font:inherit;margin:10px 0 0;padding:10px 12px;background:#fff;border:1px solid #E5D9CF}' +
+      '@media print{.cfl-lost button{display:none}}';
+    document.head.appendChild(css);
+    let t = null;
+    const run = () => { clearTimeout(t); t = setTimeout(shadeEmpty, 120); };
+    new MutationObserver(run).observe(document.body, { childList: true, subtree: true });
+    run();
+  }
+  // the summary lines saved at the sending that the page doesn't make any more
+  const lineOf = l => genderText(String(l), CFL.gender).replace(/\s+/g, ' ').trim(); // "חש/ה" and "חשה" are the same line
+  function lostLines(saved, now) {
+    const have = new Set(String(now || '').split('\n').map(lineOf));
+    // (the name line is skipped: a name corrected later is not a change in the questionnaire)
+    return String(saved || '').replace(/\r/g, '').split('\n').filter(l => { const x = lineOf(l); return x && !/^[\s\-–•·.:*←]*$/.test(x) && !/^שם:/.test(x) && !have.has(x); });
+  }
+  function summaryNow() {
+    try {
+      if (typeof window.CFL_SUMMARY === 'function') return String(window.CFL_SUMMARY() || '');
+      if (window.CWL_CFG && typeof window.CWL_CFG.summary === 'function') return String(window.CWL_CFG.summary() || '');
+    } catch (e) { }
+    return null; // this page can't say: no check
+  }
+  function lostCheck(saved) {
+    const now = summaryNow();
+    if (now === null || document.querySelector('.cfl-lost')) return;
+    const lost = lostLines(saved, now);
+    if (!lost.length) return;
+    const box = document.createElement('div');
+    box.className = 'cfl-lost noprint';
+    {
+      const b = document.createElement('b'); b.textContent = 'השאלון השתנה מאז ששלחו אותו. ';
+      const t = document.createTextNode(lost.length === 1 ? 'שורה אחת ממה שנשלח לא מופיעה בעמוד.' : lost.length + ' שורות ממה שנשלח לא מופיעות בעמוד.');
+      const btn = document.createElement('button'); btn.type = 'button'; btn.textContent = 'הצגת מה שחסר';
+      const pre = document.createElement('pre'); pre.hidden = true; pre.textContent = lost.join('\n');
+      btn.onclick = () => { pre.hidden = !pre.hidden; btn.textContent = pre.hidden ? 'הצגת מה שחסר' : 'הסתרה'; };
+      box.append(b, t, btn, pre);
+    }
+    const top = document.getElementById('cflReadOnly') || document.getElementById('cflBar');
+    if (top) top.after(box); else document.body.insertBefore(box, document.body.firstChild);
   }
 
   const CFL = {
@@ -176,6 +252,7 @@
         CFL.name = info.name; CFL.gender = info.gender;
         document.documentElement.classList.add('cfl-view');
         applyGender(CFL.gender);
+        sentWatch(info);
         return info;
       }
       if (CFL_API_URL.indexOf('PASTE_') === 0) { fatal('האתר עדיין לא חובר לשרת (CFL_config.js).'); return NEVER; }
@@ -189,6 +266,7 @@
       if (r.email && r.email !== CFL.email) { CFL.email = r.email; store(EMAIL_KEY, r.email); }
       addBar(CFL.name);
       applyGender(CFL.gender);
+      if (r.status === 'submitted' && r.readOnly) sentWatch(r);
       return r;
     },
 
