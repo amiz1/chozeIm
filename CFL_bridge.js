@@ -165,6 +165,35 @@
   //    the same answers. Lines that are no longer made are answers the page can't show any more (it changed since):
   //    a warning, and a button that shows just those lines. (Not for the נועץ: the summary has parts meant for the
   //    יועץ only, and is never sent to the נועץ's browser.)
+  // The questionnaire's version: <meta name="cfl-qversion" content="2"> in the page (1 if missing). It goes up by
+  // one whenever the questions change; each sending records the version it was given on.
+  function pageVersion() {
+    const m = document.querySelector('meta[name=cfl-qversion]');
+    return Math.max(1, parseInt(m && m.content, 10) || 1);
+  }
+  // the version travels with the saved answers; the page itself gets them without it
+  function takeVersion(info) {
+    if (info && info.saved && typeof info.saved === 'object') {
+      info.savedVersion = Math.max(1, parseInt(info.saved.qv, 10) || 1);
+      const copy = Object.assign({}, info.saved); delete copy.qv; info.saved = copy;
+    }
+    return info;
+  }
+  // the נועץ opens a questionnaire sent on an earlier version: a short note (the answers are all kept)
+  function versionNote(info) {
+    if (VIEW || info.status !== 'submitted' || !info.savedVersion || pageVersion() <= info.savedVersion) return;
+    const put = () => {
+      if (document.querySelector('.cfl-qchanged')) return;
+      const n = document.createElement('div');
+      n.className = 'cfl-qchanged noprint';
+      n.style.cssText = 'max-width:860px;margin:10px auto 0;padding:12px 18px;direction:rtl;font-family:"Heebo",Arial,sans-serif;font-size:16px;line-height:1.6;' +
+        'background:#FBF6F2;border-right:4px solid #9C6B4F;color:#2B2B28;box-sizing:border-box';
+      n.textContent = 'השאלון עודכן מאז ששלחת אותו. אם חלק מהתשובות שלך לא מופיעות כאן, הן שמורות אצלי ונעבור עליהן יחד.';
+      const top = document.getElementById('cflReadOnly') || document.getElementById('cflBar');
+      if (top) top.after(n); else document.body.insertBefore(n, document.body.firstChild);
+    };
+    setTimeout(put, 300); // after the page put its own bars at the top
+  }
   function sentWatch(info) {
     shadeStart();
     // on the summary view (where the page draws everything the summary is made of), after it drew the answers
@@ -248,7 +277,7 @@
     /** Call once when the page opens. Resolves with { status: 'open' | 'submitted', saved, submittedAt, name }. */
     async start(id) {
       if (VIEW) {
-        const info = await waitForStaffPage();
+        const info = takeVersion(await waitForStaffPage());
         CFL.name = info.name; CFL.gender = info.gender;
         document.documentElement.classList.add('cfl-view');
         applyGender(CFL.gender);
@@ -257,7 +286,7 @@
       }
       if (CFL_API_URL.indexOf('PASTE_') === 0) { fatal('האתר עדיין לא חובר לשרת (CFL_config.js).'); return NEVER; }
       if (!load(TOKEN_KEY)) { goHome(); return NEVER; }
-      const r = takeLoaded(id) || await api('getTool', { id: id });
+      const r = takeVersion(takeLoaded(id) || await api('getTool', { id: id }));
       if (r.auth === false) { store(TOKEN_KEY, null); goHome(); return NEVER; }
       if (r.privacy) { goHome(); return NEVER; } // the privacy approval is on the home page
       if (!r.ok) { fatal(r.message); return NEVER; }
@@ -267,6 +296,7 @@
       addBar(CFL.name);
       applyGender(CFL.gender);
       if (r.status === 'submitted' && r.readOnly) sentWatch(r);
+      versionNote(r);
       return r;
     },
 
@@ -280,7 +310,7 @@
     /** Sends the answers. state = raw answers (to show the results again later),
      *  summary = the text for HR, fields = extra display columns. Resolves with { ok, message }. */
     async submit(id, state, summary, fields) {
-      const r = await api('submitTool', { id: id, state: state, summary: summary, fields: fields || {} });
+      const r = await api('submitTool', { id: id, state: state, summary: summary, fields: fields || {}, qv: pageVersion() });
       if (r.auth === false) { store(TOKEN_KEY, null); goHome(); return NEVER; }
       if (r.privacy) { goHome(); return NEVER; }
       if (r.ok) store(CFL.draftKey(id), null);
