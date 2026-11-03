@@ -323,7 +323,7 @@ const FIN={'ך':'כ','ם':'מ','ן':'נ','ף':'פ','ץ':'צ'};
 function G(s){if(HASHG&&S.g!==HASHG){S.g=HASHG;save();}const g=S.g;if(g!=='f'&&g!=='m')return s;s=String(s).replace(/את\/ה/g,g==='f'?'את':'אתה');if(g==='m')s=s.replace(/אלייך/g,'אליך');
  return s.replace(/([א-ת]+)\/([היתה]{1})(?![א-ת])/g,(m,b,suf)=>{if(g==='m')return b;if(b.endsWith('ה')&&suf==='י')return b.slice(0,-1)+'י';const l=b.slice(-1);return (FIN[l]?b.slice(0,-1)+FIN[l]:b)+suf;});}
 /* ---------- שיקוף אוטומטי מחבר (כבוי עד אישור נורית) ---------- */
-const AUTO_REFL=true;
+const AUTO_REFL=false;
 const WORLDS=['משפחה וקשרים קרובים','חברים וקהילה','ספורט ותנועה','יצירה, תרבות או תחביבים','למידה והתפתחות','התנדבות או עשייה חברתית','טיפול או דאגה לאחרים','רוחניות ועולם פנימי','עיסוק נוסף או פרויקט צד'];
 function autoRefl(d){const a=d.a||{},t=d.t||{},R=[];const q=(s)=>{let x=String(s).trim().replace(/\s+/g,' ');if(x.length>150){x=x.slice(0,150);const k=Math.max(x.lastIndexOf('. '),x.lastIndexOf(', '));x=(k>60?x.slice(0,k):x.slice(0,x.lastIndexOf(' ')))+'…';}return '"'+esc(x)+'"';};
  const add=(c,p)=>R.push({c,p});const H=(id,i)=>has(a,id,i);const steps=(a.q19||[]).filter(i=>i<5).length;const words=s=>String(s||'').trim().split(/\s+/).filter(Boolean).length;
