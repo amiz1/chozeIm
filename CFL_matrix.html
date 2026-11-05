@@ -85,6 +85,9 @@ td.n{text-align:center;font-weight:700}
 footer{margin-top:50px;padding-top:18px;border-top:1px solid var(--rule);font-size:13px;color:var(--mute)}
 @media(max-width:620px){body{font-size:16px}h1{font-size:25px}section.block{padding:20px 14px}.row .on-name{min-width:100%}.scale{min-width:100%}}
 @media print{body{background:#fff}header .steps,.actions,.tabs,footer,#rawbox{display:none!important}.pane{display:block!important}section.block{border:none;padding:0}}
+
+/* "אין תשובה נכונה" בראש השאלון (תיבת זהב אחידה, 5.11.2026) */
+.cfl-truth{background:#fff;border:1px solid #DCD7CA;border-right:3px solid #B08A3E;padding:12px 16px;margin:16px 0;font-size:16px;font-weight:500;color:#2B2B2B;text-align:right;direction:rtl;line-height:1.5}
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap" rel="stylesheet"><style id="cfl-font">body,body *{font-family:"Heebo",Arial,"Arial Hebrew",sans-serif!important}</style>
 </head>
@@ -137,6 +140,7 @@ function lockNote(){return S.locked?`<div class="lock">הדירוג כבר נש�
 
 const R=[];
 R[0]=()=>blk('פתיחה','לפני שמתחילים','',`
+<div class="cfl-truth">אין כאן ציון, ואין תשובה נכונה מראש.</div>
 <p>במהלך השאלון תברר/י מה חשוב לך כעת, עד כמה כל אפשרות נותנת לכך מענה, ומה עדיין צריך לבדוק. בין הערכת האפשרויות לבין דירוג חשיבות הערכים יש מרווח מכוון. אפשר לבחור מרווח קצר אם מועד ההחלטה קרוב.</p>
 <p>בסוף תתקבל תמונת התאמה, מחירים ושאלות להמשך בירור. היא נועדה לתמוך בשיחה ובהחלטה שלך.</p>
 
