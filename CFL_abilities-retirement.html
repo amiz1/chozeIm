@@ -45,6 +45,9 @@ table{width:100%;border-collapse:collapse;font-size:15.5px;margin:8px 0 16px}td,
 .count{font-size:14px;color:var(--mute);text-align:center}
 .saved{font-size:14px;color:var(--mute)}
 @media(max-width:560px){.grid4{grid-template-columns:1fr}h1{font-size:26px}}
+
+/* "אין תשובה נכונה" בראש השאלון (תיבת זהב אחידה, 5.11.2026) */
+.cfl-truth{background:#fff;border:1px solid #DCD7CA;border-right:3px solid #B08A3E;padding:12px 16px;margin:16px 0;font-size:16px;font-weight:500;color:#2B2B2B;text-align:right;direction:rtl;line-height:1.5}
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap" rel="stylesheet"><style id="cfl-font">body,body *{font-family:"Heebo",Arial,"Arial Hebrew",sans-serif!important}</style>
 </head>
@@ -82,7 +85,7 @@ function ta(id,f,label,rows,small){return `<label for="${id}">${label}${small?` 
 function render(){
  const s=SCREENS[S.i];let h='';
  $('#back').style.visibility=S.i?'visible':'hidden';$('#next').style.display='';$('#next').textContent='הבא';
- if(s==='welcome'){h=`<p class="brand">חוזה עם החיים</p><h1>היכולות שלי · לקראת הפרישה ואחריה</h1><p class="sub">אילו מהיכולות שלי אני רוצה להביא לידי ביטוי בפרק הבא</p>
+ if(s==='welcome'){h=`<p class="brand">חוזה עם החיים</p><h1>היכולות שלי · לקראת הפרישה ואחריה</h1><p class="sub">אילו מהיכולות שלי אני רוצה להביא לידי ביטוי בפרק הבא</p><div class="cfl-truth">אין תשובה נכונה.</div>
  <p>לאורך השנים אספנו הרבה יכולות. חלקן נבנו מתוך בחירה, וחלקן פשוט נדרשו מאיתנו בתפקיד.</p>
  <p>כשהתפקיד נגמר, או עומד להיגמר, עולה שאלה חדשה: מה מכל זה הוא באמת שלי, ומה מזה אני רוצה לקחת איתי.</p>
  <p>השאלון הזה לא מבקש להחליט, וגם לא לתכנן. הוא מזמין לעצור ולהתבונן. קודם כותבים את הרשימה. אחר כך שואלים על כל יכולת שתי שאלות: האם היא עדיין נותנת לי משהו, והאם היא יכולה לבוא איתי גם בלי התפקיד.</p>
